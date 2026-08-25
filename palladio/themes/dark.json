@@ -1,0 +1,93 @@
+{
+  "name": "dark",
+  "description": "Palladio 暗色主題（首要主題）",
+  "pd": {
+    "color": {
+      "bg": {
+        "value": "{color.charcoal.950}",
+        "type": "color",
+        "description": "頁面最底層背景 (#141414)"
+      },
+      "surface": {
+        "value": "{color.charcoal.900}",
+        "type": "color",
+        "description": "主要內容表面（sidebar、panel） (#1C1C1C)"
+      },
+      "surface-raised": {
+        "value": "{color.charcoal.850}",
+        "type": "color",
+        "description": "提升一層的表面（card、dropdown） (#242424)"
+      },
+      "surface-overlay": {
+        "value": "{color.charcoal.800}",
+        "type": "color",
+        "description": "最高層（modal、tooltip、popover） (#2E2E2E)"
+      },
+      "surface-hover": {
+        "value": "{color.charcoal.750}",
+        "type": "color",
+        "description": "互動 hover 狀態的表面變化 (#323232)"
+      },
+      "border-subtle": {
+        "value": "{color.charcoal.850}",
+        "type": "color",
+        "description": "最輕量的分隔（幾乎與表面融合） (#242424)"
+      },
+      "border-default": {
+        "value": "{color.charcoal.700}",
+        "type": "color",
+        "description": "標準 border（input、card edge） (#333333)"
+      },
+      "border-strong": {
+        "value": "{color.charcoal.600}",
+        "type": "color",
+        "description": "強調邊框（focus ring 底色） (#484848)"
+      },
+      "text-primary": {
+        "value": "{color.charcoal.100}",
+        "type": "color",
+        "description": "主要文字 (#F0F0F0)"
+      },
+      "text-secondary": {
+        "value": "{color.charcoal.400}",
+        "type": "color",
+        "description": "次要文字（meta、說明） (#9A9A9A)"
+      },
+      "text-placeholder": {
+        "value": "{color.charcoal.400}",
+        "type": "color",
+        "description": "placeholder 文字 (#9A9A9A)"
+      },
+      "text-disabled": {
+        "value": "{color.charcoal.450}",
+        "type": "color",
+        "description": "disabled 元件的文字 (#969696)"
+      },
+      "text-inverse": {
+        "value": "{color.charcoal.950}",
+        "type": "color",
+        "description": "深色背景上的反白文字（用於強調色按鈕） (#141414)"
+      },
+      "success": {
+        "value": "{color.status.success}",
+        "type": "color",
+        "description": "成功、完成 (#5CB87A)"
+      },
+      "warning": {
+        "value": "{color.status.warning}",
+        "type": "color",
+        "description": "警告、需注意 (#E5A93C)"
+      },
+      "danger": {
+        "value": "{color.status.danger}",
+        "type": "color",
+        "description": "錯誤、危險操作 (#EB7878)"
+      },
+      "info": {
+        "value": "{color.status.info}",
+        "type": "color",
+        "description": "資訊、提示 (#64B5F6)"
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "pd": {
+    "duration": {
+      "instant": {
+        "value": "{duration.instant}",
+        "type": "duration",
+        "description": "prefers-reduced-motion fallback (0ms)"
+      },
+      "fast": {
+        "value": "{duration.fast}",
+        "type": "duration",
+        "description": "Micro-interaction（hover 顏色變化、checkbox toggle） (120ms)"
+      },
+      "normal": {
+        "value": "{duration.normal}",
+        "type": "duration",
+        "description": "狀態轉場（panel expand、fade in/out） (220ms)"
+      },
+      "slow": {
+        "value": "{duration.slow}",
+        "type": "duration",
+        "description": "頁面層級轉場、signature animation (380ms)"
+      }
+    },
+    "easing": {
+      "default": {
+        "value": "{easing.default}",
+        "type": "cubicBezier",
+        "description": "通用（自然感）"
+      },
+      "enter": {
+        "value": "{easing.enter}",
+        "type": "cubicBezier",
+        "description": "元素進場（慢進快出）"
+      },
+      "exit": {
+        "value": "{easing.exit}",
+        "type": "cubicBezier",
+        "description": "元素退場（快進慢出）"
+      },
+      "expressive": {
+        "value": "{easing.expressive}",
+        "type": "cubicBezier",
+        "description": "Signature animation（輕微超出再回落，有機感）"
+      }
+    }
+  }
+}
