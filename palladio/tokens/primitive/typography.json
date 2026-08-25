@@ -144,21 +144,21 @@
       "tight": {
         "$value": {
           "value": -0.02,
-          "unit": "em"
+          "unit": "rem"
         },
         "$description": "大標題微緊"
       },
       "snug": {
         "$value": {
           "value": -0.01,
-          "unit": "em"
+          "unit": "rem"
         },
         "$description": "次標題微緊"
       },
       "normal": {
         "$value": {
           "value": 0,
-          "unit": "em"
+          "unit": "rem"
         },
         "$description": "內文標準字距"
       }

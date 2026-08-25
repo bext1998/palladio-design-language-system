@@ -1,16 +1,16 @@
 /**
- * Token Validation Script for Palladio Design System (Strict DTCG Format)
+ * Token Validation Script for Palladio Design System (DTCG 2025.10 Compliant)
  * Validates:
- * 1. DTCG format compliance:
+ * 1. DTCG 2025.10 format compliance:
  *    - Token/Group metadata uses $value, $type, $description (no legacy non-$ metadata properties).
- *    - Valid payloads for all DTCG $types:
- *      - dimension: { value: number, unit: string }
- *      - duration: { value: number, unit: 'ms' | 's' }
- *      - number: JSON number (e.g. 1.2, 1.35)
+ *    - Strict payload type verification:
+ *      - dimension: { value: number, unit: "px" | "rem" } (rejects "em" or raw strings)
+ *      - duration: { value: number, unit: "ms" | "s" } (rejects raw strings)
+ *      - number: JSON number (e.g. 1.0, 1.2, 1.35)
  *      - fontWeight: JSON number (e.g. 400, 500, 600)
  *      - fontFamily: string or string[]
  *      - cubicBezier: [number, number, number, number]
- *      - color: hex string (e.g. #141414)
+ *      - color: { colorSpace: "srgb", components: [r, g, b], hex?: string, alpha?: number } (rejects raw hex strings)
  *      - typography: composite object with fontFamily, fontSize, fontWeight, letterSpacing, lineHeight
  * 2. Dynamic reference resolution ({path.to.token}) for Layer 1 semantic tokens and themes.
  * 3. Exact coverage of specifications across all scales.
@@ -47,35 +47,40 @@ function deepMerge(target, source) {
 }
 
 // Color contrast calculation helper (WCAG 2.1)
-function hexToRgb(hex) {
-  const cleanHex = hex.replace('#', '');
-  const r = parseInt(cleanHex.substring(0, 2), 16) / 255;
-  const g = parseInt(cleanHex.substring(2, 4), 16) / 255;
-  const b = parseInt(cleanHex.substring(4, 6), 16) / 255;
-  return [r, g, b];
-}
-
 function srgbToLinear(c) {
   return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
 }
 
-function getLuminance(hex) {
-  const [r, g, b] = hexToRgb(hex);
-  const rL = srgbToLinear(r);
-  const gL = srgbToLinear(g);
-  const bL = srgbToLinear(b);
-  return 0.2126 * rL + 0.7152 * gL + 0.0722 * bL;
+function getLuminanceFromColor(colorObj) {
+  if (colorObj && typeof colorObj === 'object' && Array.isArray(colorObj.components)) {
+    const [r, g, b] = colorObj.components;
+    const rL = srgbToLinear(r);
+    const gL = srgbToLinear(g);
+    const bL = srgbToLinear(b);
+    return 0.2126 * rL + 0.7152 * gL + 0.0722 * bL;
+  }
+  if (typeof colorObj === 'string' && colorObj.startsWith('#')) {
+    const cleanHex = colorObj.replace('#', '');
+    const r = parseInt(cleanHex.substring(0, 2), 16) / 255;
+    const g = parseInt(cleanHex.substring(2, 4), 16) / 255;
+    const b = parseInt(cleanHex.substring(4, 6), 16) / 255;
+    const rL = srgbToLinear(r);
+    const gL = srgbToLinear(g);
+    const bL = srgbToLinear(b);
+    return 0.2126 * rL + 0.7152 * gL + 0.0722 * bL;
+  }
+  throw new Error('Unsupported color format for luminance: ' + JSON.stringify(colorObj));
 }
 
-function getContrastRatio(hex1, hex2) {
-  const l1 = getLuminance(hex1);
-  const l2 = getLuminance(hex2);
+function getContrastRatio(colorObj1, colorObj2) {
+  const l1 = getLuminanceFromColor(colorObj1);
+  const l2 = getLuminanceFromColor(colorObj2);
   const brighter = Math.max(l1, l2);
   const darker = Math.min(l1, l2);
   return (brighter + 0.05) / (darker + 0.05);
 }
 
-console.log('=== Palladio Strict DTCG Token Validation ===\n');
+console.log('=== Palladio DTCG 2025.10 Token Validation ===\n');
 
 // 1. Load all token files
 const tokenFiles = {
@@ -151,7 +156,6 @@ function resolveRef(refStr, reg, visited = new Set()) {
   }
 
   if (current && typeof current === 'object' && '$value' in current) {
-    const tokenType = current.$type || inheritedType;
     const resolvedVal = resolveRef(current.$value, reg, new Set(visited));
     return resolvedVal;
   }
@@ -173,6 +177,10 @@ function resolveTokenValue(tokenVal, reg) {
         unit: resolveTokenValue(tokenVal.unit, reg)
       };
     }
+    // If it is a color object { colorSpace, components, ... }
+    if ('colorSpace' in tokenVal && 'components' in tokenVal) {
+      return tokenVal;
+    }
     const resolvedObj = {};
     for (const [k, v] of Object.entries(tokenVal)) {
       resolvedObj[k] = resolveTokenValue(v, reg);
@@ -182,7 +190,7 @@ function resolveTokenValue(tokenVal, reg) {
   return tokenVal;
 }
 
-// 4. Validate DTCG Payload Types
+// 4. Validate DTCG Payload Types (Strict DTCG 2025.10 specifications)
 function validatePayloadType(type, val, tokenPath) {
   if (typeof val === 'string' && val.startsWith('{') && val.endsWith('}')) {
     // Valid alias
@@ -191,8 +199,8 @@ function validatePayloadType(type, val, tokenPath) {
 
   switch (type) {
     case 'dimension': {
-      if (!val || typeof val !== 'object' || typeof val.value !== 'number' || typeof val.unit !== 'string') {
-        throw new Error(`Invalid DTCG dimension payload at "${tokenPath}": expected { value: number, unit: string }, got ${JSON.stringify(val)}`);
+      if (!val || typeof val !== 'object' || typeof val.value !== 'number' || !['px', 'rem'].includes(val.unit)) {
+        throw new Error(`Invalid DTCG dimension payload at "${tokenPath}": expected { value: number, unit: "px"|"rem" }, got ${JSON.stringify(val)}`);
       }
       break;
     }
@@ -227,8 +235,15 @@ function validatePayloadType(type, val, tokenPath) {
       break;
     }
     case 'color': {
-      if (typeof val !== 'string' || !val.startsWith('#')) {
-        throw new Error(`Invalid DTCG color payload at "${tokenPath}": expected hex string, got ${JSON.stringify(val)}`);
+      if (
+        !val ||
+        typeof val !== 'object' ||
+        val.colorSpace !== 'srgb' ||
+        !Array.isArray(val.components) ||
+        val.components.length !== 3 ||
+        !val.components.every(n => typeof n === 'number')
+      ) {
+        throw new Error(`Invalid DTCG color payload at "${tokenPath}": expected { colorSpace: "srgb", components: [r, g, b], hex?: string, alpha?: number }, got ${JSON.stringify(val)}`);
       }
       break;
     }
@@ -266,7 +281,7 @@ function traverseAndValidateTypes(obj, inheritedType = undefined, currentPath = 
 for (const [name, data] of Object.entries(tokenFiles)) {
   traverseAndValidateTypes(data, undefined, name);
 }
-console.log('✔ DTCG Payload types verified: dimension, duration, number, cubicBezier, color, fontFamily, typography all strictly follow DTCG spec.');
+console.log('✔ DTCG 2025.10 Payload types verified: color (srgb object), dimension (px/rem), duration (ms/s), number, cubicBezier, fontFamily, typography.');
 
 // 5. Validate Primitive Scales content
 const expectedCharcoal = {
@@ -274,12 +289,12 @@ const expectedCharcoal = {
   '700': '#333333', '600': '#484848', '450': '#969696', '400': '#9A9A9A', '100': '#F0F0F0'
 };
 for (const [key, expectedHex] of Object.entries(expectedCharcoal)) {
-  const actualHex = resolveRef(`{color.charcoal.${key}}`, registry);
-  if (actualHex !== expectedHex) {
-    throw new Error(`Primitive charcoal.${key} expected ${expectedHex} but got ${actualHex}`);
+  const actualColor = resolveRef(`{color.charcoal.${key}}`, registry);
+  if (actualColor.hex !== expectedHex || actualColor.colorSpace !== 'srgb') {
+    throw new Error(`Primitive charcoal.${key} expected hex ${expectedHex} in srgb but got ${JSON.stringify(actualColor)}`);
   }
 }
-console.log('✔ Primitive charcoal ladder verified (10 steps).');
+console.log('✔ Primitive charcoal ladder verified (10 steps, DTCG colorSpace srgb).');
 
 // Space scale
 const expectedSpaces = {
@@ -393,23 +408,23 @@ const resolvedStatusColors = {
 // Check parity
 for (const key of Object.keys(resolvedTextColors)) {
   const semVal = resolveRef(semColors[key].$value, registry);
-  if (semVal !== resolvedTextColors[key]) {
-    throw new Error(`Semantic token mismatch for ${key}: semantic=${semVal}, dark theme=${resolvedTextColors[key]}`);
+  if (semVal.hex !== resolvedTextColors[key].hex) {
+    throw new Error(`Semantic token mismatch for ${key}: semantic=${semVal.hex}, dark theme=${resolvedTextColors[key].hex}`);
   }
 }
 
 console.log('\n--- Dynamic WCAG Contrast Ratio Check (A-M1 >= 4.5:1 on all surfaces) ---');
-for (const [surfName, surfHex] of Object.entries(resolvedSurfaces)) {
-  for (const [textName, textHex] of Object.entries(resolvedTextColors)) {
-    const ratio = getContrastRatio(textHex, surfHex);
-    console.log(`[Text] ${textName} (${textHex}) on ${surfName} (${surfHex}) => ${ratio.toFixed(2)}:1`);
+for (const [surfName, surfObj] of Object.entries(resolvedSurfaces)) {
+  for (const [textName, textObj] of Object.entries(resolvedTextColors)) {
+    const ratio = getContrastRatio(textObj, surfObj);
+    console.log(`[Text] ${textName} (${textObj.hex}) on ${surfName} (${surfObj.hex}) => ${ratio.toFixed(2)}:1`);
     if (ratio < 4.5) {
       throw new Error(`A-M1 Contrast failure: ${textName} on ${surfName} is ${ratio.toFixed(2)}:1 (< 4.5:1)`);
     }
   }
-  for (const [statusName, statusHex] of Object.entries(resolvedStatusColors)) {
-    const ratio = getContrastRatio(statusHex, surfHex);
-    console.log(`[Status] ${statusName} (${statusHex}) on ${surfName} (${surfHex}) => ${ratio.toFixed(2)}:1`);
+  for (const [statusName, statusObj] of Object.entries(resolvedStatusColors)) {
+    const ratio = getContrastRatio(statusObj, surfObj);
+    console.log(`[Status] ${statusName} (${statusObj.hex}) on ${surfName} (${surfObj.hex}) => ${ratio.toFixed(2)}:1`);
     if (ratio < 4.5) {
       throw new Error(`A-M1 Contrast failure: ${statusName} on ${surfName} is ${ratio.toFixed(2)}:1 (< 4.5:1)`);
     }
@@ -418,5 +433,5 @@ for (const [surfName, surfHex] of Object.entries(resolvedSurfaces)) {
 console.log('✔ All dynamic WCAG A-M1 contrast ratios >= 4.5:1 verified.');
 
 console.log('\n========================================');
-console.log('🎉 All Strict DTCG Token Checks Passed!');
+console.log('🎉 All DTCG 2025.10 Token Checks Passed!');
 console.log('========================================\n');

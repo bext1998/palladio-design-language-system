@@ -3,71 +3,151 @@
     "$type": "color",
     "charcoal": {
       "950": {
-        "$value": "#141414",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.078431, 0.078431, 0.078431],
+          "hex": "#141414",
+          "alpha": 1
+        },
         "$description": "頁面最底層背景"
       },
       "900": {
-        "$value": "#1C1C1C",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.109804, 0.109804, 0.109804],
+          "hex": "#1C1C1C",
+          "alpha": 1
+        },
         "$description": "主要內容表面（sidebar、panel）"
       },
       "850": {
-        "$value": "#242424",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.141176, 0.141176, 0.141176],
+          "hex": "#242424",
+          "alpha": 1
+        },
         "$description": "提升一層的表面（card、dropdown）與微弱分隔線"
       },
       "800": {
-        "$value": "#2E2E2E",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.180392, 0.180392, 0.180392],
+          "hex": "#2E2E2E",
+          "alpha": 1
+        },
         "$description": "最高層表面（modal、tooltip、popover）"
       },
       "750": {
-        "$value": "#323232",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.196078, 0.196078, 0.196078],
+          "hex": "#323232",
+          "alpha": 1
+        },
         "$description": "互動 hover 狀態的表面變化"
       },
       "700": {
-        "$value": "#333333",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.2, 0.2, 0.2],
+          "hex": "#333333",
+          "alpha": 1
+        },
         "$description": "標準 border（input、card edge）"
       },
       "600": {
-        "$value": "#484848",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.282353, 0.282353, 0.282353],
+          "hex": "#484848",
+          "alpha": 1
+        },
         "$description": "強調邊框（focus ring 底色）"
       },
       "450": {
-        "$value": "#969696",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.588235, 0.588235, 0.588235],
+          "hex": "#969696",
+          "alpha": 1
+        },
         "$description": "disabled 元件文字（WCAG AA on dark）"
       },
       "400": {
-        "$value": "#9A9A9A",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.603922, 0.603922, 0.603922],
+          "hex": "#9A9A9A",
+          "alpha": 1
+        },
         "$description": "次要文字與 placeholder 文字"
       },
       "100": {
-        "$value": "#F0F0F0",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.941176, 0.941176, 0.941176],
+          "hex": "#F0F0F0",
+          "alpha": 1
+        },
         "$description": "主要文字"
       }
     },
     "base": {
       "white": {
-        "$value": "#FFFFFF",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [1, 1, 1],
+          "hex": "#FFFFFF",
+          "alpha": 1
+        },
         "$description": "純白色"
       },
       "black": {
-        "$value": "#000000",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0, 0, 0],
+          "hex": "#000000",
+          "alpha": 1
+        },
         "$description": "純黑色"
       }
     },
     "status": {
       "success": {
-        "$value": "#5CB87A",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.360784, 0.721569, 0.478431],
+          "hex": "#5CB87A",
+          "alpha": 1
+        },
         "$description": "成功狀態色（去飽和綠）"
       },
       "warning": {
-        "$value": "#E5A93C",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.898039, 0.662745, 0.235294],
+          "hex": "#E5A93C",
+          "alpha": 1
+        },
         "$description": "警告狀態色（琥珀色）"
       },
       "danger": {
-        "$value": "#EB7878",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.921569, 0.470588, 0.470588],
+          "hex": "#EB7878",
+          "alpha": 1
+        },
         "$description": "危險/錯誤狀態色（去飽和紅）"
       },
       "info": {
-        "$value": "#64B5F6",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.392157, 0.709804, 0.964706],
+          "hex": "#64B5F6",
+          "alpha": 1
+        },
         "$description": "資訊狀態色（去飽和藍）"
       }
     }
