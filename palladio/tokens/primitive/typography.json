@@ -1,133 +1,114 @@
 {
   "font": {
     "family": {
+      "$type": "fontFamily",
       "sans": {
-        "value": "\"Noto Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
-        "type": "fontFamily",
-        "description": "主字體（UI、內容）"
+        "$value": "\"Noto Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "$description": "主字體（UI、內容）"
       },
       "mono": {
-        "value": "\"Noto Sans Mono\", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
-        "type": "fontFamily",
-        "description": "等寬字體（code、data）"
+        "$value": "\"Noto Sans Mono\", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+        "$description": "等寬字體（code、data）"
       }
     },
     "size": {
+      "$type": "dimension",
       "10": {
-        "value": "10px",
-        "type": "dimension",
-        "description": "最小可用字體尺寸（極端場景）"
+        "$value": "10px",
+        "$description": "最小可用字體尺寸（極端場景）"
       },
       "12": {
-        "value": "12px",
-        "type": "dimension",
-        "description": "次要資訊、小型標籤"
+        "$value": "12px",
+        "$description": "次要資訊、小型標籤"
       },
       "13": {
-        "value": "13px",
-        "type": "dimension",
-        "description": "Compact body、程式碼"
+        "$value": "13px",
+        "$description": "Compact body、程式碼"
       },
       "14": {
-        "value": "14px",
-        "type": "dimension",
-        "description": "標準 UI 文字、次標題"
+        "$value": "14px",
+        "$description": "標準 UI 文字、次標題"
       },
       "15": {
-        "value": "15px",
-        "type": "dimension",
-        "description": "Spacious body 文字"
+        "$value": "15px",
+        "$description": "Spacious body 文字"
       },
       "16": {
-        "value": "16px",
-        "type": "dimension",
-        "description": "主要內文"
+        "$value": "16px",
+        "$description": "主要內文"
       },
       "18": {
-        "value": "18px",
-        "type": "dimension",
-        "description": "段落次標題"
+        "$value": "18px",
+        "$description": "段落次標題"
       },
       "24": {
-        "value": "24px",
-        "type": "dimension",
-        "description": "段落主標題"
+        "$value": "24px",
+        "$description": "段落主標題"
       },
       "32": {
-        "value": "32px",
-        "type": "dimension",
-        "description": "頁面大標題"
+        "$value": "32px",
+        "$description": "頁面大標題"
       }
     },
     "weight": {
+      "$type": "fontWeight",
       "regular": {
-        "value": "400",
-        "type": "fontWeight",
-        "description": "一般內文"
+        "$value": 400,
+        "$description": "一般內文"
       },
       "medium": {
-        "value": "500",
-        "type": "fontWeight",
-        "description": "按鈕、標籤"
+        "$value": 500,
+        "$description": "按鈕、標籤"
       },
       "semibold": {
-        "value": "600",
-        "type": "fontWeight",
-        "description": "標題"
+        "$value": 600,
+        "$description": "標題"
       }
     },
     "lineHeight": {
+      "$type": "number",
       "1-0": {
-        "value": "1.0",
-        "type": "number",
-        "description": "單行標籤與按鈕"
+        "$value": 1.0,
+        "$description": "單行標籤與按鈕"
       },
       "1-2": {
-        "value": "1.2",
-        "type": "number",
-        "description": "大標題"
+        "$value": 1.2,
+        "$description": "大標題"
       },
       "1-3": {
-        "value": "1.3",
-        "type": "number",
-        "description": "主標題"
+        "$value": 1.3,
+        "$description": "主標題"
       },
       "1-35": {
-        "value": "1.35",
-        "type": "number",
-        "description": "次標題"
+        "$value": 1.35,
+        "$description": "次標題"
       },
       "1-4": {
-        "value": "1.4",
-        "type": "number",
-        "description": "小標題"
+        "$value": 1.4,
+        "$description": "小標題"
       },
       "1-5": {
-        "value": "1.5",
-        "type": "number",
-        "description": "次要資訊"
+        "$value": 1.5,
+        "$description": "次要資訊"
       },
       "1-6": {
-        "value": "1.6",
-        "type": "number",
-        "description": "標準內文"
+        "$value": 1.6,
+        "$description": "標準內文"
       }
     },
     "letterSpacing": {
+      "$type": "dimension",
       "tight": {
-        "value": "-0.02em",
-        "type": "dimension",
-        "description": "大標題微緊"
+        "$value": "-0.02em",
+        "$description": "大標題微緊"
       },
       "snug": {
-        "value": "-0.01em",
-        "type": "dimension",
-        "description": "次標題微緊"
+        "$value": "-0.01em",
+        "$description": "次標題微緊"
       },
       "normal": {
-        "value": "0",
-        "type": "dimension",
-        "description": "內文標準字距"
+        "$value": "0",
+        "$description": "內文標準字距"
       }
     }
   }

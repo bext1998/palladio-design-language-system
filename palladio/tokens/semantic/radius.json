@@ -1,35 +1,30 @@
 {
   "pd": {
     "radius": {
+      "$type": "dimension",
       "none": {
-        "value": "{radius.none}",
-        "type": "dimension",
-        "description": "全出血元素、刻意強調硬邊的場景 (0px)"
+        "$value": "{radius.none}",
+        "$description": "全出血元素、刻意強調硬邊的場景 (0px)"
       },
       "sm": {
-        "value": "{radius.sm}",
-        "type": "dimension",
-        "description": "輕微圓角（input、大型 card） (4px)"
+        "$value": "{radius.sm}",
+        "$description": "輕微圓角（input、大型 card） (4px)"
       },
       "md": {
-        "value": "{radius.md}",
-        "type": "dimension",
-        "description": "中型元件（dropdown panel、tooltip、button） (8px)"
+        "$value": "{radius.md}",
+        "$description": "中型元件（dropdown panel、tooltip、button） (8px)"
       },
       "lg": {
-        "value": "{radius.lg}",
-        "type": "dimension",
-        "description": "大型容器（modal、side panel） (12px)"
+        "$value": "{radius.lg}",
+        "$description": "大型容器（modal、side panel） (12px)"
       },
       "xl": {
-        "value": "{radius.xl}",
-        "type": "dimension",
-        "description": "刻意圓潤的大型容器 (16px)"
+        "$value": "{radius.xl}",
+        "$description": "刻意圓潤的大型容器 (16px)"
       },
       "full": {
-        "value": "{radius.full}",
-        "type": "dimension",
-        "description": "膠囊形狀（badge、tag、pill button）、圓形頭像 (9999px)"
+        "$value": "{radius.full}",
+        "$description": "膠囊形狀（badge、tag、pill button）、圓形頭像 (9999px)"
       }
     }
   }

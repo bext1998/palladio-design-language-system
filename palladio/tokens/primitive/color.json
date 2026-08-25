@@ -1,89 +1,74 @@
 {
   "color": {
+    "$type": "color",
     "charcoal": {
       "950": {
-        "value": "#141414",
-        "type": "color",
-        "description": "頁面最底層背景"
+        "$value": "#141414",
+        "$description": "頁面最底層背景"
       },
       "900": {
-        "value": "#1C1C1C",
-        "type": "color",
-        "description": "主要內容表面（sidebar、panel）"
+        "$value": "#1C1C1C",
+        "$description": "主要內容表面（sidebar、panel）"
       },
       "850": {
-        "value": "#242424",
-        "type": "color",
-        "description": "提升一層的表面（card、dropdown）與微弱分隔線"
+        "$value": "#242424",
+        "$description": "提升一層的表面（card、dropdown）與微弱分隔線"
       },
       "800": {
-        "value": "#2E2E2E",
-        "type": "color",
-        "description": "最高層表面（modal、tooltip、popover）"
+        "$value": "#2E2E2E",
+        "$description": "最高層表面（modal、tooltip、popover）"
       },
       "750": {
-        "value": "#323232",
-        "type": "color",
-        "description": "互動 hover 狀態的表面變化"
+        "$value": "#323232",
+        "$description": "互動 hover 狀態的表面變化"
       },
       "700": {
-        "value": "#333333",
-        "type": "color",
-        "description": "標準 border（input、card edge）"
+        "$value": "#333333",
+        "$description": "標準 border（input、card edge）"
       },
       "600": {
-        "value": "#484848",
-        "type": "color",
-        "description": "強調邊框（focus ring 底色）"
+        "$value": "#484848",
+        "$description": "強調邊框（focus ring 底色）"
       },
       "450": {
-        "value": "#969696",
-        "type": "color",
-        "description": "disabled 元件文字（WCAG AA on dark）"
+        "$value": "#969696",
+        "$description": "disabled 元件文字（WCAG AA on dark）"
       },
       "400": {
-        "value": "#9A9A9A",
-        "type": "color",
-        "description": "次要文字與 placeholder 文字"
+        "$value": "#9A9A9A",
+        "$description": "次要文字與 placeholder 文字"
       },
       "100": {
-        "value": "#F0F0F0",
-        "type": "color",
-        "description": "主要文字"
+        "$value": "#F0F0F0",
+        "$description": "主要文字"
       }
     },
     "base": {
       "white": {
-        "value": "#FFFFFF",
-        "type": "color",
-        "description": "純白色"
+        "$value": "#FFFFFF",
+        "$description": "純白色"
       },
       "black": {
-        "value": "#000000",
-        "type": "color",
-        "description": "純黑色"
+        "$value": "#000000",
+        "$description": "純黑色"
       }
     },
     "status": {
       "success": {
-        "value": "#5CB87A",
-        "type": "color",
-        "description": "成功狀態色（去飽和綠）"
+        "$value": "#5CB87A",
+        "$description": "成功狀態色（去飽和綠）"
       },
       "warning": {
-        "value": "#E5A93C",
-        "type": "color",
-        "description": "警告狀態色（琥珀色）"
+        "$value": "#E5A93C",
+        "$description": "警告狀態色（琥珀色）"
       },
       "danger": {
-        "value": "#EB7878",
-        "type": "color",
-        "description": "危險/錯誤狀態色（去飽和紅）"
+        "$value": "#EB7878",
+        "$description": "危險/錯誤狀態色（去飽和紅）"
       },
       "info": {
-        "value": "#64B5F6",
-        "type": "color",
-        "description": "資訊狀態色（去飽和藍）"
+        "$value": "#64B5F6",
+        "$description": "資訊狀態色（去飽和藍）"
       }
     }
   }

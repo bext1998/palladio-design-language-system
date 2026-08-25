@@ -1,55 +1,46 @@
 {
   "pd": {
     "space": {
+      "$type": "dimension",
       "1": {
-        "value": "{space.1}",
-        "type": "dimension",
-        "description": "4px"
+        "$value": "{space.1}",
+        "$description": "4px"
       },
       "2": {
-        "value": "{space.2}",
-        "type": "dimension",
-        "description": "8px"
+        "$value": "{space.2}",
+        "$description": "8px"
       },
       "3": {
-        "value": "{space.3}",
-        "type": "dimension",
-        "description": "12px"
+        "$value": "{space.3}",
+        "$description": "12px"
       },
       "4": {
-        "value": "{space.4}",
-        "type": "dimension",
-        "description": "16px"
+        "$value": "{space.4}",
+        "$description": "16px"
       },
       "5": {
-        "value": "{space.5}",
-        "type": "dimension",
-        "description": "20px"
+        "$value": "{space.5}",
+        "$description": "20px"
       },
       "6": {
-        "value": "{space.6}",
-        "type": "dimension",
-        "description": "24px"
+        "$value": "{space.6}",
+        "$description": "24px"
       },
       "8": {
-        "value": "{space.8}",
-        "type": "dimension",
-        "description": "32px"
+        "$value": "{space.8}",
+        "$description": "32px"
       },
       "10": {
-        "value": "{space.10}",
-        "type": "dimension",
-        "description": "40px"
+        "$value": "{space.10}",
+        "$description": "40px"
       },
       "12": {
-        "value": "{space.12}",
-        "type": "dimension",
-        "description": "48px"
+        "$value": "{space.12}",
+        "$description": "48px"
       },
       "16": {
-        "value": "{space.16}",
-        "type": "dimension",
-        "description": "64px"
+        "$value": "{space.16}",
+        "$description": "64px"
       }
     }
   }
