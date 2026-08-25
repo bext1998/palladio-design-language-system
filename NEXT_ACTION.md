@@ -4,19 +4,20 @@
 
 ## 下一個 Session 目標
 
-確認 GitHub Issue Dry Run 後，開始 Foundation token 與 Style Dictionary pipeline 的第一個可驗收垂直切片。
+完成 [#16 Primitive 與暗色 Semantic token](https://github.com/bext1998/palladio-design-language-system/issues/16)，作為 Foundation parent [#1](https://github.com/bext1998/palladio-design-language-system/issues/1) 的第一個可驗收垂直切片。
 
 ## 行動（最多 3 項）
 
-1. 確認規格分解出的 GitHub Issues 與標籤建立計畫。
-2. 實作 Primitive 與 Semantic token 的暗色主題基礎，並驗證 CSS、TypeScript、JSON 與 agent reference 四種產物。
-3. 文件化 `[MUST]` 可及性規則，建立至少一組 accent 插槽的對比驗證流程。
+1. 完成 [#16](https://github.com/bext1998/palladio-design-language-system/issues/16) 的 Primitive 與暗色 Semantic token 定義及驗收。
+2. 依序推進 [#9](https://github.com/bext1998/palladio-design-language-system/issues/9)、[#5](https://github.com/bext1998/palladio-design-language-system/issues/5)、[#10](https://github.com/bext1998/palladio-design-language-system/issues/10) 與 [#3](https://github.com/bext1998/palladio-design-language-system/issues/3)。
+3. Foundation 完成後開始第一批元件 Issue，再進行三種壓力測試。
 
 ## 阻塞與待決策
 
-- 需確認 Issue Dry Run 後才能寫入 GitHub Issues 與新標籤。
+- 無。雙產品 accent 驗證（#15）須在後續取得兩個產品的實際色彩資料。
 
 ## 權威連結
 
 - [規格第 9–13 章](docs/spec.md)
-- GitHub repository：`bext1998/palladio-design-language-system`
+- [Foundation parent #1](https://github.com/bext1998/palladio-design-language-system/issues/1)
+- [Foundation 第一項 #16](https://github.com/bext1998/palladio-design-language-system/issues/16)
