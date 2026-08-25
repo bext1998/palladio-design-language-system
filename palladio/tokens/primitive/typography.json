@@ -1,0 +1,185 @@
+{
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "sans": {
+        "$value": [
+          "Noto Sans",
+          "system-ui",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "Roboto",
+          "sans-serif"
+        ],
+        "$description": "主字體（UI、內容）"
+      },
+      "mono": {
+        "$value": [
+          "Noto Sans Mono",
+          "ui-monospace",
+          "SFMono-Regular",
+          "Menlo",
+          "Monaco",
+          "Consolas",
+          "monospace"
+        ],
+        "$description": "等寬字體（code、data）"
+      }
+    },
+    "size": {
+      "$type": "dimension",
+      "10": {
+        "$value": {
+          "value": 10,
+          "unit": "px"
+        },
+        "$description": "最小可用字體尺寸（極端場景）"
+      },
+      "12": {
+        "$value": {
+          "value": 12,
+          "unit": "px"
+        },
+        "$description": "次要資訊、小型標籤"
+      },
+      "13": {
+        "$value": {
+          "value": 13,
+          "unit": "px"
+        },
+        "$description": "Compact body、程式碼"
+      },
+      "14": {
+        "$value": {
+          "value": 14,
+          "unit": "px"
+        },
+        "$description": "標準 UI 文字、次標題"
+      },
+      "15": {
+        "$value": {
+          "value": 15,
+          "unit": "px"
+        },
+        "$description": "Spacious body 文字"
+      },
+      "16": {
+        "$value": {
+          "value": 16,
+          "unit": "px"
+        },
+        "$description": "主要內文"
+      },
+      "18": {
+        "$value": {
+          "value": 18,
+          "unit": "px"
+        },
+        "$description": "段落次標題"
+      },
+      "24": {
+        "$value": {
+          "value": 24,
+          "unit": "px"
+        },
+        "$description": "段落主標題"
+      },
+      "32": {
+        "$value": {
+          "value": 32,
+          "unit": "px"
+        },
+        "$description": "頁面大標題"
+      }
+    },
+    "weight": {
+      "$type": "fontWeight",
+      "regular": {
+        "$value": 400,
+        "$description": "一般內文"
+      },
+      "medium": {
+        "$value": 500,
+        "$description": "按鈕、標籤"
+      },
+      "semibold": {
+        "$value": 600,
+        "$description": "標題"
+      }
+    },
+    "lineHeight": {
+      "$type": "number",
+      "1-0": {
+        "$value": 1.0,
+        "$description": "單行標籤與按鈕"
+      },
+      "1-2": {
+        "$value": 1.2,
+        "$description": "大標題"
+      },
+      "1-3": {
+        "$value": 1.3,
+        "$description": "主標題"
+      },
+      "1-35": {
+        "$value": 1.35,
+        "$description": "次標題"
+      },
+      "1-4": {
+        "$value": 1.4,
+        "$description": "小標題"
+      },
+      "1-5": {
+        "$value": 1.5,
+        "$description": "次要資訊"
+      },
+      "1-6": {
+        "$value": 1.6,
+        "$description": "標準內文"
+      }
+    },
+    "letterSpacing": {
+      "$type": "dimension",
+      "tight": {
+        "32": {
+          "$value": {
+            "value": -0.64,
+            "unit": "px"
+          },
+          "$description": "32px 大標題微緊（-0.02em 等效）"
+        },
+        "24": {
+          "$value": {
+            "value": -0.48,
+            "unit": "px"
+          },
+          "$description": "24px 標題微緊（-0.02em 等效）"
+        }
+      },
+      "snug": {
+        "18": {
+          "$value": {
+            "value": -0.18,
+            "unit": "px"
+          },
+          "$description": "18px 次標題微緊（-0.01em 等效）"
+        },
+        "14": {
+          "$value": {
+            "value": -0.14,
+            "unit": "px"
+          },
+          "$description": "14px 小標題微緊（-0.01em 等效）"
+        }
+      },
+      "normal": {
+        "$value": {
+          "value": 0,
+          "unit": "px"
+        },
+        "$description": "內文標準字距"
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "radius": {
+    "$type": "dimension",
+    "none": {
+      "$value": {
+        "value": 0,
+        "unit": "px"
+      },
+      "$description": "全出血元素、刻意強調硬邊的場景"
+    },
+    "sm": {
+      "$value": {
+        "value": 4,
+        "unit": "px"
+      },
+      "$description": "輕微圓角（input、大型 card）"
+    },
+    "md": {
+      "$value": {
+        "value": 8,
+        "unit": "px"
+      },
+      "$description": "中型元件（dropdown panel、tooltip、button）"
+    },
+    "lg": {
+      "$value": {
+        "value": 12,
+        "unit": "px"
+      },
+      "$description": "大型容器（modal、side panel）"
+    },
+    "xl": {
+      "$value": {
+        "value": 16,
+        "unit": "px"
+      },
+      "$description": "刻意圓潤的大型容器（保守使用）"
+    },
+    "full": {
+      "$value": {
+        "value": 9999,
+        "unit": "px"
+      },
+      "$description": "膠囊形狀（badge、tag、pill button）、圓形頭像"
+    }
+  }
+}

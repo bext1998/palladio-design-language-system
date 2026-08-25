@@ -1,0 +1,107 @@
+{
+  "pd": {
+    "text": {
+      "$type": "typography",
+      "display": {
+        "$value": {
+          "fontSize": "{font.size.32}",
+          "fontWeight": "{font.weight.semibold}",
+          "lineHeight": "{font.lineHeight.1-2}",
+          "letterSpacing": "{font.letterSpacing.tight.32}",
+          "fontFamily": "{font.family.sans}"
+        },
+        "$description": "頁面大標題"
+      },
+      "heading-lg": {
+        "$value": {
+          "fontSize": "{font.size.24}",
+          "fontWeight": "{font.weight.semibold}",
+          "lineHeight": "{font.lineHeight.1-3}",
+          "letterSpacing": "{font.letterSpacing.tight.24}",
+          "fontFamily": "{font.family.sans}"
+        },
+        "$description": "段落主標題"
+      },
+      "heading-md": {
+        "$value": {
+          "fontSize": "{font.size.18}",
+          "fontWeight": "{font.weight.semibold}",
+          "lineHeight": "{font.lineHeight.1-35}",
+          "letterSpacing": "{font.letterSpacing.snug.18}",
+          "fontFamily": "{font.family.sans}"
+        },
+        "$description": "段落次標題"
+      },
+      "heading-sm": {
+        "$value": {
+          "fontSize": "{font.size.14}",
+          "fontWeight": "{font.weight.semibold}",
+          "lineHeight": "{font.lineHeight.1-4}",
+          "letterSpacing": "{font.letterSpacing.snug.14}",
+          "fontFamily": "{font.family.sans}"
+        },
+        "$description": "小標題、sidebar 分組標題"
+      },
+      "body-lg": {
+        "$value": {
+          "fontSize": "{font.size.16}",
+          "fontWeight": "{font.weight.regular}",
+          "lineHeight": "{font.lineHeight.1-6}",
+          "letterSpacing": "{font.letterSpacing.normal}",
+          "fontFamily": "{font.family.sans}"
+        },
+        "$description": "主要內文"
+      },
+      "body-md": {
+        "$value": {
+          "fontSize": "{font.size.14}",
+          "fontWeight": "{font.weight.regular}",
+          "lineHeight": "{font.lineHeight.1-6}",
+          "letterSpacing": "{font.letterSpacing.normal}",
+          "fontFamily": "{font.family.sans}"
+        },
+        "$description": "標準 UI 文字"
+      },
+      "body-sm": {
+        "$value": {
+          "fontSize": "{font.size.12}",
+          "fontWeight": "{font.weight.regular}",
+          "lineHeight": "{font.lineHeight.1-5}",
+          "letterSpacing": "{font.letterSpacing.normal}",
+          "fontFamily": "{font.family.sans}"
+        },
+        "$description": "次要資訊、meta"
+      },
+      "label-md": {
+        "$value": {
+          "fontSize": "{font.size.14}",
+          "fontWeight": "{font.weight.medium}",
+          "lineHeight": "{font.lineHeight.1-0}",
+          "letterSpacing": "{font.letterSpacing.normal}",
+          "fontFamily": "{font.family.sans}"
+        },
+        "$description": "按鈕、tab 標籤"
+      },
+      "label-sm": {
+        "$value": {
+          "fontSize": "{font.size.12}",
+          "fontWeight": "{font.weight.medium}",
+          "lineHeight": "{font.lineHeight.1-0}",
+          "letterSpacing": "{font.letterSpacing.normal}",
+          "fontFamily": "{font.family.sans}"
+        },
+        "$description": "小型標籤、badge"
+      },
+      "mono": {
+        "$value": {
+          "fontSize": "{font.size.13}",
+          "fontWeight": "{font.weight.regular}",
+          "lineHeight": "{font.lineHeight.1-6}",
+          "letterSpacing": "{font.letterSpacing.normal}",
+          "fontFamily": "{font.family.mono}"
+        },
+        "$description": "程式碼、資料欄位"
+      }
+    }
+  }
+}
