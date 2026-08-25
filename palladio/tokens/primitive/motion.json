@@ -2,19 +2,31 @@
   "duration": {
     "$type": "duration",
     "instant": {
-      "$value": "0ms",
+      "$value": {
+        "value": 0,
+        "unit": "ms"
+      },
       "$description": "prefers-reduced-motion fallback"
     },
     "fast": {
-      "$value": "120ms",
+      "$value": {
+        "value": 120,
+        "unit": "ms"
+      },
       "$description": "Micro-interaction（hover 顏色變化、checkbox toggle）"
     },
     "normal": {
-      "$value": "220ms",
+      "$value": {
+        "value": 220,
+        "unit": "ms"
+      },
       "$description": "狀態轉場（panel expand、fade in/out）"
     },
     "slow": {
-      "$value": "380ms",
+      "$value": {
+        "value": 380,
+        "unit": "ms"
+      },
       "$description": "頁面層級轉場、signature animation"
     }
   },

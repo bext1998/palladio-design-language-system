@@ -1,12 +1,21 @@
 /**
- * Token Validation Script for Palladio Design System (DTCG Compliant)
+ * Token Validation Script for Palladio Design System (Strict DTCG Format)
  * Validates:
- * 1. DTCG standard compliance: all tokens use $value, $type, $description (no legacy value/type/description).
- * 2. Registry building from Layer 0 primitive tokens.
- * 3. Dynamic reference resolution ({path.to.token}) for Layer 1 semantic tokens and themes.
- * 4. Exact coverage of specifications across color, typography, space, radius, and motion.
- * 5. Dynamic WCAG 2.1 contrast ratio verification using resolved semantic / theme color values (A-M1 >= 4.5:1).
- * 6. Isolation of Accent slots (ensuring dark theme and semantic tokens do NOT contain accent fallback values).
+ * 1. DTCG format compliance:
+ *    - Token/Group metadata uses $value, $type, $description (no legacy non-$ metadata properties).
+ *    - Valid payloads for all DTCG $types:
+ *      - dimension: { value: number, unit: string }
+ *      - duration: { value: number, unit: 'ms' | 's' }
+ *      - number: JSON number (e.g. 1.2, 1.35)
+ *      - fontWeight: JSON number (e.g. 400, 500, 600)
+ *      - fontFamily: string or string[]
+ *      - cubicBezier: [number, number, number, number]
+ *      - color: hex string (e.g. #141414)
+ *      - typography: composite object with fontFamily, fontSize, fontWeight, letterSpacing, lineHeight
+ * 2. Dynamic reference resolution ({path.to.token}) for Layer 1 semantic tokens and themes.
+ * 3. Exact coverage of specifications across all scales.
+ * 4. Dynamic WCAG 2.1 contrast ratio verification using resolved semantic / theme color values (A-M1 >= 4.5:1).
+ * 5. Isolation of Accent slots (ensuring dark theme and semantic tokens do NOT contain accent fallback values).
  */
 
 import fs from 'fs';
@@ -66,7 +75,7 @@ function getContrastRatio(hex1, hex2) {
   return (brighter + 0.05) / (darker + 0.05);
 }
 
-console.log('=== Palladio DTCG Token Validation ===\n');
+console.log('=== Palladio Strict DTCG Token Validation ===\n');
 
 // 1. Load all token files
 const tokenFiles = {
@@ -85,23 +94,30 @@ const tokenFiles = {
 
 console.log('✔ All 11 token JSON files loaded and parsed successfully.');
 
-// 2. Validate DTCG format across all files (check no legacy non-$ fields)
-function validateDtcgFormat(obj, currentPath = '') {
+// 2. Validate DTCG format metadata across all files (check no legacy non-$ metadata properties)
+function validateDtcgMetadata(obj, currentPath = '') {
+  if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return;
+
   for (const [key, val] of Object.entries(obj)) {
     const nodePath = currentPath ? `${currentPath}.${key}` : key;
-    if (['value', 'type', 'description'].includes(key)) {
-      throw new Error(`Legacy field "${key}" found at "${currentPath}". DTCG format requires "$${key}".`);
+    // Check if token/group level metadata incorrectly uses non-$ legacy fields
+    if (['type', 'description'].includes(key)) {
+      throw new Error(`Legacy metadata property "${key}" found at "${nodePath}". DTCG format requires "$${key}".`);
     }
-    if (val && typeof val === 'object' && !Array.isArray(val)) {
-      validateDtcgFormat(val, nodePath);
+    if (key === 'value' && !currentPath.endsWith('$value')) {
+      throw new Error(`Legacy property "value" found at "${nodePath}". DTCG format requires "$value".`);
+    }
+
+    if (key !== '$value' && val && typeof val === 'object' && !Array.isArray(val)) {
+      validateDtcgMetadata(val, nodePath);
     }
   }
 }
 
 for (const [name, data] of Object.entries(tokenFiles)) {
-  validateDtcgFormat(data, name);
+  validateDtcgMetadata(data, name);
 }
-console.log('✔ DTCG format verified: All tokens use $value, $type, $description without legacy properties.');
+console.log('✔ DTCG metadata verified: All tokens and groups use $value, $type, $description.');
 
 // 3. Build Registry from Primitives
 const registry = {};
@@ -125,15 +141,19 @@ function resolveRef(refStr, reg, visited = new Set()) {
 
   const parts = refPath.split('.');
   let current = reg;
+  let inheritedType = undefined;
   for (const part of parts) {
     if (!current || typeof current !== 'object' || !(part in current)) {
       throw new Error(`Unresolved reference: "{${refPath}}" - part "${part}" not found in registry.`);
     }
+    if (current.$type) inheritedType = current.$type;
     current = current[part];
   }
 
   if (current && typeof current === 'object' && '$value' in current) {
-    return resolveRef(current.$value, reg, new Set(visited));
+    const tokenType = current.$type || inheritedType;
+    const resolvedVal = resolveRef(current.$value, reg, new Set(visited));
+    return resolvedVal;
   }
   return current;
 }
@@ -146,6 +166,13 @@ function resolveTokenValue(tokenVal, reg) {
     if (Array.isArray(tokenVal)) {
       return tokenVal.map(item => resolveTokenValue(item, reg));
     }
+    // If it is a dimension or duration object { value, unit }
+    if ('value' in tokenVal && 'unit' in tokenVal && Object.keys(tokenVal).length === 2) {
+      return {
+        value: resolveTokenValue(tokenVal.value, reg),
+        unit: resolveTokenValue(tokenVal.unit, reg)
+      };
+    }
     const resolvedObj = {};
     for (const [k, v] of Object.entries(tokenVal)) {
       resolvedObj[k] = resolveTokenValue(v, reg);
@@ -155,20 +182,97 @@ function resolveTokenValue(tokenVal, reg) {
   return tokenVal;
 }
 
-// 4. Validate Primitive Tokens content
-const expectedCharcoal = {
-  '950': '#141414',
-  '900': '#1C1C1C',
-  '850': '#242424',
-  '800': '#2E2E2E',
-  '750': '#323232',
-  '700': '#333333',
-  '600': '#484848',
-  '450': '#969696',
-  '400': '#9A9A9A',
-  '100': '#F0F0F0'
-};
+// 4. Validate DTCG Payload Types
+function validatePayloadType(type, val, tokenPath) {
+  if (typeof val === 'string' && val.startsWith('{') && val.endsWith('}')) {
+    // Valid alias
+    return;
+  }
 
+  switch (type) {
+    case 'dimension': {
+      if (!val || typeof val !== 'object' || typeof val.value !== 'number' || typeof val.unit !== 'string') {
+        throw new Error(`Invalid DTCG dimension payload at "${tokenPath}": expected { value: number, unit: string }, got ${JSON.stringify(val)}`);
+      }
+      break;
+    }
+    case 'duration': {
+      if (!val || typeof val !== 'object' || typeof val.value !== 'number' || !['ms', 's'].includes(val.unit)) {
+        throw new Error(`Invalid DTCG duration payload at "${tokenPath}": expected { value: number, unit: "ms"|"s" }, got ${JSON.stringify(val)}`);
+      }
+      break;
+    }
+    case 'number': {
+      if (typeof val !== 'number') {
+        throw new Error(`Invalid DTCG number payload at "${tokenPath}": expected JSON number, got ${typeof val} (${JSON.stringify(val)})`);
+      }
+      break;
+    }
+    case 'fontWeight': {
+      if (typeof val !== 'number' && typeof val !== 'string') {
+        throw new Error(`Invalid DTCG fontWeight payload at "${tokenPath}": expected number or string, got ${typeof val}`);
+      }
+      break;
+    }
+    case 'fontFamily': {
+      if (typeof val !== 'string' && !Array.isArray(val)) {
+        throw new Error(`Invalid DTCG fontFamily payload at "${tokenPath}": expected string or string[], got ${typeof val}`);
+      }
+      break;
+    }
+    case 'cubicBezier': {
+      if (!Array.isArray(val) || val.length !== 4 || !val.every(n => typeof n === 'number')) {
+        throw new Error(`Invalid DTCG cubicBezier payload at "${tokenPath}": expected [x1, y1, x2, y2] numbers, got ${JSON.stringify(val)}`);
+      }
+      break;
+    }
+    case 'color': {
+      if (typeof val !== 'string' || !val.startsWith('#')) {
+        throw new Error(`Invalid DTCG color payload at "${tokenPath}": expected hex string, got ${JSON.stringify(val)}`);
+      }
+      break;
+    }
+    case 'typography': {
+      if (!val || typeof val !== 'object') {
+        throw new Error(`Invalid DTCG typography payload at "${tokenPath}": expected composite object, got ${typeof val}`);
+      }
+      const required = ['fontFamily', 'fontSize', 'fontWeight', 'lineHeight', 'letterSpacing'];
+      for (const req of required) {
+        if (!(req in val)) {
+          throw new Error(`Invalid DTCG typography payload at "${tokenPath}": missing required property "${req}".`);
+        }
+      }
+      break;
+    }
+  }
+}
+
+function traverseAndValidateTypes(obj, inheritedType = undefined, currentPath = '') {
+  if (!obj || typeof obj !== 'object') return;
+  const currentType = obj.$type || inheritedType;
+
+  if ('$value' in obj) {
+    validatePayloadType(currentType, obj.$value, currentPath);
+  }
+
+  for (const [k, v] of Object.entries(obj)) {
+    if (k.startsWith('$')) continue;
+    if (v && typeof v === 'object') {
+      traverseAndValidateTypes(v, currentType, currentPath ? `${currentPath}.${k}` : k);
+    }
+  }
+}
+
+for (const [name, data] of Object.entries(tokenFiles)) {
+  traverseAndValidateTypes(data, undefined, name);
+}
+console.log('✔ DTCG Payload types verified: dimension, duration, number, cubicBezier, color, fontFamily, typography all strictly follow DTCG spec.');
+
+// 5. Validate Primitive Scales content
+const expectedCharcoal = {
+  '950': '#141414', '900': '#1C1C1C', '850': '#242424', '800': '#2E2E2E', '750': '#323232',
+  '700': '#333333', '600': '#484848', '450': '#969696', '400': '#9A9A9A', '100': '#F0F0F0'
+};
 for (const [key, expectedHex] of Object.entries(expectedCharcoal)) {
   const actualHex = resolveRef(`{color.charcoal.${key}}`, registry);
   if (actualHex !== expectedHex) {
@@ -179,35 +283,35 @@ console.log('✔ Primitive charcoal ladder verified (10 steps).');
 
 // Space scale
 const expectedSpaces = {
-  '1': '4px', '2': '8px', '3': '12px', '4': '16px', '5': '20px',
-  '6': '24px', '8': '32px', '10': '40px', '12': '48px', '16': '64px'
+  '1': 4, '2': 8, '3': 12, '4': 16, '5': 20,
+  '6': 24, '8': 32, '10': 40, '12': 48, '16': 64
 };
 for (const [key, expectedVal] of Object.entries(expectedSpaces)) {
-  const actualVal = resolveRef(`{space.${key}}`, registry);
-  if (actualVal !== expectedVal) {
-    throw new Error(`Primitive space.${key} expected ${expectedVal} but got ${actualVal}`);
+  const actual = resolveRef(`{space.${key}}`, registry);
+  if (actual.value !== expectedVal || actual.unit !== 'px') {
+    throw new Error(`Primitive space.${key} expected {value: ${expectedVal}, unit: 'px'} but got ${JSON.stringify(actual)}`);
   }
 }
-console.log('✔ Primitive space scale verified (4px base unit).');
+console.log('✔ Primitive space scale verified (4px base unit, dimension objects).');
 
 // Radius scale
 const expectedRadii = {
-  'none': '0px', 'sm': '4px', 'md': '8px', 'lg': '12px', 'xl': '16px', 'full': '9999px'
+  'none': 0, 'sm': 4, 'md': 8, 'lg': 12, 'xl': 16, 'full': 9999
 };
 for (const [key, expectedVal] of Object.entries(expectedRadii)) {
-  const actualVal = resolveRef(`{radius.${key}}`, registry);
-  if (actualVal !== expectedVal) {
-    throw new Error(`Primitive radius.${key} expected ${expectedVal} but got ${actualVal}`);
+  const actual = resolveRef(`{radius.${key}}`, registry);
+  if (actual.value !== expectedVal || actual.unit !== 'px') {
+    throw new Error(`Primitive radius.${key} expected {value: ${expectedVal}, unit: 'px'} but got ${JSON.stringify(actual)}`);
   }
 }
-console.log('✔ Primitive radius scale verified.');
+console.log('✔ Primitive radius scale verified (dimension objects).');
 
 // Motion duration & easing
-const expectedDurations = { 'instant': '0ms', 'fast': '120ms', 'normal': '220ms', 'slow': '380ms' };
+const expectedDurations = { 'instant': 0, 'fast': 120, 'normal': 220, 'slow': 380 };
 for (const [key, expectedVal] of Object.entries(expectedDurations)) {
-  const actualVal = resolveRef(`{duration.${key}}`, registry);
-  if (actualVal !== expectedVal) {
-    throw new Error(`Primitive duration.${key} expected ${expectedVal} but got ${actualVal}`);
+  const actual = resolveRef(`{duration.${key}}`, registry);
+  if (actual.value !== expectedVal || actual.unit !== 'ms') {
+    throw new Error(`Primitive duration.${key} expected {value: ${expectedVal}, unit: 'ms'} but got ${JSON.stringify(actual)}`);
   }
 }
 
@@ -223,9 +327,9 @@ for (const [key, expectedVal] of Object.entries(expectedEasings)) {
     throw new Error(`Primitive easing.${key} expected ${JSON.stringify(expectedVal)} but got ${JSON.stringify(actualVal)}`);
   }
 }
-console.log('✔ Primitive duration and easing scales verified.');
+console.log('✔ Primitive duration and easing scales verified (DTCG payloads).');
 
-// 5. Verify ALL Semantic & Theme token references resolve cleanly
+// 6. Verify ALL Semantic & Theme token references resolve cleanly
 function verifyAllReferences(obj, currentPath = '') {
   for (const [k, v] of Object.entries(obj)) {
     const p = currentPath ? `${currentPath}.${k}` : k;
@@ -247,7 +351,7 @@ for (const [name, data] of Object.entries(tokenFiles)) {
 }
 console.log('✔ All Semantic and Theme token references dynamically resolved successfully.');
 
-// 6. Accent Isolation Verification
+// 7. Accent Isolation Verification
 const darkJsonStr = JSON.stringify(tokenFiles['themes/dark']);
 const semColorJsonStr = JSON.stringify(tokenFiles['semantic/color']);
 
@@ -261,8 +365,7 @@ for (const [sourceName, jsonStr] of [['themes/dark.json', darkJsonStr], ['semant
 }
 console.log('✔ Accent slot isolation verified: No hardcoded fallback or derived accent tokens in theme or semantic color definitions.');
 
-// 7. Dynamic WCAG Contrast Ratio Verification (A-M1 >= 4.5:1)
-// Dynamically resolve surface colors from dark theme
+// 8. Dynamic WCAG Contrast Ratio Verification (A-M1 >= 4.5:1)
 const darkColors = tokenFiles['themes/dark'].pd.color;
 const semColors = tokenFiles['semantic/color'].pd.color;
 
@@ -287,7 +390,7 @@ const resolvedStatusColors = {
   'info': resolveRef(darkColors.info.$value, registry)
 };
 
-// Also ensure semantic/color references match dark theme target mappings
+// Check parity
 for (const key of Object.keys(resolvedTextColors)) {
   const semVal = resolveRef(semColors[key].$value, registry);
   if (semVal !== resolvedTextColors[key]) {
@@ -315,5 +418,5 @@ for (const [surfName, surfHex] of Object.entries(resolvedSurfaces)) {
 console.log('✔ All dynamic WCAG A-M1 contrast ratios >= 4.5:1 verified.');
 
 console.log('\n========================================');
-console.log('🎉 All DTCG Token & Reference Checks Passed!');
+console.log('🎉 All Strict DTCG Token Checks Passed!');
 console.log('========================================\n');
