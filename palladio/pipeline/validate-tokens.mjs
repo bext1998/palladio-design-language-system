@@ -241,9 +241,11 @@ function validatePayloadType(type, val, tokenPath) {
         val.colorSpace !== 'srgb' ||
         !Array.isArray(val.components) ||
         val.components.length !== 3 ||
-        !val.components.every(n => typeof n === 'number')
+        !val.components.every(n => typeof n === 'number' && Number.isFinite(n) && n >= 0 && n <= 1) ||
+        (val.alpha !== undefined && (typeof val.alpha !== 'number' || !Number.isFinite(val.alpha) || val.alpha < 0 || val.alpha > 1)) ||
+        (val.hex !== undefined && (typeof val.hex !== 'string' || !/^#[0-9a-fA-F]{6}$/.test(val.hex)))
       ) {
-        throw new Error(`Invalid DTCG color payload at "${tokenPath}": expected { colorSpace: "srgb", components: [r, g, b], hex?: string, alpha?: number }, got ${JSON.stringify(val)}`);
+        throw new Error(`Invalid DTCG color payload at "${tokenPath}": expected srgb components and alpha in [0, 1] plus a 6-digit CSS hex, got ${JSON.stringify(val)}`);
       }
       break;
     }
@@ -366,7 +368,29 @@ for (const [name, data] of Object.entries(tokenFiles)) {
 }
 console.log('✔ All Semantic and Theme token references dynamically resolved successfully.');
 
-// 7. Accent Isolation Verification
+// 7. Verify typography letter-spacing preserves the specification's em values
+const expectedTypographyLetterSpacing = {
+  display: { fontSize: 32, em: -0.02 },
+  'heading-lg': { fontSize: 24, em: -0.02 },
+  'heading-md': { fontSize: 18, em: -0.01 },
+  'heading-sm': { fontSize: 14, em: -0.01 },
+  'body-lg': { fontSize: 16, px: 0 },
+  'body-md': { fontSize: 14, px: 0 },
+  'body-sm': { fontSize: 12, px: 0 },
+  'label-md': { fontSize: 14, px: 0 },
+  'label-sm': { fontSize: 12, px: 0 },
+  mono: { fontSize: 13, px: 0 }
+};
+for (const [tokenName, expected] of Object.entries(expectedTypographyLetterSpacing)) {
+  const typography = resolveTokenValue(tokenFiles['semantic/typography'].pd.text[tokenName].$value, registry);
+  const expectedPx = expected.px ?? expected.fontSize * expected.em;
+  if (typography.letterSpacing?.unit !== 'px' || typography.letterSpacing.value !== expectedPx) {
+    throw new Error(`Typography ${tokenName} letter-spacing expected { value: ${expectedPx}, unit: "px" } but got ${JSON.stringify(typography.letterSpacing)}`);
+  }
+}
+console.log('✔ Typography letter-spacing preserves spec em equivalents as px dimensions.');
+
+// 8. Accent Isolation Verification
 const darkJsonStr = JSON.stringify(tokenFiles['themes/dark']);
 const semColorJsonStr = JSON.stringify(tokenFiles['semantic/color']);
 
@@ -380,7 +404,7 @@ for (const [sourceName, jsonStr] of [['themes/dark.json', darkJsonStr], ['semant
 }
 console.log('✔ Accent slot isolation verified: No hardcoded fallback or derived accent tokens in theme or semantic color definitions.');
 
-// 8. Dynamic WCAG Contrast Ratio Verification (A-M1 >= 4.5:1)
+// 9. Dynamic WCAG Contrast Ratio Verification (A-M1 >= 4.5:1)
 const darkColors = tokenFiles['themes/dark'].pd.color;
 const semColors = tokenFiles['semantic/color'].pd.color;
 

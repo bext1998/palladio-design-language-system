@@ -7,7 +7,7 @@
           "fontSize": "{font.size.32}",
           "fontWeight": "{font.weight.semibold}",
           "lineHeight": "{font.lineHeight.1-2}",
-          "letterSpacing": "{font.letterSpacing.tight}",
+          "letterSpacing": "{font.letterSpacing.tight.32}",
           "fontFamily": "{font.family.sans}"
         },
         "$description": "頁面大標題"
@@ -17,7 +17,7 @@
           "fontSize": "{font.size.24}",
           "fontWeight": "{font.weight.semibold}",
           "lineHeight": "{font.lineHeight.1-3}",
-          "letterSpacing": "{font.letterSpacing.tight}",
+          "letterSpacing": "{font.letterSpacing.tight.24}",
           "fontFamily": "{font.family.sans}"
         },
         "$description": "段落主標題"
@@ -27,7 +27,7 @@
           "fontSize": "{font.size.18}",
           "fontWeight": "{font.weight.semibold}",
           "lineHeight": "{font.lineHeight.1-35}",
-          "letterSpacing": "{font.letterSpacing.snug}",
+          "letterSpacing": "{font.letterSpacing.snug.18}",
           "fontFamily": "{font.family.sans}"
         },
         "$description": "段落次標題"
@@ -37,7 +37,7 @@
           "fontSize": "{font.size.14}",
           "fontWeight": "{font.weight.semibold}",
           "lineHeight": "{font.lineHeight.1-4}",
-          "letterSpacing": "{font.letterSpacing.snug}",
+          "letterSpacing": "{font.letterSpacing.snug.14}",
           "fontFamily": "{font.family.sans}"
         },
         "$description": "小標題、sidebar 分組標題"

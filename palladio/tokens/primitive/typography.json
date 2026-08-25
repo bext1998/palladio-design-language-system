@@ -142,23 +142,41 @@
     "letterSpacing": {
       "$type": "dimension",
       "tight": {
-        "$value": {
-          "value": -0.02,
-          "unit": "rem"
+        "32": {
+          "$value": {
+            "value": -0.64,
+            "unit": "px"
+          },
+          "$description": "32px 大標題微緊（-0.02em 等效）"
         },
-        "$description": "大標題微緊"
+        "24": {
+          "$value": {
+            "value": -0.48,
+            "unit": "px"
+          },
+          "$description": "24px 標題微緊（-0.02em 等效）"
+        }
       },
       "snug": {
-        "$value": {
-          "value": -0.01,
-          "unit": "rem"
+        "18": {
+          "$value": {
+            "value": -0.18,
+            "unit": "px"
+          },
+          "$description": "18px 次標題微緊（-0.01em 等效）"
         },
-        "$description": "次標題微緊"
+        "14": {
+          "$value": {
+            "value": -0.14,
+            "unit": "px"
+          },
+          "$description": "14px 小標題微緊（-0.01em 等效）"
+        }
       },
       "normal": {
         "$value": {
           "value": 0,
-          "unit": "rem"
+          "unit": "px"
         },
         "$description": "內文標準字距"
       }
