@@ -29,7 +29,7 @@
             "value": 36,
             "unit": "px"
           },
-          "$description": "互動元素最小尺寸（36px）"
+          "$description": "互動元素最小尺寸（36px）— Spec 6.2 定義值，space scale 無對應 primitive，故使用 inline dimension"
         }
       },
       "typography": {
