@@ -1,0 +1,45 @@
+{
+  "pd": {
+    "density": {
+      "base": {
+        "$type": "dimension",
+        "$description": "Default 密度的基礎間距設定",
+        "spacing-unit": {
+          "$value": "{space.1}",
+          "$description": "基礎間距單位（4px）"
+        }
+      },
+      "component": {
+        "$description": "Default 元件尺寸設定",
+        "padding": {
+          "$type": "dimension",
+          "$description": "元件內距",
+          "vertical": {
+            "$value": "{space.2}",
+            "$description": "元件垂直內距（8px）"
+          },
+          "horizontal": {
+            "$value": "{space.3}",
+            "$description": "元件水平內距（12px）"
+          }
+        },
+        "min-interactive-size": {
+          "$type": "dimension",
+          "$value": {
+            "value": 36,
+            "unit": "px"
+          },
+          "$description": "互動元素最小尺寸（36px）— Spec 6.2 定義值，space scale 無對應 primitive，故使用 inline dimension"
+        }
+      },
+      "typography": {
+        "$type": "dimension",
+        "$description": "Default 文字設定",
+        "body-font-size": {
+          "$value": "{font.size.14}",
+          "$description": "標準內文字體尺寸（14px）"
+        }
+      }
+    }
+  }
+}

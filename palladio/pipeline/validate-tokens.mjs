@@ -94,10 +94,13 @@ const tokenFiles = {
   'semantic/space': loadJson('tokens/semantic/space.json'),
   'semantic/radius': loadJson('tokens/semantic/radius.json'),
   'semantic/motion': loadJson('tokens/semantic/motion.json'),
+  'semantic/density/compact': loadJson('tokens/semantic/density/compact.json'),
+  'semantic/density/default': loadJson('tokens/semantic/density/default.json'),
+  'semantic/density/spacious': loadJson('tokens/semantic/density/spacious.json'),
   'themes/dark': loadJson('themes/dark.json')
 };
 
-console.log('✔ All 11 token JSON files loaded and parsed successfully.');
+console.log('✔ All 14 token JSON files loaded and parsed successfully.');
 
 // 2. Validate DTCG format metadata across all files (check no legacy non-$ metadata properties)
 function validateDtcgMetadata(obj, currentPath = '') {
@@ -368,7 +371,74 @@ for (const [name, data] of Object.entries(tokenFiles)) {
 }
 console.log('✔ All Semantic and Theme token references dynamically resolved successfully.');
 
-// 7. Verify typography letter-spacing preserves the specification's em values
+// 7. Verify Density Presets (Spec 6.1, 6.2 and A-M6)
+const expectedDensity = {
+  compact: { baseSpacingUnit: 4, paddingVertical: 4, paddingHorizontal: 8, minInteractiveSize: 32, bodyFontSize: 13 },
+  default: { baseSpacingUnit: 4, paddingVertical: 8, paddingHorizontal: 12, minInteractiveSize: 36, bodyFontSize: 14 },
+  spacious: { baseSpacingUnit: 4, paddingVertical: 12, paddingHorizontal: 20, minInteractiveSize: 48, bodyFontSize: 15 }
+};
+const densityTokenPaths = [
+  'pd.density.base.spacing-unit',
+  'pd.density.component.padding.vertical',
+  'pd.density.component.padding.horizontal',
+  'pd.density.component.min-interactive-size',
+  'pd.density.typography.body-font-size'
+];
+
+function getDensityToken(name, tokenPath) {
+  const parts = tokenPath.split('.');
+  let current = tokenFiles[`semantic/density/${name}`];
+  for (const part of parts) {
+    if (!current || typeof current !== 'object' || !(part in current)) {
+      throw new Error(`Missing density token "${tokenPath}" in ${name}.json.`);
+    }
+    current = current[part];
+  }
+  if (!current || typeof current !== 'object' || !('$value' in current)) {
+    throw new Error(`Density path "${tokenPath}" in ${name}.json is not a leaf token.`);
+  }
+  return current;
+}
+
+function assertDensityDimension(name, tokenPath, expectedValue, requireFourPxMultiple = false) {
+  const token = getDensityToken(name, tokenPath);
+  const resolved = resolveTokenValue(token.$value, registry);
+  if (!resolved || resolved.unit !== 'px' || resolved.value !== expectedValue) {
+    throw new Error(`Density ${name} ${tokenPath} expected {value: ${expectedValue}, unit: "px"} but got ${JSON.stringify(resolved)}.`);
+  }
+  if (requireFourPxMultiple && resolved.value % 4 !== 0) {
+    throw new Error(`Density ${name} ${tokenPath} must be a multiple of 4px but got ${resolved.value}px.`);
+  }
+}
+
+function collectLeafPaths(obj, currentPath = '') {
+  const paths = [];
+  if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return paths;
+  if ('$value' in obj) return [currentPath];
+  for (const [key, value] of Object.entries(obj)) {
+    if (key.startsWith('$')) continue;
+    paths.push(...collectLeafPaths(value, currentPath ? `${currentPath}.${key}` : key));
+  }
+  return paths;
+}
+
+const densityLeafPaths = {};
+for (const name of Object.keys(expectedDensity)) {
+  const density = tokenFiles[`semantic/density/${name}`];
+  densityLeafPaths[name] = collectLeafPaths(density).sort();
+  if (JSON.stringify(densityLeafPaths[name]) !== JSON.stringify(densityTokenPaths.slice().sort())) {
+    throw new Error(`Density ${name}.json leaf token paths must exactly match the shared consumer contract: ${JSON.stringify(densityTokenPaths)}.`);
+  }
+  const expected = expectedDensity[name];
+  assertDensityDimension(name, densityTokenPaths[0], expected.baseSpacingUnit, true);
+  assertDensityDimension(name, densityTokenPaths[1], expected.paddingVertical, true);
+  assertDensityDimension(name, densityTokenPaths[2], expected.paddingHorizontal, true);
+  assertDensityDimension(name, densityTokenPaths[3], expected.minInteractiveSize);
+  assertDensityDimension(name, densityTokenPaths[4], expected.bodyFontSize);
+}
+console.log('✔ Compact, Default and Spacious density presets verified (shared paths, exact Spec 6.2 values, 4px spacing multiples).');
+
+// 8. Verify typography letter-spacing preserves the specification's em values
 const expectedTypographyLetterSpacing = {
   display: { fontSize: 32, em: -0.02 },
   'heading-lg': { fontSize: 24, em: -0.02 },
@@ -390,7 +460,7 @@ for (const [tokenName, expected] of Object.entries(expectedTypographyLetterSpaci
 }
 console.log('✔ Typography letter-spacing preserves spec em equivalents as px dimensions.');
 
-// 8. Accent Isolation Verification
+// 9. Accent Isolation Verification
 const darkJsonStr = JSON.stringify(tokenFiles['themes/dark']);
 const semColorJsonStr = JSON.stringify(tokenFiles['semantic/color']);
 
@@ -404,7 +474,7 @@ for (const [sourceName, jsonStr] of [['themes/dark.json', darkJsonStr], ['semant
 }
 console.log('✔ Accent slot isolation verified: No hardcoded fallback or derived accent tokens in theme or semantic color definitions.');
 
-// 9. Dynamic WCAG Contrast Ratio Verification (A-M1 >= 4.5:1)
+// 10. Dynamic WCAG Contrast Ratio Verification (A-M1 >= 4.5:1)
 const darkColors = tokenFiles['themes/dark'].pd.color;
 const semColors = tokenFiles['semantic/color'].pd.color;
 
