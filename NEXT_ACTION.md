@@ -4,12 +4,12 @@
 
 ## 下一個 Session 目標
 
-完成 [#16 Primitive 與暗色 Semantic token](https://github.com/bext1998/palladio-design-language-system/issues/16)，作為 Foundation parent [#1](https://github.com/bext1998/palladio-design-language-system/issues/1) 的第一個可驗收垂直切片。
+完成 [#5 Style Dictionary pipeline 與三種程式產物](https://github.com/bext1998/palladio-design-language-system/issues/5)，延續已合併的 Foundation token 基礎。
 
 ## 行動（最多 3 項）
 
-1. 完成 [#16](https://github.com/bext1998/palladio-design-language-system/issues/16) 的 Primitive 與暗色 Semantic token 定義及驗收。
-2. 依序推進 [#9](https://github.com/bext1998/palladio-design-language-system/issues/9)、[#5](https://github.com/bext1998/palladio-design-language-system/issues/5)、[#10](https://github.com/bext1998/palladio-design-language-system/issues/10) 與 [#3](https://github.com/bext1998/palladio-design-language-system/issues/3)。
+1. 完成 [#5](https://github.com/bext1998/palladio-design-language-system/issues/5)：以現有 Primitive、暗色 Semantic 與三種 Density token 為輸入，產出 CSS、TypeScript、JSON 與 `agent-reference.md`。
+2. 依序推進 [#10](https://github.com/bext1998/palladio-design-language-system/issues/10) 與 [#3](https://github.com/bext1998/palladio-design-language-system/issues/3)。
 3. Foundation 完成後開始第一批元件 Issue，再進行三種壓力測試。
 
 ## 阻塞與待決策
@@ -20,4 +20,4 @@
 
 - [規格第 9–13 章](docs/spec.md)
 - [Foundation parent #1](https://github.com/bext1998/palladio-design-language-system/issues/1)
-- [Foundation 第一項 #16](https://github.com/bext1998/palladio-design-language-system/issues/16)
+- [下一項 Foundation #5](https://github.com/bext1998/palladio-design-language-system/issues/5)
