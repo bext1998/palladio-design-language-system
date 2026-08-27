@@ -40,7 +40,6 @@ Palladio Design Language & System 是可跨消費端使用的開源設計語言�
 
 ## 禁止行為
 
-- 不得 force push 到 main 或覆蓋未確認的使用者修改。
 - 不得修改 `docs/spec.md` 的功能範圍，除非使用者明確要求。
 - 不得為 accent 插槽加入 fallback、推導色值或跨消費端混色公式。
 - 不得將 Primitive token 直接用於 UI 元件。
