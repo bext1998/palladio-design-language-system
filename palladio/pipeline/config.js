@@ -1,114 +1,138 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { collectTokenRecords, loadTokenSources } from './token-model.mjs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import StyleDictionary from 'style-dictionary';
+import { loadTokenSources } from './token-model.mjs';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageDir = path.resolve(__dirname, '..');
 const distDir = path.join(packageDir, 'dist');
 
 const { primitive, semantic, density, theme } = loadTokenSources(packageDir);
-const registry = primitive;
-const semanticTree = semantic;
-const densityTrees = density;
-const themeTrees = theme;
 
-function semanticRecords(tokenTree) {
-  return collectTokenRecords(tokenTree, registry).filter((record) => record.path.startsWith('pd.'));
+// Keep primitive tokens available to Style Dictionary for reference resolution,
+// while putting each public token set under its artifact namespace.
+const tokens = {
+  ...primitive,
+  semantic: semantic.pd,
+  density: {
+    compact: density.compact.pd,
+    default: density.default.pd,
+    spacious: density.spacious.pd
+  },
+  theme: { dark: theme.dark.pd }
+};
+
+function tokenValue(token) {
+  return token['$value'];
 }
 
-const defaultDensity = densityTrees.default;
-const darkTheme = themeTrees.dark;
+function tokenType(token) {
+  return token['$type'];
+}
 
-function transformValue(record) {
-  switch (record.type) {
+function transformCssValue(token) {
+  const value = tokenValue(token);
+  switch (tokenType(token)) {
     case 'color':
-      return record.value.hex;
+      return value.hex;
     case 'dimension':
-      return `${record.value.value}${record.value.unit}`;
     case 'duration':
-      return `${record.value.value}${record.value.unit}`;
+      return `${value.value}${value.unit}`;
     case 'cubicBezier':
-      return `cubic-bezier(${record.value.join(', ')})`;
+      return `cubic-bezier(${value.join(', ')})`;
     case 'fontWeight':
-      return String(record.value);
     case 'number':
-      return String(record.value);
+      return String(value);
     case 'fontFamily':
-      return record.value.join(', ');
+      return value.join(', ');
     case 'typography':
       return [
-        `${record.value.fontFamily.join(', ')}`,
-        `${record.value.fontSize.value}${record.value.fontSize.unit}`,
-        `font-weight ${record.value.fontWeight}`,
-        `line-height ${record.value.lineHeight}`,
-        `letter-spacing ${record.value.letterSpacing.value}${record.value.letterSpacing.unit}`
+        `${value.fontFamily.join(', ')}`,
+        `${value.fontSize.value}${value.fontSize.unit}`,
+        `font-weight ${value.fontWeight}`,
+        `line-height ${value.lineHeight}`,
+        `letter-spacing ${value.letterSpacing.value}${value.letterSpacing.unit}`
       ].join(' ');
     default:
-      throw new Error(`Unsupported token type "${record.type}" at "${record.path}".`);
+      throw new Error(`Unsupported token type "${tokenType(token)}" at "${token.key}".`);
   }
 }
 
-function cssVariableName(tokenPath) {
-  return `--${tokenPath.split('.').join('-')}`;
+function cssVariableName(token) {
+  const pathStart = token.path[0] === 'semantic' ? 1 : 2;
+  return `--pd-${token.path.slice(pathStart).join('-')}`;
 }
 
-function renderCssBlock(selector, records) {
+function cssBlock(selector, records) {
   const lines = [`${selector} {`];
   for (const record of records) {
-    lines.push(`  ${cssVariableName(record.path)}: ${transformValue(record)};`);
+    lines.push(`  ${cssVariableName(record)}: ${transformCssValue(record)};`);
   }
   lines.push('}');
   return lines.join('\n');
 }
 
-function renderCss() {
-  const themeSelector = ':root[data-theme="dark"]';
-  const densitySelector = ':root[data-density]';
-  const baseSemanticRecords = semanticRecords(semanticTree).filter((record) => !record.path.startsWith('pd.color.'));
-  const themeRecords = semanticRecords(themeTrees.dark);
-  const densityRecords = {
-    compact: semanticRecords(densityTrees.compact),
-    default: semanticRecords(densityTrees.default),
-    spacious: semanticRecords(densityTrees.spacious)
-  };
-
-  const defaultDensityBlock = renderCssBlock(densitySelector, densityRecords.default);
-  const compactBlock = renderCssBlock(':root[data-density="compact"]', densityRecords.compact);
-  const spaciousBlock = renderCssBlock(':root[data-density="spacious"]', densityRecords.spacious);
-  const themeBlock = renderCssBlock(themeSelector, themeRecords);
-  const semanticBlock = renderCssBlock(':root', baseSemanticRecords);
+function renderCss({ dictionary }) {
+  const records = dictionary.allTokens;
+  const semanticRecords = records.filter(
+    (token) => token.path[0] === 'semantic' && token.path[1] !== 'color'
+  );
+  const themeRecords = records.filter(
+    (token) => token.path[0] === 'theme' && token.path[1] === 'dark'
+  );
+  const densityRecords = (name) => records.filter(
+    (token) => token.path[0] === 'density' && token.path[1] === name
+  );
 
   return [
     '/* Generated by Palladio Style Dictionary pipeline. Do not edit. */',
     '',
-    semanticBlock,
+    cssBlock(':root', semanticRecords),
     '',
-    themeBlock,
+    cssBlock(':root[data-theme="dark"]', themeRecords),
     '',
-    defaultDensityBlock,
+    cssBlock(':root[data-density]', densityRecords('default')),
     '',
-    compactBlock,
+    cssBlock(':root[data-density="compact"]', densityRecords('compact')),
     '',
-    spaciousBlock,
+    cssBlock(':root[data-density="spacious"]', densityRecords('spacious')),
     ''
   ].join('\n');
 }
 
-function nestedObject(records) {
-  const object = {};
+function nestedValues(records, stripSegments) {
+  const result = {};
   for (const record of records) {
-    const parts = record.path.split('.').slice(1);
-    let current = object;
-    while (parts.length > 1) {
-      const key = parts.shift();
+    const parts = record.path.slice(stripSegments);
+    let current = result;
+    for (const key of parts.slice(0, -1)) {
       if (!Object.hasOwn(current, key)) current[key] = {};
       current = current[key];
     }
-    current[parts[0]] = record.value;
+    current[parts.at(-1)] = tokenValue(record);
   }
-  return object;
+  return result;
+}
+
+function tokenSets(dictionary) {
+  const records = dictionary.allTokens;
+  const semanticRecords = records.filter((token) => token.path[0] === 'semantic');
+  const densityRecords = (name) => records.filter(
+    (token) => token.path[0] === 'density' && token.path[1] === name
+  );
+  const themeRecords = records.filter(
+    (token) => token.path[0] === 'theme' && token.path[1] === 'dark'
+  );
+
+  return {
+    semantic: nestedValues(semanticRecords, 1),
+    density: {
+      compact: nestedValues(densityRecords('compact'), 2),
+      default: nestedValues(densityRecords('default'), 2),
+      spacious: nestedValues(densityRecords('spacious'), 2)
+    },
+    theme: { dark: nestedValues(themeRecords, 2) }
+  };
 }
 
 function stableStringify(value, indentation = 2) {
@@ -119,25 +143,20 @@ function stableStringify(value, indentation = 2) {
     const entries = Object.entries(value);
     return entries.length === 0
       ? '{}'
-      : `{\n${entries.map(([key, item]) => `${' '.repeat(indentation)}${JSON.stringify(key)}: ${stableStringify(item, indentation + 2)}`).join(',\n')}\n${' '.repeat(indentation - 2)}}`;
+      : `{
+${entries.map(([key, item]) => `${' '.repeat(indentation)}${JSON.stringify(key)}: ${stableStringify(item, indentation + 2)}`).join(',\n')}
+${' '.repeat(indentation - 2)}}`;
   }
   return JSON.stringify(value);
 }
 
-function renderTs() {
-  const semantic = nestedObject(semanticRecords(semanticTree));
-  const densities = {
-    compact: nestedObject(semanticRecords(densityTrees.compact)),
-    default: nestedObject(semanticRecords(densityTrees.default)),
-    spacious: nestedObject(semanticRecords(densityTrees.spacious))
-  };
-  const theme = { dark: nestedObject(semanticRecords(themeTrees.dark)) };
-
+function renderTs({ dictionary }) {
+  const { semantic, density, theme } = tokenSets(dictionary);
   return [
     '// Generated by Palladio Style Dictionary pipeline. Do not edit.',
     '',
     `export const palladioTokens = ${stableStringify(semantic)} as const;`,
-    `export const palladioDensity = ${stableStringify(densities)} as const;`,
+    `export const palladioDensity = ${stableStringify(density)} as const;`,
     `export const palladioTheme = ${stableStringify(theme)} as const;`,
     '',
     'export type PalladioTokenValue =',
@@ -150,33 +169,43 @@ function renderTs() {
   ].join('\n');
 }
 
-function renderJson() {
-  return `${JSON.stringify({
-    semantic: nestedObject(semanticRecords(semanticTree)),
-    density: {
-      compact: nestedObject(semanticRecords(densityTrees.compact)),
-      default: nestedObject(semanticRecords(densityTrees.default)),
-      spacious: nestedObject(semanticRecords(densityTrees.spacious))
+function renderJson({ dictionary }) {
+  return `${JSON.stringify(tokenSets(dictionary), null, 2)}\n`;
+}
+
+const styleDictionary = new StyleDictionary({
+  tokens,
+  hooks: {
+    transforms: {
+      'name/palladio': {
+        type: 'name',
+        transform: (token) => token.path.join('-')
+      }
     },
-    theme: { dark: nestedObject(semanticRecords(themeTrees.dark)) }
-  }, null, 2)}\n`;
-}
+    formats: {
+      'palladio/css': renderCss,
+      'palladio/typescript': renderTs,
+      'palladio/json': renderJson
+    }
+  },
+  platforms: {
+    css: {
+      transforms: ['name/palladio'],
+      buildPath: path.join(distDir, 'css'),
+      files: [{ destination: 'palladio.css', format: 'palladio/css' }]
+    },
+    typescript: {
+      transforms: ['name/palladio'],
+      buildPath: path.join(distDir, 'ts'),
+      files: [{ destination: 'tokens.ts', format: 'palladio/typescript' }]
+    },
+    json: {
+      transforms: ['name/palladio'],
+      buildPath: path.join(distDir, 'json'),
+      files: [{ destination: 'tokens.json', format: 'palladio/json' }]
+    }
+  }
+});
 
-function ensureDirectory(directory) {
-  fs.mkdirSync(directory, { recursive: true });
-}
-
-function writeGeneratedFile(relativePath, content) {
-  const target = path.join(distDir, relativePath);
-  ensureDirectory(path.dirname(target));
-  fs.writeFileSync(target, content, 'utf8');
-}
-
-export async function run() {
-  writeGeneratedFile(path.join('css', 'palladio.css'), renderCss());
-  writeGeneratedFile(path.join('ts', 'tokens.ts'), renderTs());
-  writeGeneratedFile(path.join('json', 'tokens.json'), renderJson());
-  console.log('Generated CSS, TypeScript and JSON artifacts.');
-}
-
-await run();
+await styleDictionary.buildAllPlatforms();
+console.log('Generated CSS, TypeScript and JSON artifacts with Style Dictionary.');

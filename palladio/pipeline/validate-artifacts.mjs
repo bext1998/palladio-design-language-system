@@ -73,8 +73,14 @@ const artifactContent = JSON.stringify(json);
 const leakedPrimitivePaths = [...primitivePaths].filter((primitivePath) => artifactContent.includes(`"${primitivePath}"`));
 assert(leakedPrimitivePaths.length === 0, `Primitive tokens leaked into JSON artifact: ${leakedPrimitivePaths.join(', ')}`);
 
-const before = fs.readFileSync(cssPath, 'utf8');
+const before = {
+  css: fs.readFileSync(cssPath, 'utf8'),
+  ts: fs.readFileSync(tsPath, 'utf8'),
+  json: fs.readFileSync(jsonPath, 'utf8')
+};
 execFileSync(process.execPath, [path.join(packageDir, 'pipeline/config.js')], { cwd: packageDir, stdio: 'ignore' });
-assert(fs.readFileSync(cssPath, 'utf8') === before, 'Rebuild changed CSS artifact unexpectedly.');
+assert(fs.readFileSync(cssPath, 'utf8') === before.css, 'Rebuild changed CSS artifact unexpectedly.');
+assert(fs.readFileSync(tsPath, 'utf8') === before.ts, 'Rebuild changed TypeScript artifact unexpectedly.');
+assert(fs.readFileSync(jsonPath, 'utf8') === before.json, 'Rebuild changed JSON artifact unexpectedly.');
 
 console.log('Validated CSS, TypeScript and JSON artifacts.');
