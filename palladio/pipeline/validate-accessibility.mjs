@@ -63,6 +63,7 @@ const EXPECTED = [
   { token: 'border-default', surface: 'bg', ratio: 1.46, gated: true },
   { token: 'border-default', surface: 'surface', ratio: 1.35, gated: true },
   { token: 'border-default', surface: 'surface-raised', ratio: 1.23, gated: true },
+  { token: 'border-default', surface: 'surface-overlay', ratio: 1.07, gated: true },
   { token: 'border-strong', surface: 'bg', ratio: 2.01, gated: true },
   { token: 'border-strong', surface: 'surface', ratio: 1.86, gated: true },
   { token: 'border-strong', surface: 'surface-raised', ratio: 1.70, gated: true },
@@ -184,6 +185,14 @@ export function validateAccentPairs(accent, extraPairs = []) {
     if (!accent?.[key]) {
       throw new Error(`Missing required accent slot "${key}". Palladio does not fall back or derive accent values (spec 2.5).`);
     }
+    // Every slot must be a well-formed "#rrggbb" hex color, even accentSubtle,
+    // which has no mandated fixed contrast pair of its own (see JSDoc above) —
+    // format validity is still required, it is just not paired against anything here.
+    try {
+      hexToColorObj(accent[key]);
+    } catch {
+      throw new Error(`Accent slot "${key}" is not a valid "#rrggbb" hex color: ${accent[key]}`);
+    }
   }
 
   const results = [];
@@ -248,6 +257,13 @@ function runAccentPairsRegression() {
   // 1. Missing accentSubtle must be rejected (spec 2.5: all six slots required).
   const { accentSubtle, ...withoutSubtle } = goodAccent;
   expectThrow(() => validateAccentPairs(withoutSubtle), 'missing accentSubtle');
+
+  // 1b. A malformed accentSubtle (present but not a valid hex color) must also
+  // be rejected — presence alone is not enough, format is still validated.
+  expectThrow(
+    () => validateAccentPairs({ ...goodAccent, accentSubtle: 'not-a-hex-colour' }),
+    'malformed accentSubtle rejected'
+  );
 
   // 2. A 3.45:1 pair passes as large text (A-M2 3:1).
   expectPass(() => validateAccentPairs(goodAccent, [{ ...midPair, kind: 'largeText' }]), '3.45:1 large text passes A-M2');

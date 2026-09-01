@@ -30,6 +30,7 @@
 - **不得使用 font-weight 100–300**（規格 3.3，深色背景上過細難以閱讀）。
 - **不得用 `outline: none` 移除 focus 樣式卻不提供替代的可見 focus indicator**（A-M3）。
 - **不得預設把 `pd-color-border-strong` 當作 focus ring 唯一依據**——它對系統現有表面對比皆低於 A-M2 的 3:1（已確認缺漏，追蹤於 [Issue #21](https://github.com/bext1998/palladio-design-language-system/issues/21)），元件必須自行選一個能驗證通過 3:1 的呈現方式（例如產品 accent 色、`text-primary`，或雙層 ring），見 `accessibility-contract.md` 第四節。
+- **不得把 `pd-color-border-default` 當作 Input 唯一可識別邊界**——它雖是規格 2.2 定義的標準 input／card border，但對系統現有全部四層表面對比皆低於 A-M2 的 3:1（已確認缺漏，見 `accessibility-contract.md` 第三、十一節）。在此缺口修正前，Input（Issue #13）等元件若需要一個符合 A-M2 的可辨識邊界，須另加能驗證通過 3:1 的視覺線索，不得只依賴 `border-default`。
 
 ## 三、色彩
 

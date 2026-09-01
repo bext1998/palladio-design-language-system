@@ -92,6 +92,10 @@ assert(
   'agent-reference.md must explicitly prohibit accent fallback/derivation.'
 );
 assert(agentReference.includes('Issue #21'), 'agent-reference.md must flag the known border-strong focus-ring gap so agents do not rely on it.');
+assert(
+  /不得把\s*`?pd-color-border-default`?\s*當作\s*Input\s*唯一可識別邊界/.test(agentReference),
+  'agent-reference.md must explicitly prohibit pd-color-border-default as the sole identifiable Input boundary until its A-M2 gap is fixed.'
+);
 
 const before = {
   css: fs.readFileSync(cssPath, 'utf8'),
