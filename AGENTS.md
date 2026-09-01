@@ -18,6 +18,7 @@ Palladio Design Language & System 是可跨消費端使用的開源設計語言�
 2. 第一至八章設計語言為 source of truth；不得用 pipeline 便利性改寫其行為。
 3. GitHub Issue／PR 與 Git 是工作狀態權威；只有明確 closeout 才重建 `NEXT_ACTION.md`。
 4. 修改前確認對應 token、輸出產物、可及性規則與消費端契約。
+5. Git Worktrees請集中放置於D:\AgentCoding\.codex\worktrees\PalladioDesignLanguage&System
 
 ---
 
