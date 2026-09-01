@@ -180,7 +180,7 @@ npm --prefix palladio run validate:artifacts
 
 | 缺漏 | 影響規則 | 現況 | 後續處置 |
 |---|---|---|---|
-| `pd-color-border-strong`（`#484848`）作為 focus ring 底色，對所有既有表面對比皆 < 3:1（最高 2.01:1 對 `bg`） | A-M2、連帶影響 A-M3 | 已記錄，未修改 token 值（詳見第三、四節） | 元件實作（#6、#7、#11、#12、#13）須依第四節契約，各自選擇並驗證能通過 3:1 的 focus indicator 呈現方式，不得預設沿用 `border-strong`；若後續要為 Foundation 新增專屬、通過 3:1 的 focus 色 token，需另立 Issue 處理（不在本 Issue #3 範圍內）。 |
+| `pd-color-border-strong`（`#484848`）作為 focus ring 底色，對所有既有表面對比皆 < 3:1（最高 2.01:1 對 `bg`） | A-M2、連帶影響 A-M3 | 已記錄，未修改 token 值（詳見第三、四節） | 追蹤於 [#21](https://github.com/bext1998/palladio-design-language-system/issues/21)。在 #21 完成前，元件實作（#6、#7、#11、#12、#13）須依第四節契約，各自選擇並驗證能通過 3:1 的 focus indicator 呈現方式，不得預設沿用 `border-strong`。 |
 
 ---
 
