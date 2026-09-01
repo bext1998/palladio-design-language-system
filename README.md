@@ -2,7 +2,7 @@
 
 Palladio 是一套開源設計語言與 design-token system：以深碳灰的表面層級、精準線條與流體有機動效建立共同基礎，同時讓每個產品自行定義品牌強調色。
 
-目前專案處於 Foundation 初始化階段。完整設計契約與驗收標準請見 [規格書](docs/spec.md)。
+Foundation（token 系統基礎）已完成。完整設計契約與驗收標準請見 [規格書](docs/spec.md)；第一批元件與壓力測試進行中，請見 GitHub Issues。
 
 ## 原則
 
@@ -10,9 +10,18 @@ Palladio 是一套開源設計語言與 design-token system：以深碳灰的表
 - 所有 accent 狀態由產品明確提供並驗證對比；系統不推導色值。
 - 支援 Compact、Default、Spacious 三種密度，以及 reduced-motion 行為。
 
-## 規劃的產物
+## 產物
 
-Foundation 完成後，token pipeline 會產出 CSS custom properties、TypeScript const object、raw JSON 及 `agent-reference.md`。
+`npm --prefix palladio run rebuild` 會從 `palladio/tokens/`、`palladio/themes/` 的 token 來源重新產出：
+
+| 產物 | 路徑 |
+|---|---|
+| CSS custom properties | `palladio/dist/css/palladio.css` |
+| TypeScript const object | `palladio/dist/ts/tokens.ts` |
+| Raw JSON | `palladio/dist/json/tokens.json` |
+| Agent Reference（AI 代理用 token 總覽與使用規則） | `palladio/dist/agent-reference.md` |
+
+可及性契約（A-M1–A-M6 驗收說明）見 [`palladio/docs/accessibility/accessibility-contract.md`](palladio/docs/accessibility/accessibility-contract.md)。
 
 ## 授權
 

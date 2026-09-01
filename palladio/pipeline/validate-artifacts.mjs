@@ -11,6 +11,7 @@ const distDir = path.join(packageDir, 'dist');
 const cssPath = path.join(distDir, 'css/palladio.css');
 const tsPath = path.join(distDir, 'ts/tokens.ts');
 const jsonPath = path.join(distDir, 'json/tokens.json');
+const agentReferencePath = path.join(distDir, 'agent-reference.md');
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -40,10 +41,12 @@ function cssVariable(block, name) {
 assertFileExists(cssPath);
 assertFileExists(tsPath);
 assertFileExists(jsonPath);
+assertFileExists(agentReferencePath);
 
 const css = fs.readFileSync(cssPath, 'utf8');
 const ts = fs.readFileSync(tsPath, 'utf8');
 const json = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+const agentReference = fs.readFileSync(agentReferencePath, 'utf8');
 
 const themeBlock = cssBlock(css, ':root[data-theme="dark"]');
 const defaultDensityBlock = cssBlock(css, ':root[data-density]');
@@ -73,14 +76,33 @@ const artifactContent = JSON.stringify(json);
 const leakedPrimitivePaths = [...primitivePaths].filter((primitivePath) => artifactContent.includes(`"${primitivePath}"`));
 assert(leakedPrimitivePaths.length === 0, `Primitive tokens leaked into JSON artifact: ${leakedPrimitivePaths.join(', ')}`);
 
+// agent-reference.md (Issue #10 / Spec 9.3–9.4) — must cover semantic tokens,
+// usage rules and prohibitions, and explicitly forbid accent fallback and
+// direct Primitive usage in UI (Issue #10 acceptance criteria).
+assert(agentReference.includes('# Palladio Agent Reference'), 'agent-reference.md is missing its title.');
+assert(agentReference.includes('--pd-color-bg') && agentReference.includes('#141414'), 'agent-reference.md is missing the semantic color token table.');
+assert(agentReference.includes('Density Preset') && agentReference.includes('| 32px | 36px | 48px |'), 'agent-reference.md is missing the density preset table.');
+assert(agentReference.includes('A-M1') && agentReference.includes('A-M6'), 'agent-reference.md is missing the accessibility MUST rules summary.');
+assert(
+  /不得將\s*Primitive\s*token\s*直接用於\s*UI/.test(agentReference),
+  'agent-reference.md must explicitly prohibit using Primitive tokens directly in UI.'
+);
+assert(
+  /不得為\s*accent\s*插槽加入\s*fallback/.test(agentReference),
+  'agent-reference.md must explicitly prohibit accent fallback/derivation.'
+);
+assert(agentReference.includes('Issue #21'), 'agent-reference.md must flag the known border-strong focus-ring gap so agents do not rely on it.');
+
 const before = {
   css: fs.readFileSync(cssPath, 'utf8'),
   ts: fs.readFileSync(tsPath, 'utf8'),
-  json: fs.readFileSync(jsonPath, 'utf8')
+  json: fs.readFileSync(jsonPath, 'utf8'),
+  agentReference: fs.readFileSync(agentReferencePath, 'utf8')
 };
 execFileSync(process.execPath, [path.join(packageDir, 'pipeline/config.js')], { cwd: packageDir, stdio: 'ignore' });
 assert(fs.readFileSync(cssPath, 'utf8') === before.css, 'Rebuild changed CSS artifact unexpectedly.');
 assert(fs.readFileSync(tsPath, 'utf8') === before.ts, 'Rebuild changed TypeScript artifact unexpectedly.');
 assert(fs.readFileSync(jsonPath, 'utf8') === before.json, 'Rebuild changed JSON artifact unexpectedly.');
+assert(fs.readFileSync(agentReferencePath, 'utf8') === before.agentReference, 'Rebuild changed agent-reference.md artifact unexpectedly.');
 
-console.log('Validated CSS, TypeScript and JSON artifacts.');
+console.log('Validated CSS, TypeScript, JSON and agent-reference.md artifacts.');
