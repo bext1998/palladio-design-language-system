@@ -9,7 +9,8 @@
     "clean": "node pipeline/clean.mjs",
     "rebuild": "npm run clean && npm run build",
     "validate:tokens": "node pipeline/validate-tokens.mjs",
-    "validate:artifacts": "node pipeline/validate-artifacts.mjs"
+    "validate:artifacts": "node pipeline/validate-artifacts.mjs",
+    "validate:accessibility": "node pipeline/validate-accessibility.mjs"
   },
   "engines": {
     "node": ">=22"
