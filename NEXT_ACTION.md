@@ -15,7 +15,7 @@
 ## 阻塞與待決策
 
 - 無。雙產品 accent 驗證（#15）須在後續取得兩個產品的實際色彩資料。
-- 已確認缺漏（非阻塞，但每個元件都需個別處理）：`pd-color-border-strong` 作為 focus ring 底色對現有表面對比未達 A-M2 3:1，詳見 `palladio/docs/accessibility/accessibility-contract.md` 第三、四、十一節。
+- 已確認缺漏，追蹤於 [#21](https://github.com/bext1998/palladio-design-language-system/issues/21)（非阻塞，但每個元件都需個別處理直到 #21 完成）：`pd-color-border-strong` 作為 focus ring 底色對現有表面對比未達 A-M2 3:1，詳見 `palladio/docs/accessibility/accessibility-contract.md` 第三、四、十一節。
 
 ## 權威連結
 
@@ -23,3 +23,4 @@
 - [Foundation parent #1](https://github.com/bext1998/palladio-design-language-system/issues/1)
 - [下一項 Foundation #10](https://github.com/bext1998/palladio-design-language-system/issues/10)
 - [可及性契約文件](palladio/docs/accessibility/accessibility-contract.md)（#3 交付物）
+- [Focus ring 對比缺漏 #21](https://github.com/bext1998/palladio-design-language-system/issues/21)
