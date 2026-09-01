@@ -50,16 +50,19 @@ const DRIFT_TOLERANCE = 0.01;
 
 // Expected ratios below are the ones documented and explained in
 // palladio/docs/accessibility/accessibility-contract.md (section 3).
-// `gated: true` means the pair is required by spec (docs/spec.md 2.2, 8) to
-// serve as a focus/UI indicator and is therefore subject to the A-M2 3:1
-// threshold; `gated: false` means the token is purely decorative (a static
-// divider or default border) and A-M2 does not apply to it.
+// `gated: true` means the token is used as a UI element that conveys a
+// boundary/state (docs/spec.md 2.2, 8) — a focus/UI indicator or an input's
+// identifiable edge — and is therefore subject to the A-M2 3:1 threshold.
+// `gated: false` is reserved for tokens that are *only* a decorative divider
+// (border-subtle: "幾乎與表面融合", spec 2.2). border-default is NOT decorative:
+// spec 2.2 defines it as the standard input/card edge, so as an input boundary
+// it is a non-text UI element under A-M2 (see accessibility-contract.md §3/§11).
 const EXPECTED = [
   { token: 'border-subtle', surface: 'bg', ratio: 1.19, gated: false },
   { token: 'border-subtle', surface: 'surface', ratio: 1.10, gated: false },
-  { token: 'border-default', surface: 'bg', ratio: 1.46, gated: false },
-  { token: 'border-default', surface: 'surface', ratio: 1.35, gated: false },
-  { token: 'border-default', surface: 'surface-raised', ratio: 1.23, gated: false },
+  { token: 'border-default', surface: 'bg', ratio: 1.46, gated: true },
+  { token: 'border-default', surface: 'surface', ratio: 1.35, gated: true },
+  { token: 'border-default', surface: 'surface-raised', ratio: 1.23, gated: true },
   { token: 'border-strong', surface: 'bg', ratio: 2.01, gated: true },
   { token: 'border-strong', surface: 'surface', ratio: 1.86, gated: true },
   { token: 'border-strong', surface: 'surface-raised', ratio: 1.70, gated: true },
@@ -68,7 +71,12 @@ const EXPECTED = [
 
 // Confirmed gaps register — see accessibility-contract.md §11. A gated pair
 // listed here is allowed to stay below 3:1 without failing this script.
-const KNOWN_GAPS = new Set(['border-strong']);
+// - border-strong: focus-ring base (spec 2.2), tracked in Issue #21.
+// - border-default: standard input/card edge (spec 2.2); as an input boundary
+//   it is an A-M2 UI element but is < 3:1 on every surface. Documented as a
+//   confirmed gap in accessibility-contract.md §11; GitHub tracking (new issue
+//   or expanding #21) is pending a maintainer decision — not created here.
+const KNOWN_GAPS = new Set(['border-strong', 'border-default']);
 
 /** Runs the border/focus-ring A-M2 audit against the live token sources. Throws on drift or an undocumented A-M2 violation. */
 function runBorderContrastAudit() {
@@ -127,7 +135,9 @@ function runBorderContrastAudit() {
   }
 
   console.log('\n✔ Accessibility contract audit complete. All pairs match documented, expected values.');
-  console.log('  (border-strong remains a confirmed A-M2 gap — see docs/accessibility/accessibility-contract.md §11, tracked in Issue #21.)');
+  console.log('  (Confirmed A-M2 gaps — see docs/accessibility/accessibility-contract.md §11:');
+  console.log('   - border-strong (focus-ring base), tracked in Issue #21;');
+  console.log('   - border-default (input/card edge), GitHub tracking pending a maintainer decision.)');
 }
 
 // Only run the audit (and its console output) when this file is executed
@@ -135,6 +145,7 @@ function runBorderContrastAudit() {
 // not when another module imports `validateAccentPairs` from it.
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   runBorderContrastAudit();
+  runAccentPairsRegression();
 }
 
 function hexToColorObj(hex) {
@@ -153,16 +164,22 @@ function hexToColorObj(hex) {
  * it is exported for the product's own validation (Issue #15) to import
  * and call once real accent hex values are available.
  *
- * @param {{ accent: string, accentHover: string, accentActive: string, accentDisabled: string, accentText: string }} accent
- *   The product's five required accent slots as "#rrggbb" strings (accent-subtle is excluded here —
- *   it has no mandated foreground/background pair of its own under spec 2.5).
- * @param {Array<{ name: string, foreground: string, background: string, kind: 'text' | 'ui' }>} [extraPairs]
+ * @param {{ accent: string, accentHover: string, accentActive: string, accentDisabled: string, accentSubtle: string, accentText: string }} accent
+ *   All six required accent slots as "#rrggbb" strings (spec 2.5 mandates every slot; the product
+ *   provides them, Palladio never derives or falls back). accentSubtle is presence-validated here but
+ *   has no mandated fixed foreground/background pair of its own, so it is not part of the contrast
+ *   checks below — list any pair a product actually renders on it via `extraPairs`.
+ * @param {Array<{ name: string, foreground: string, background: string, kind: 'text' | 'largeText' | 'ui' }>} [extraPairs]
  *   Additional foreground/background pairs the product actually uses (spec 2.5 requires listing these
- *   in the product's own token docs), classified as normal/large text (A-M1, 4.5:1) or a UI element (A-M2, 3:1).
+ *   in the product's own token docs). `kind` selects the required threshold and must be one of:
+ *   - 'text'      → normal text, A-M1 (>= 4.5:1)
+ *   - 'largeText' → large text (>=24px regular / >=18.5px bold), A-M2 (>= 3:1)
+ *   - 'ui'        → non-text UI element (border/icon/etc.), A-M2 (>= 3:1)
+ *   An unrecognised `kind` is rejected — it is never silently downgraded to a laxer threshold.
  * @returns {Array<{ pair: string, ratio: number, threshold: number, passes: boolean }>}
  */
 export function validateAccentPairs(accent, extraPairs = []) {
-  const required = ['accent', 'accentHover', 'accentActive', 'accentDisabled', 'accentText'];
+  const required = ['accent', 'accentHover', 'accentActive', 'accentDisabled', 'accentSubtle', 'accentText'];
   for (const key of required) {
     if (!accent?.[key]) {
       throw new Error(`Missing required accent slot "${key}". Palladio does not fall back or derive accent values (spec 2.5).`);
@@ -177,9 +194,16 @@ export function validateAccentPairs(accent, extraPairs = []) {
     results.push({ pair: `accent-text on ${bg}`, ratio, threshold: A_M1_THRESHOLD, passes: ratio >= A_M1_THRESHOLD });
   }
 
-  // Product-listed extra pairs — classified by the caller as A-M1 (text) or A-M2 (UI element / large text).
+  // Product-listed extra pairs — the caller classifies each pair's `kind`, which
+  // selects the required threshold. Unknown kinds are rejected, never downgraded.
+  const KIND_THRESHOLDS = { text: A_M1_THRESHOLD, largeText: A_M2_THRESHOLD, ui: A_M2_THRESHOLD };
   for (const { name, foreground, background, kind } of extraPairs) {
-    const threshold = kind === 'ui' ? A_M2_THRESHOLD : A_M1_THRESHOLD;
+    const threshold = KIND_THRESHOLDS[kind];
+    if (threshold === undefined) {
+      throw new Error(
+        `Unknown extraPairs kind "${kind}" for pair "${name}". Use 'text' (A-M1 4.5:1), 'largeText' (A-M2 3:1) or 'ui' (A-M2 3:1).`
+      );
+    }
     const ratio = contrastRatio(hexToColorObj(foreground), hexToColorObj(background));
     results.push({ pair: name, ratio, threshold, passes: ratio >= threshold });
   }
@@ -192,4 +216,47 @@ export function validateAccentPairs(accent, extraPairs = []) {
   }
 
   return results;
+}
+
+/**
+ * Regression coverage for validateAccentPairs() — the behaviours the PR #22
+ * review required. Runs as part of `npm run validate:accessibility`; throws if
+ * any case regresses. No test framework is used in this repo, matching the
+ * other pipeline validators (validate-tokens.mjs / validate-artifacts.mjs).
+ */
+function runAccentPairsRegression() {
+  // A fully-populated, passing accent set: white text on black backgrounds is
+  // 21:1, comfortably above A-M1, so the mandatory accent-text pairs pass and
+  // the extraPairs behaviour is what the case under test actually exercises.
+  const goodAccent = {
+    accent: '#000000', accentHover: '#000000', accentActive: '#000000',
+    accentDisabled: '#000000', accentSubtle: '#333333', accentText: '#FFFFFF'
+  };
+  // #8A8A8A on #FFFFFF is 3.45:1 — between the A-M2 (3:1) and A-M1 (4.5:1)
+  // thresholds, so it must pass as largeText and fail as normal text.
+  const midPair = { name: 'mid', foreground: '#8A8A8A', background: '#FFFFFF' };
+
+  const expectThrow = (fn, label) => {
+    let threw = false;
+    try { fn(); } catch { threw = true; }
+    if (!threw) throw new Error(`Accent regression failed: expected "${label}" to throw, but it did not.`);
+  };
+  const expectPass = (fn, label) => {
+    try { fn(); } catch (e) { throw new Error(`Accent regression failed: expected "${label}" to pass, but it threw: ${e.message}`); }
+  };
+
+  // 1. Missing accentSubtle must be rejected (spec 2.5: all six slots required).
+  const { accentSubtle, ...withoutSubtle } = goodAccent;
+  expectThrow(() => validateAccentPairs(withoutSubtle), 'missing accentSubtle');
+
+  // 2. A 3.45:1 pair passes as large text (A-M2 3:1).
+  expectPass(() => validateAccentPairs(goodAccent, [{ ...midPair, kind: 'largeText' }]), '3.45:1 large text passes A-M2');
+
+  // 3. The same 3.45:1 pair fails as normal text (A-M1 4.5:1).
+  expectThrow(() => validateAccentPairs(goodAccent, [{ ...midPair, kind: 'text' }]), '3.45:1 normal text fails A-M1');
+
+  // 4. An unknown kind is rejected, not silently downgraded.
+  expectThrow(() => validateAccentPairs(goodAccent, [{ ...midPair, kind: 'decorative' }]), 'unknown extraPairs kind rejected');
+
+  console.log('\n✔ validateAccentPairs regression checks passed (accentSubtle required; largeText/text/unknown kind handling).');
 }

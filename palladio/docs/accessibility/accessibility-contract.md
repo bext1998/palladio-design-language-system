@@ -58,11 +58,13 @@
 
 | Border Token | 值 | 對 `bg` | 對 `surface` | 對 `surface-raised` | 對 `surface-overlay` | 用途 |
 |---|---|---|---|---|---|---|
-| `border-subtle` | `#242424` | 1.19:1 ❌ | 1.10:1 ❌ | — | — | 純分隔線，非互動指示，不受 A-M2 約束 |
-| `border-default` | `#333333` | 1.46:1 ❌ | 1.35:1 ❌ | 1.23:1 ❌ | — | 一般 input／card 邊框，非互動指示，不受 A-M2 約束 |
-| `border-strong` | `#484848` | **2.01:1 ❌** | **1.86:1 ❌** | **1.70:1 ❌** | **1.48:1 ❌** | **規格 2.2 指定為 focus ring 底色 → 受 A-M2 約束** |
+| `border-subtle` | `#242424` | 1.19:1 ❌ | 1.10:1 ❌ | — | — | 純分隔線（「幾乎與表面融合」），非互動邊界，不受 A-M2 約束 |
+| `border-default` | `#333333` | 1.46:1 ❌ | 1.35:1 ❌ | 1.23:1 ❌ | — | **規格 2.2 定義為 input／card edge → 作為 Input 可識別邊界時受 A-M2 約束；已確認缺漏** |
+| `border-strong` | `#484848` | **2.01:1 ❌** | **1.86:1 ❌** | **1.70:1 ❌** | **1.48:1 ❌** | **規格 2.2 指定為 focus ring 底色 → 受 A-M2 約束；已確認缺漏** |
 
-`border-subtle`／`border-default` 用於靜態分隔與邊框，屬於裝飾性線條，WCAG 1.4.11 與 A-M2 僅約束「傳達資訊或狀態」的 UI 元件，因此這兩者不受 3:1 門檻約束，維持現狀。
+`border-subtle` 依規格 2.2 定義為「最輕量的分隔（幾乎與表面融合）」，屬純裝飾性分隔線；WCAG 1.4.11 與 A-M2 僅約束「傳達資訊或狀態」的 UI 元件，故 `border-subtle` 不受 3:1 門檻約束，維持現狀。
+
+⚠️ **`border-default` 是已確認缺漏**：規格 2.2 將它定義為「標準 border（input、card edge）」。當它作為 **Input 的可識別邊界**時，就是傳達邊界的非文字 UI 元件，受 A-M2 約束——但它對所有既有表面的對比皆 < 3:1（最高 1.46:1）。因此**不能一概宣稱 `border-default` 為裝飾性而不受 A-M2**；任何以 `border-default` 作為 Input 唯一可辨識邊界的情境，在目前表面組合下都不符合 A-M2。此限制登記於第十一節，並由 `validate-accessibility.mjs` 以 gated + known-gap 方式追蹤（不修改 token 值）。
 
 ⚠️ **`border-strong` 是已確認缺漏**：規格 2.2 明確將它定義為「強調邊框（focus ring 底色）」，但它對系統中所有既有表面的對比都不到 3:1（最高僅 2.01:1，對 `surface-raised`／`surface-overlay` 更低）。也就是說，**任何元件若直接以 `border-strong` 作為 focus ring 顏色，其 focus indicator 將不符合 A-M2**，進而違反 A-M3。詳見第四節與第十一節「已確認缺漏」。
 
@@ -153,7 +155,7 @@ Palladio 不定義 accent 色值，本文件**不推導**任何產品的 accent 
 4. **記錄**：每個產品需在其 token 文件列出實際使用的前景／背景配對清單（規格 2.5 節要求），驗證結果需可追溯回該清單，不得只驗證系統預設的四組。
 5. **不允許的操作**：不得為未提供的插槽套用 fallback；不得用同一色相的深淺變化「推算」`hover`／`active`；不得跨產品共用同一組 accent 驗證結果。
 
-`palladio/pipeline/validate-accessibility.mjs` 已預留 `validateAccentPairs()`（見腳本內註解）作為兩個產品實際色值到位後可直接呼叫的驗證函式骨架，避免 Issue #15 需要重新設計驗證邏輯。
+`palladio/pipeline/validate-accessibility.mjs` 的 `validateAccentPairs()`（見腳本內註解）是兩個產品實際色值到位後可直接呼叫的驗證函式，避免 Issue #15 需要重新設計驗證邏輯。它強制檢查全部**六個** slot 是否齊備（含 `accent-subtle`；缺任一即擲例外，不推導、不 fallback），對規格指定的四組 `accent-text` 配對套 A-M1（4.5:1），並要求 `extraPairs` 逐一標明 `kind`：`text`（A-M1 4.5:1）、`largeText`（A-M2 3:1）、`ui`（A-M2 3:1）；未知 `kind` 一律擲例外，不靜默降級。`accent-subtle` 僅做齊備性檢查、無固定對比配對，其實際渲染配對由產品透過 `extraPairs` 提供。
 
 ---
 
@@ -181,6 +183,7 @@ npm --prefix palladio run validate:artifacts
 | 缺漏 | 影響規則 | 現況 | 後續處置 |
 |---|---|---|---|
 | `pd-color-border-strong`（`#484848`）作為 focus ring 底色，對所有既有表面對比皆 < 3:1（最高 2.01:1 對 `bg`） | A-M2、連帶影響 A-M3 | 已記錄，未修改 token 值（詳見第三、四節） | 追蹤於 [#21](https://github.com/bext1998/palladio-design-language-system/issues/21)。在 #21 完成前，元件實作（#6、#7、#11、#12、#13）須依第四節契約，各自選擇並驗證能通過 3:1 的 focus indicator 呈現方式，不得預設沿用 `border-strong`。 |
+| `pd-color-border-default`（`#333333`）作為 **Input 可識別邊界**，對所有既有表面對比皆 < 3:1（最高 1.46:1 對 `bg`） | A-M2 | 已記錄，未修改 token 值（詳見第三節）；`validate-accessibility.mjs` 已將其標為 gated 並列入 KNOWN_GAPS，audit 不再宣稱其合規 | **待維護者決策 GitHub 追蹤方式**（新開 Issue 或擴張 [#21](https://github.com/bext1998/palladio-design-language-system/issues/21)）——本次修正無授權建立／修改 Issue，故僅在此登記並回報。在追蹤議題落地並修正前，元件實作（尤以 Input #13）若需要一個符合 A-M2 的可辨識邊界，**不得**只依賴 `border-default`，須另加通過 3:1 的視覺線索（例如 filled surface 對比、`border-strong` 以上的邊框並自行驗證，或搭配 label／背景色塊）。 |
 
 ---
 
