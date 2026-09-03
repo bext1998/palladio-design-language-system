@@ -295,7 +295,7 @@ Prefix `pd` = Palladio，避免與各產品自身的 CSS 變數衝突。
 |------|------|
 | Token 格式 | JSON（Design Tokens Community Group 格式相容） |
 | Pipeline 工具 | Style Dictionary |
-| CSS 產出 | CSS custom properties（`:root[data-theme]` / `[data-density]`） |
+| CSS 產出 | CSS custom properties（`:root` 含 Default density、`:root[data-theme="dark"]`、`:root[data-density="compact"\|"spacious"]`） |
 | TS 產出 | TypeScript const object（tree-shakable，供 React 消費） |
 | JSON 產出 | Raw JSON（供 Go / Wails 直接讀取） |
 | Agent Reference 產出 | `agent-reference.md`（Token 總覽 + 使用規則，AI 代理 context 用） |
