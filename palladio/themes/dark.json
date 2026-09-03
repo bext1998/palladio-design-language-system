@@ -33,7 +33,7 @@
       },
       "border-strong": {
         "$value": "{color.charcoal.600}",
-        "$description": "強調邊框（focus ring 底色） (#484848)"
+        "$description": "強調邊框（focus ring 底色） (#7A7A7A)"
       },
       "text-primary": {
         "$value": "{color.charcoal.100}",

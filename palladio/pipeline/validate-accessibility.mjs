@@ -64,20 +64,19 @@ const EXPECTED = [
   { token: 'border-default', surface: 'surface', ratio: 1.35, gated: true },
   { token: 'border-default', surface: 'surface-raised', ratio: 1.23, gated: true },
   { token: 'border-default', surface: 'surface-overlay', ratio: 1.07, gated: true },
-  { token: 'border-strong', surface: 'bg', ratio: 2.01, gated: true },
-  { token: 'border-strong', surface: 'surface', ratio: 1.86, gated: true },
-  { token: 'border-strong', surface: 'surface-raised', ratio: 1.70, gated: true },
-  { token: 'border-strong', surface: 'surface-overlay', ratio: 1.48, gated: true }
+  { token: 'border-strong', surface: 'bg', ratio: 4.29, gated: true },
+  { token: 'border-strong', surface: 'surface', ratio: 3.97, gated: true },
+  { token: 'border-strong', surface: 'surface-raised', ratio: 3.62, gated: true },
+  { token: 'border-strong', surface: 'surface-overlay', ratio: 3.16, gated: true }
 ];
 
 // Confirmed gaps register — see accessibility-contract.md §11. A gated pair
 // listed here is allowed to stay below 3:1 without failing this script.
-// - border-strong: focus-ring base (spec 2.2), tracked in Issue #21.
 // - border-default: standard input/card edge (spec 2.2); as an input boundary
 //   it is an A-M2 UI element but is < 3:1 on every surface. Documented as a
 //   confirmed gap in accessibility-contract.md §11; GitHub tracking (new issue
 //   or expanding #21) is pending a maintainer decision — not created here.
-const KNOWN_GAPS = new Set(['border-strong', 'border-default']);
+const KNOWN_GAPS = new Set(['border-default']);
 
 /** Runs the border/focus-ring A-M2 audit against the live token sources. Throws on drift or an undocumented A-M2 violation. */
 function runBorderContrastAudit() {
@@ -137,7 +136,6 @@ function runBorderContrastAudit() {
 
   console.log('\n✔ Accessibility contract audit complete. All pairs match documented, expected values.');
   console.log('  (Confirmed A-M2 gaps — see docs/accessibility/accessibility-contract.md §11:');
-  console.log('   - border-strong (focus-ring base), tracked in Issue #21;');
   console.log('   - border-default (input/card edge), GitHub tracking pending a maintainer decision.)');
 }
 

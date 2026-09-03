@@ -55,6 +55,7 @@ const spaciousBlock = cssBlock(css, ':root[data-density="spacious"]');
 
 assertEqual(cssVariable(themeBlock, 'pd-color-bg'), '#141414', 'Dark theme background');
 assertEqual(cssVariable(themeBlock, 'pd-color-text-primary'), '#F0F0F0', 'Dark theme primary text');
+assertEqual(cssVariable(themeBlock, 'pd-color-border-strong'), '#7A7A7A', 'Dark theme focus ring');
 assertEqual(cssVariable(defaultDensityBlock, 'pd-density-component-min-interactive-size'), '36px', 'Default density minimum interactive size');
 assertEqual(cssVariable(compactBlock, 'pd-density-component-min-interactive-size'), '32px', 'Compact density minimum interactive size');
 assertEqual(cssVariable(spaciousBlock, 'pd-density-component-min-interactive-size'), '48px', 'Spacious density minimum interactive size');
@@ -67,6 +68,7 @@ assert(JSON.stringify(Object.keys(json)) === JSON.stringify(['semantic', 'densit
 assert(JSON.stringify(Object.keys(json.density)) === JSON.stringify(['compact', 'default', 'spacious']), 'JSON density keys are incorrect');
 assert(JSON.stringify(Object.keys(json.theme)) === JSON.stringify(['dark']), 'JSON theme keys are incorrect');
 assertEqual(json.semantic.color.bg.hex, '#141414', 'JSON semantic background');
+assertEqual(json.semantic.color['border-strong'].hex, '#7A7A7A', 'JSON semantic focus ring');
 assertEqual(json.density.default.density.component['min-interactive-size'].value, 36, 'JSON default density minimum interactive size');
 assertEqual(json.theme.dark.color.bg.hex, '#141414', 'JSON dark theme background');
 
@@ -91,7 +93,10 @@ assert(
   /不得為\s*accent\s*插槽加入\s*fallback/.test(agentReference),
   'agent-reference.md must explicitly prohibit accent fallback/derivation.'
 );
-assert(agentReference.includes('Issue #21'), 'agent-reference.md must flag the known border-strong focus-ring gap so agents do not rely on it.');
+assert(
+  /focus indicator 應使用\s*`?pd-color-border-strong`?/.test(agentReference),
+  'agent-reference.md must recommend pd-color-border-strong for focus indicators.'
+);
 assert(
   /不得把\s*`?pd-color-border-default`?\s*當作\s*Input\s*唯一可識別邊界/.test(agentReference),
   'agent-reference.md must explicitly prohibit pd-color-border-default as the sole identifiable Input boundary until its A-M2 gap is fixed.'
