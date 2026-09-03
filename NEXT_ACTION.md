@@ -10,7 +10,7 @@ Foundation（#1 及其全部子 Issue）已完成，包含 #10 產出的 `pallad
 
 1. 確認 [#1 Foundation 總覽](https://github.com/bext1998/palladio-design-language-system/issues/1) 的子 Issue 皆已關閉後，關閉 #1。（已於 #1 留言確認 6/6 子 Issue 關閉、三個 validator 通過，符合關閉條件。）
 2. 挑一個第一批元件 Issue 開始實作；規格建議順序是 Button（#11）→ Input（#13）→ Divider（#2）→ Badge/Tag（#12）→ Card（#7）→ Navigation（#6）（依「能同時驗證最多 Foundation 決策」排序，規格 10.1 節）。每個元件的 focus indicator 驗收依 `palladio/docs/accessibility/accessibility-contract.md` 第四節契約：可直接使用 `pd-color-border-strong`（`#7A7A7A`，已對四層表面通過 A-M2，最低 3.16:1）；若改用產品 accent、`text-primary` 或雙層 ring，仍須對實際相鄰表面逐一驗證 3:1。
-3. Input（#13）專屬約束：靜止邊界用 `pd-color-input-border`。因 `input-border` 與 `border-strong` 目前解析為同一色（皆 `{color.charcoal.600}` → `#7A7A7A`），`:focus-visible` **不得**只把同色套回同一條 border，必須產生可見的幾何差異（offset outline、外圈 ring、box-shadow 或邊框寬度變化），且該 focus indicator 仍須依 A-M2 對相鄰表面驗證。（此約束待正式併入 #13 驗收條件。）
+3. Input（#13）專屬約束（已併入 #13 驗收條件）：靜止邊界用 `pd-color-input-border`。因 `input-border` 與 `border-strong` 目前解析為同一色（皆 `{color.charcoal.600}` → `#7A7A7A`），`:focus-visible` **不得**只把同色套回同一條 border，必須產生可見的幾何差異（offset outline、外圈 ring、box-shadow 或邊框寬度變化），且該 focus indicator 仍須依 A-M2 對相鄰表面驗證。
 
 ## 阻塞與待決策
 
