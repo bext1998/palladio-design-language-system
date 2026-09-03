@@ -60,13 +60,13 @@
 |---|---|---|---|---|---|---|
 | `border-subtle` | `#242424` | 1.19:1 ❌ | 1.10:1 ❌ | — | — | 純分隔線（「幾乎與表面融合」），非互動邊界，不受 A-M2 約束 |
 | `border-default` | `#333333` | 1.46:1 ❌ | 1.35:1 ❌ | 1.23:1 ❌ | 1.07:1 ❌ | **規格 2.2 定義為 input／card edge → 作為 Input 可識別邊界時受 A-M2 約束；已確認缺漏** |
-| `border-strong` | `#484848` | **2.01:1 ❌** | **1.86:1 ❌** | **1.70:1 ❌** | **1.48:1 ❌** | **規格 2.2 指定為 focus ring 底色 → 受 A-M2 約束；已確認缺漏** |
+| `border-strong` | `#7A7A7A` | **4.29:1 ✅** | **3.97:1 ✅** | **3.62:1 ✅** | **3.16:1 ✅** | **規格 2.2 指定為 focus ring 底色 → 符合 A-M2** |
 
 `border-subtle` 依規格 2.2 定義為「最輕量的分隔（幾乎與表面融合）」，屬純裝飾性分隔線；WCAG 1.4.11 與 A-M2 僅約束「傳達資訊或狀態」的 UI 元件，故 `border-subtle` 不受 3:1 門檻約束，維持現狀。
 
 ⚠️ **`border-default` 是已確認缺漏**：規格 2.2 將它定義為「標準 border（input、card edge）」。當它作為 **Input 的可識別邊界**時，就是傳達邊界的非文字 UI 元件，受 A-M2 約束——但它對系統中**全部四層表面**（`bg`、`surface`、`surface-raised`、`surface-overlay`）的對比皆 < 3:1（最高 1.46:1 對 `bg`，最低 1.07:1 對 `surface-overlay`）。因此**不能一概宣稱 `border-default` 為裝飾性而不受 A-M2**；任何以 `border-default` 作為 Input 唯一可辨識邊界的情境，在目前表面組合下都不符合 A-M2。此限制登記於第十一節，並由 `validate-accessibility.mjs` 以 gated + known-gap 方式追蹤（不修改 token 值）。
 
-⚠️ **`border-strong` 是已確認缺漏**：規格 2.2 明確將它定義為「強調邊框（focus ring 底色）」，但它對系統中所有既有表面的對比都不到 3:1（最高僅 2.01:1，對 `surface-raised`／`surface-overlay` 更低）。也就是說，**任何元件若直接以 `border-strong` 作為 focus ring 顏色，其 focus indicator 將不符合 A-M2**，進而違反 A-M3。詳見第四節與第十一節「已確認缺漏」。
+`border-strong` 是所有元件可直接消費的 focus ring 底色。它已對四層既有表面通過 A-M2；最小對比是對 `surface-overlay` 的 3.16:1。元件仍須依第四節契約保留可見 focus indicator 與 `:focus-visible` 語意。
 
 ---
 
@@ -77,10 +77,7 @@
 **契約內容**（供 #6、#7、#11、#12、#13 元件實作遵循）：
 
 1. Focus indicator 的呈現色彩（無論是 border、outline 或 box-shadow）必須對其相鄰的表面達到 A-M2 的 3:1 門檻。
-2. 因第三節列出的已確認缺漏，元件**不得**預設直接引用 `pd-color-border-strong` 作為 focus ring 的唯一依據——它在目前表面組合下無法通過驗證。元件必須自行選擇並驗證能通過 3:1 的呈現方式，例如：
-   - 使用產品提供的 `pd-color-accent`（多數品牌強調色亮度高於中性灰，對深色表面更容易達到 3:1，但仍須依 A-M2 逐一驗證，不可假設）；
-   - 使用 `pd-color-text-primary`（`#F0F0F0`，對所有表面皆 > 11:1）作為 focus ring 描邊色；
-   - 或採用雙層 ring（例如外圈搭配與底色有落差的中性色 + offset），並各自驗證對比。
+2. 元件應以 `pd-color-border-strong`（`#7A7A7A`）作為 focus ring 呈現色；它已對四層既有表面通過 A-M2。若元件改用產品 accent、`pd-color-text-primary` 或雙層 ring，該元件仍須依 A-M2 對實際相鄰表面逐一驗證。
 3. Keyboard focus 與 mouse focus 的呈現不得矛盾；`:focus-visible` 語意應被保留（鍵盤操作可見、單純滑鼠點擊不必要時可省略），除非規格另有指定。
 4. 每個元件 Issue 的驗收條件都必須包含「focus indicator 可見且符合 A-M2」——這是既有 Issue #6/#7/#11/#12/#13 驗收條件已明列的項目，本文件把它的判定標準（3:1、相鄰表面計算方式）落地為可重複執行的規則。
 
@@ -182,7 +179,6 @@ npm --prefix palladio run validate:artifacts
 
 | 缺漏 | 影響規則 | 現況 | 後續處置 |
 |---|---|---|---|
-| `pd-color-border-strong`（`#484848`）作為 focus ring 底色，對所有既有表面對比皆 < 3:1（最高 2.01:1 對 `bg`） | A-M2、連帶影響 A-M3 | 已記錄，未修改 token 值（詳見第三、四節） | 追蹤於 [#21](https://github.com/bext1998/palladio-design-language-system/issues/21)。在 #21 完成前，元件實作（#6、#7、#11、#12、#13）須依第四節契約，各自選擇並驗證能通過 3:1 的 focus indicator 呈現方式，不得預設沿用 `border-strong`。 |
 | `pd-color-border-default`（`#333333`）作為 **Input 可識別邊界**，對全部四層表面（`bg`／`surface`／`surface-raised`／`surface-overlay`）對比皆 < 3:1（最高 1.46:1 對 `bg`，最低 1.07:1 對 `surface-overlay`） | A-M2 | 已記錄，未修改 token 值（詳見第三節）；`validate-accessibility.mjs` 已將其標為 gated 並列入 KNOWN_GAPS，audit 不再宣稱其合規 | **待維護者決策 GitHub 追蹤方式**（新開 Issue 或擴張 [#21](https://github.com/bext1998/palladio-design-language-system/issues/21)）——本次修正無授權建立／修改 Issue，故僅在此登記並回報。在追蹤議題落地並修正前，元件實作（尤以 Input #13）若需要一個符合 A-M2 的可辨識邊界，**不得**只依賴 `border-default`，須另加通過 3:1 的視覺線索（例如 filled surface 對比、`border-strong` 以上的邊框並自行驗證，或搭配 label／背景色塊）。 |
 
 ---

@@ -67,7 +67,7 @@ Palladio 的表面系統由五層構成，從最深的背景往上疊加。每�
 |-------|------|--------|
 | `pd-color-border-subtle` | 最輕量的分隔（幾乎與表面融合） | `#242424` |
 | `pd-color-border-default` | 標準 border（input、card edge） | `#333333` |
-| `pd-color-border-strong` | 強調邊框（focus ring 底色） | `#484848` |
+| `pd-color-border-strong` | 強調邊框（focus ring 底色） | `#7A7A7A` |
 
 ### 2.3 文字層級
 

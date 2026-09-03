@@ -291,7 +291,7 @@ console.log('✔ DTCG 2025.10 Payload types verified: color (srgb object), dimen
 // 5. Validate Primitive Scales content
 const expectedCharcoal = {
   '950': '#141414', '900': '#1C1C1C', '850': '#242424', '800': '#2E2E2E', '750': '#323232',
-  '700': '#333333', '600': '#484848', '450': '#969696', '400': '#9A9A9A', '100': '#F0F0F0'
+  '700': '#333333', '600': '#7A7A7A', '450': '#969696', '400': '#9A9A9A', '100': '#F0F0F0'
 };
 for (const [key, expectedHex] of Object.entries(expectedCharcoal)) {
   const actualColor = resolveRef(`{color.charcoal.${key}}`, registry);

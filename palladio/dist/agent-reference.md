@@ -29,7 +29,7 @@
 - **不得只用色彩傳達資訊或狀態**（A-M5）——語意色需搭配文字、圖示或其他非色彩線索。
 - **不得使用 font-weight 100–300**（規格 3.3，深色背景上過細難以閱讀）。
 - **不得用 `outline: none` 移除 focus 樣式卻不提供替代的可見 focus indicator**（A-M3）。
-- **不得預設把 `pd-color-border-strong` 當作 focus ring 唯一依據**——它對系統現有表面對比皆低於 A-M2 的 3:1（已確認缺漏，追蹤於 [Issue #21](https://github.com/bext1998/palladio-design-language-system/issues/21)），元件必須自行選一個能驗證通過 3:1 的呈現方式（例如產品 accent 色、`text-primary`，或雙層 ring），見 `accessibility-contract.md` 第四節。
+- **focus indicator 應使用 `pd-color-border-strong`**——規格 2.2 的 focus ring 底色 `#7A7A7A` 已對四層既有表面通過 A-M2（最低 3.16:1）；保留 `:focus-visible` 語意，完整契約見 `accessibility-contract.md` 第四節。
 - **不得把 `pd-color-border-default` 當作 Input 唯一可識別邊界**——它雖是規格 2.2 定義的標準 input／card border，但對系統現有全部四層表面對比皆低於 A-M2 的 3:1（已確認缺漏，見 `accessibility-contract.md` 第三、十一節）。在此缺口修正前，Input（Issue #13）等元件若需要一個符合 A-M2 的可辨識邊界，須另加能驗證通過 3:1 的視覺線索，不得只依賴 `border-default`。
 
 ## 三、色彩
@@ -50,7 +50,7 @@
 | --- | --- | --- |
 | `--pd-color-border-subtle` | #242424 | 最輕量的分隔（幾乎與表面融合） |
 | `--pd-color-border-default` | #333333 | 標準 border（input、card edge） |
-| `--pd-color-border-strong` | #484848 | 強調邊框（focus ring 底色） |
+| `--pd-color-border-strong` | #7A7A7A | 強調邊框（focus ring 底色） |
 
 ### 文字層級
 
@@ -188,7 +188,7 @@
 | A-M5 | 色彩不可為唯一資訊傳達手段 | 需搭配非色彩線索 |
 | A-M6 | 互動元素最小尺寸依 density | 32 / 36 / 48px（見第六節） |
 
-完整驗收說明、對比計算結果與已確認缺漏（含 `border-strong` focus ring 問題）見 `palladio/docs/accessibility/accessibility-contract.md`；可用 `npm run validate:tokens` 與 `npm run validate:accessibility` 重新驗證。
+完整驗收說明、對比計算結果與已確認缺漏見 `palladio/docs/accessibility/accessibility-contract.md`；可用 `npm run validate:tokens` 與 `npm run validate:accessibility` 重新驗證。
 
 ---
 
