@@ -29,7 +29,11 @@
       },
       "border-default": {
         "$value": "{color.charcoal.700}",
-        "$description": "標準 border（input、card edge） (#333333)"
+        "$description": "標準裝飾性 border（card edge） (#333333)"
+      },
+      "input-border": {
+        "$value": "{color.charcoal.600}",
+        "$description": "Input 可識別邊界 (#7A7A7A)"
       },
       "border-strong": {
         "$value": "{color.charcoal.600}",

@@ -56,6 +56,7 @@ const spaciousBlock = cssBlock(css, ':root[data-density="spacious"]');
 assertEqual(cssVariable(themeBlock, 'pd-color-bg'), '#141414', 'Dark theme background');
 assertEqual(cssVariable(themeBlock, 'pd-color-text-primary'), '#F0F0F0', 'Dark theme primary text');
 assertEqual(cssVariable(themeBlock, 'pd-color-border-strong'), '#7A7A7A', 'Dark theme focus ring');
+assertEqual(cssVariable(themeBlock, 'pd-color-input-border'), '#7A7A7A', 'Dark theme input border');
 assertEqual(cssVariable(defaultDensityBlock, 'pd-density-component-min-interactive-size'), '36px', 'Default density minimum interactive size');
 assertEqual(cssVariable(compactBlock, 'pd-density-component-min-interactive-size'), '32px', 'Compact density minimum interactive size');
 assertEqual(cssVariable(spaciousBlock, 'pd-density-component-min-interactive-size'), '48px', 'Spacious density minimum interactive size');
@@ -69,6 +70,7 @@ assert(JSON.stringify(Object.keys(json.density)) === JSON.stringify(['compact', 
 assert(JSON.stringify(Object.keys(json.theme)) === JSON.stringify(['dark']), 'JSON theme keys are incorrect');
 assertEqual(json.semantic.color.bg.hex, '#141414', 'JSON semantic background');
 assertEqual(json.semantic.color['border-strong'].hex, '#7A7A7A', 'JSON semantic focus ring');
+assertEqual(json.semantic.color['input-border'].hex, '#7A7A7A', 'JSON semantic input border');
 assertEqual(json.density.default.density.component['min-interactive-size'].value, 36, 'JSON default density minimum interactive size');
 assertEqual(json.theme.dark.color.bg.hex, '#141414', 'JSON dark theme background');
 
@@ -98,8 +100,12 @@ assert(
   'agent-reference.md must recommend pd-color-border-strong for focus indicators.'
 );
 assert(
-  /不得把\s*`?pd-color-border-default`?\s*當作\s*Input\s*唯一可識別邊界/.test(agentReference),
-  'agent-reference.md must explicitly prohibit pd-color-border-default as the sole identifiable Input boundary until its A-M2 gap is fixed.'
+  /Input 可識別邊界應使用\s*`?pd-color-input-border`?/.test(agentReference),
+  'agent-reference.md must recommend pd-color-input-border for identifiable Input boundaries.'
+);
+assert(
+  /不得將\s*`?pd-color-border-default`?\s*當作\s*Input\s*可識別邊界/.test(agentReference),
+  'agent-reference.md must prohibit pd-color-border-default as an identifiable Input boundary.'
 );
 
 const before = {

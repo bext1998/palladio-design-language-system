@@ -30,7 +30,7 @@
 - **不得使用 font-weight 100–300**（規格 3.3，深色背景上過細難以閱讀）。
 - **不得用 `outline: none` 移除 focus 樣式卻不提供替代的可見 focus indicator**（A-M3）。
 - **focus indicator 應使用 `pd-color-border-strong`**——規格 2.2 的 focus ring 底色 `#7A7A7A` 已對四層既有表面通過 A-M2（最低 3.16:1）；保留 `:focus-visible` 語意，完整契約見 `accessibility-contract.md` 第四節。
-- **不得把 `pd-color-border-default` 當作 Input 唯一可識別邊界**——它雖是規格 2.2 定義的標準 input／card border，但對系統現有全部四層表面對比皆低於 A-M2 的 3:1（已確認缺漏，見 `accessibility-contract.md` 第三、十一節）。在此缺口修正前，Input（Issue #13）等元件若需要一個符合 A-M2 的可辨識邊界，須另加能驗證通過 3:1 的視覺線索，不得只依賴 `border-default`。
+- **不得將 `pd-color-border-default` 當作 Input 可識別邊界**——它只用於裝飾性 card edge。**Input 可識別邊界應使用 `pd-color-input-border`**——它對四層既有表面均通過 A-M2（最低 3.16:1），完整契約見 `accessibility-contract.md` 第三節。
 
 ## 三、色彩
 
@@ -49,8 +49,14 @@
 | Token | Value | 用途 |
 | --- | --- | --- |
 | `--pd-color-border-subtle` | #242424 | 最輕量的分隔（幾乎與表面融合） |
-| `--pd-color-border-default` | #333333 | 標準 border（input、card edge） |
+| `--pd-color-border-default` | #333333 | 標準裝飾性 border（card edge） |
 | `--pd-color-border-strong` | #7A7A7A | 強調邊框（focus ring 底色） |
+
+### Input 可識別邊界
+
+| Token | Value | 用途 |
+| --- | --- | --- |
+| `--pd-color-input-border` | #7A7A7A | Input 可識別邊界 |
 
 ### 文字層級
 
