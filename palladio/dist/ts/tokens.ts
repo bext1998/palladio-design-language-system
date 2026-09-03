@@ -44,6 +44,12 @@ export const palladioTokens = {
       "hex": "#333333",
       "alpha": 1
     },
+    "input-border": {
+      "colorSpace": "srgb",
+      "components": [0.478431, 0.478431, 0.478431],
+      "hex": "#7A7A7A",
+      "alpha": 1
+    },
     "border-strong": {
       "colorSpace": "srgb",
       "components": [0.478431, 0.478431, 0.478431],
@@ -471,6 +477,12 @@ export const palladioTheme = {
         "colorSpace": "srgb",
         "components": [0.2, 0.2, 0.2],
         "hex": "#333333",
+        "alpha": 1
+      },
+      "input-border": {
+        "colorSpace": "srgb",
+        "components": [0.478431, 0.478431, 0.478431],
+        "hex": "#7A7A7A",
         "alpha": 1
       },
       "border-strong": {

@@ -53,17 +53,20 @@ const DRIFT_TOLERANCE = 0.01;
 // `gated: true` means the token is used as a UI element that conveys a
 // boundary/state (docs/spec.md 2.2, 8) — a focus/UI indicator or an input's
 // identifiable edge — and is therefore subject to the A-M2 3:1 threshold.
-// `gated: false` is reserved for tokens that are *only* a decorative divider
-// (border-subtle: "幾乎與表面融合", spec 2.2). border-default is NOT decorative:
-// spec 2.2 defines it as the standard input/card edge, so as an input boundary
-// it is a non-text UI element under A-M2 (see accessibility-contract.md §3/§11).
+// `gated: false` is reserved for tokens that are *only* decorative borders
+// (border-subtle and border-default, spec 2.2). Input's identifiable boundary
+// is input-border, which is gated under A-M2 (see accessibility-contract.md §3).
 const EXPECTED = [
   { token: 'border-subtle', surface: 'bg', ratio: 1.19, gated: false },
   { token: 'border-subtle', surface: 'surface', ratio: 1.10, gated: false },
-  { token: 'border-default', surface: 'bg', ratio: 1.46, gated: true },
-  { token: 'border-default', surface: 'surface', ratio: 1.35, gated: true },
-  { token: 'border-default', surface: 'surface-raised', ratio: 1.23, gated: true },
-  { token: 'border-default', surface: 'surface-overlay', ratio: 1.07, gated: true },
+  { token: 'border-default', surface: 'bg', ratio: 1.46, gated: false },
+  { token: 'border-default', surface: 'surface', ratio: 1.35, gated: false },
+  { token: 'border-default', surface: 'surface-raised', ratio: 1.23, gated: false },
+  { token: 'border-default', surface: 'surface-overlay', ratio: 1.07, gated: false },
+  { token: 'input-border', surface: 'bg', ratio: 4.29, gated: true },
+  { token: 'input-border', surface: 'surface', ratio: 3.97, gated: true },
+  { token: 'input-border', surface: 'surface-raised', ratio: 3.62, gated: true },
+  { token: 'input-border', surface: 'surface-overlay', ratio: 3.16, gated: true },
   { token: 'border-strong', surface: 'bg', ratio: 4.29, gated: true },
   { token: 'border-strong', surface: 'surface', ratio: 3.97, gated: true },
   { token: 'border-strong', surface: 'surface-raised', ratio: 3.62, gated: true },
@@ -72,11 +75,9 @@ const EXPECTED = [
 
 // Confirmed gaps register — see accessibility-contract.md §11. A gated pair
 // listed here is allowed to stay below 3:1 without failing this script.
-// - border-default: standard input/card edge (spec 2.2); as an input boundary
-//   it is an A-M2 UI element but is < 3:1 on every surface. Documented as a
-//   confirmed gap in accessibility-contract.md §11; GitHub tracking (new issue
-//   or expanding #21) is pending a maintainer decision — not created here.
-const KNOWN_GAPS = new Set(['border-default']);
+// Issue #24 resolves the former Input boundary gap; keep this set for future
+// documented exceptions rather than silently permitting a new A-M2 violation.
+const KNOWN_GAPS = new Set();
 
 /** Runs the border/focus-ring A-M2 audit against the live token sources. Throws on drift or an undocumented A-M2 violation. */
 function runBorderContrastAudit() {
@@ -135,8 +136,7 @@ function runBorderContrastAudit() {
   }
 
   console.log('\n✔ Accessibility contract audit complete. All pairs match documented, expected values.');
-  console.log('  (Confirmed A-M2 gaps — see docs/accessibility/accessibility-contract.md §11:');
-  console.log('   - border-default (input/card edge), GitHub tracking pending a maintainer decision.)');
+  console.log('  (No confirmed A-M2 gaps — see docs/accessibility/accessibility-contract.md §11.)');
 }
 
 // Only run the audit (and its console output) when this file is executed

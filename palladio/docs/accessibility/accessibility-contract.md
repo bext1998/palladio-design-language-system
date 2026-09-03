@@ -52,19 +52,20 @@
 
 **大字部分**：規格 3.2 中唯一達到「大字」門檻的字級是 `pd-text-display`（32px/600）與 `pd-text-heading-lg`（24px/600）。這兩者實務上沿用 `text-primary` 或語意色，而這些顏色在第二節已驗證達 4.5:1（嚴格高於 3:1 門檻），因此大字部分自動符合，不需獨立驗證，除非未來新增專屬於大字、對比更低的顏色 token。
 
-**UI 元件部分（border / focus ring）**：使用 `npm --prefix palladio run validate:accessibility` 驗證 `pd-color-border-subtle`、`pd-color-border-default`、`pd-color-border-strong` 對四層表面的對比。
+**UI 元件部分（border / focus ring）**：使用 `npm --prefix palladio run validate:accessibility` 驗證 `pd-color-border-subtle`、`pd-color-border-default`、`pd-color-input-border`、`pd-color-border-strong` 對四層表面的對比。
 
 **目前結果**：
 
 | Border Token | 值 | 對 `bg` | 對 `surface` | 對 `surface-raised` | 對 `surface-overlay` | 用途 |
 |---|---|---|---|---|---|---|
 | `border-subtle` | `#242424` | 1.19:1 ❌ | 1.10:1 ❌ | — | — | 純分隔線（「幾乎與表面融合」），非互動邊界，不受 A-M2 約束 |
-| `border-default` | `#333333` | 1.46:1 ❌ | 1.35:1 ❌ | 1.23:1 ❌ | 1.07:1 ❌ | **規格 2.2 定義為 input／card edge → 作為 Input 可識別邊界時受 A-M2 約束；已確認缺漏** |
+| `border-default` | `#333333` | 1.46:1 ❌ | 1.35:1 ❌ | 1.23:1 ❌ | 1.07:1 ❌ | 純裝飾性 card edge，非 Input 可識別邊界，不受 A-M2 約束 |
+| `input-border` | `#7A7A7A` | **4.29:1 ✅** | **3.97:1 ✅** | **3.62:1 ✅** | **3.16:1 ✅** | **規格 2.2 指定為 Input 可識別邊界 → 符合 A-M2** |
 | `border-strong` | `#7A7A7A` | **4.29:1 ✅** | **3.97:1 ✅** | **3.62:1 ✅** | **3.16:1 ✅** | **規格 2.2 指定為 focus ring 底色 → 符合 A-M2** |
 
 `border-subtle` 依規格 2.2 定義為「最輕量的分隔（幾乎與表面融合）」，屬純裝飾性分隔線；WCAG 1.4.11 與 A-M2 僅約束「傳達資訊或狀態」的 UI 元件，故 `border-subtle` 不受 3:1 門檻約束，維持現狀。
 
-⚠️ **`border-default` 是已確認缺漏**：規格 2.2 將它定義為「標準 border（input、card edge）」。當它作為 **Input 的可識別邊界**時，就是傳達邊界的非文字 UI 元件，受 A-M2 約束——但它對系統中**全部四層表面**（`bg`、`surface`、`surface-raised`、`surface-overlay`）的對比皆 < 3:1（最高 1.46:1 對 `bg`，最低 1.07:1 對 `surface-overlay`）。因此**不能一概宣稱 `border-default` 為裝飾性而不受 A-M2**；任何以 `border-default` 作為 Input 唯一可辨識邊界的情境，在目前表面組合下都不符合 A-M2。此限制登記於第十一節，並由 `validate-accessibility.mjs` 以 gated + known-gap 方式追蹤（不修改 token 值）。
+`border-default` 依規格 2.2 的修訂定義為純裝飾性 card edge；它不得作為 Input 可識別邊界。Input 必須使用 `input-border`，其最小對比是對 `surface-overlay` 的 3.16:1，已符合 A-M2。
 
 `border-strong` 是所有元件可直接消費的 focus ring 底色。它已對四層既有表面通過 A-M2；最小對比是對 `surface-overlay` 的 3.16:1。元件仍須依第四節契約保留可見 focus indicator 與 `:focus-visible` 語意。
 
@@ -179,7 +180,7 @@ npm --prefix palladio run validate:artifacts
 
 | 缺漏 | 影響規則 | 現況 | 後續處置 |
 |---|---|---|---|
-| `pd-color-border-default`（`#333333`）作為 **Input 可識別邊界**，對全部四層表面（`bg`／`surface`／`surface-raised`／`surface-overlay`）對比皆 < 3:1（最高 1.46:1 對 `bg`，最低 1.07:1 對 `surface-overlay`） | A-M2 | 已記錄，未修改 token 值（詳見第三節）；`validate-accessibility.mjs` 已將其標為 gated 並列入 KNOWN_GAPS，audit 不再宣稱其合規 | **待維護者決策 GitHub 追蹤方式**（新開 Issue 或擴張 [#21](https://github.com/bext1998/palladio-design-language-system/issues/21)）——本次修正無授權建立／修改 Issue，故僅在此登記並回報。在追蹤議題落地並修正前，元件實作（尤以 Input #13）若需要一個符合 A-M2 的可辨識邊界，**不得**只依賴 `border-default`，須另加通過 3:1 的視覺線索（例如 filled surface 對比、`border-strong` 以上的邊框並自行驗證，或搭配 label／背景色塊）。 |
+目前沒有已確認的 A-M2 缺漏。Issue #24 已以 `pd-color-input-border` 取代原本不合規的 Input 邊界用法；`KNOWN_GAPS` 保留為未來已記錄例外的明確追蹤機制。
 
 ---
 
