@@ -16,7 +16,8 @@ Foundation（#1 及其全部子 Issue）已完成，包含 #10 產出的 `pallad
 
 - 無阻塞。
 - **已解決（#24 / #25）**：`pd-color-border-default`（`#333333`）作為 Input 可識別邊界的 A-M2 缺口，已由新增 `pd-color-input-border`（`#7A7A7A`，對 `bg`／`surface`／`surface-raised`／`surface-overlay` 四層皆 ≥3:1）取代。`border-default` 依規格 2.2 修訂收窄為純裝飾性 card edge，`validate-accessibility.mjs` 的 `KNOWN_GAPS` 已清空，契約第十一節記為「目前沒有已確認的 A-M2 缺漏」。若 Card（#7）日後需要可識別的互動邊界，會遇到與 Input 相同的約束。
-- **非阻塞（審查遺留，可選）**：契約第三節的 border A-M2 稽核只涵蓋四層表面，規格 2.1 的第五層 `surface-hover`（`#323232`）未納入（`input-border`／`border-strong` 對它均為 2.99:1）——可補一句說明為何排除（暫態表面）。契約文件抬頭 `Spec Revision：480b27b…` 早於 #23／#25 對 spec 2.2 與契約 §3／§11 的變更，應更新為實際 merge commit。
+- **非阻塞（審查遺留，可選）**：契約第三節的 border A-M2 稽核只涵蓋四層表面，規格 2.1 的第五層 `surface-hover`（`#323232`）未納入（`input-border`／`border-strong` 對它均為 2.99:1）——可補一句說明為何排除（暫態表面）。
+- **已決策：廢棄 `Spec Revision` 抬頭欄位**（人工維護、已確認低價值）。本次已從 `accessibility-contract.md` 抬頭移除；不再維護，也不開專門 PR 回填。maze 工具產生的新 Issue 內文若仍帶此欄位，視為未維護、可忽略；規格版本以 `git log docs/spec.md` 為準。
 - 雙產品 accent 驗證（[#15](https://github.com/bext1998/palladio-design-language-system/issues/15)）仍需兩個產品提供實際 accent 色值後才能執行。
 
 ## 權威連結

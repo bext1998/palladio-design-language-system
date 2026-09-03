@@ -2,7 +2,6 @@
 
 > Spec 路徑：`docs/spec.md`
 > 對應章節：5.4, 8, 9.4, 13
-> Spec Revision：480b27b29be5857516649e5c834bc9f511c5fbeb
 > Task ID：accessibility-contract-validation（Issue #3）
 > 建立日期：2026-09-01
 
