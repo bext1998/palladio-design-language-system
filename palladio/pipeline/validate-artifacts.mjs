@@ -48,8 +48,8 @@ const ts = fs.readFileSync(tsPath, 'utf8');
 const json = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
 const agentReference = fs.readFileSync(agentReferencePath, 'utf8');
 
+const rootBlock = cssBlock(css, ':root');
 const themeBlock = cssBlock(css, ':root[data-theme="dark"]');
-const defaultDensityBlock = cssBlock(css, ':root[data-density]');
 const compactBlock = cssBlock(css, ':root[data-density="compact"]');
 const spaciousBlock = cssBlock(css, ':root[data-density="spacious"]');
 
@@ -57,7 +57,7 @@ assertEqual(cssVariable(themeBlock, 'pd-color-bg'), '#141414', 'Dark theme backg
 assertEqual(cssVariable(themeBlock, 'pd-color-text-primary'), '#F0F0F0', 'Dark theme primary text');
 assertEqual(cssVariable(themeBlock, 'pd-color-border-strong'), '#7A7A7A', 'Dark theme focus ring');
 assertEqual(cssVariable(themeBlock, 'pd-color-input-border'), '#7A7A7A', 'Dark theme input border');
-assertEqual(cssVariable(defaultDensityBlock, 'pd-density-component-min-interactive-size'), '36px', 'Default density minimum interactive size');
+assertEqual(cssVariable(rootBlock, 'pd-density-component-min-interactive-size'), '36px', 'Default density minimum interactive size');
 assertEqual(cssVariable(compactBlock, 'pd-density-component-min-interactive-size'), '32px', 'Compact density minimum interactive size');
 assertEqual(cssVariable(spaciousBlock, 'pd-density-component-min-interactive-size'), '48px', 'Spacious density minimum interactive size');
 

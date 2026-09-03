@@ -179,7 +179,7 @@
 | Min interactive size (A-M6) | 32px | 36px | 48px |
 | Body font size | 13px | 14px | 15px |
 
-套用方式：容器加上 `data-density="compact"` 或 `data-density="spacious"`；省略時套用 Default（`:root[data-density]` 選擇器提供 fallback）。三種 density 下元件結構保持不變，只有上表五個值跟著切換。
+套用方式：容器加上 `data-density="compact"` 或 `data-density="spacious"`；省略時套用 Default（Default 值定義在 `:root`，無須任何屬性）。三種 density 下元件結構保持不變，只有上表五個值跟著切換。
 
 ---
 

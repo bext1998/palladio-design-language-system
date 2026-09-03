@@ -1,0 +1,50 @@
+/*
+ * Product code must load palladio.css first and provide every accent slot.
+ * This component deliberately provides no accent fallback or derived value.
+ */
+.pd-button {
+  align-items: center;
+  appearance: none;
+  background-color: var(--pd-color-accent);
+  border: none;
+  border-radius: var(--pd-radius-md);
+  color: var(--pd-color-accent-text);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  justify-content: center;
+  min-block-size: var(--pd-density-component-min-interactive-size);
+  padding-block: var(--pd-density-component-padding-vertical);
+  padding-inline: var(--pd-density-component-padding-horizontal);
+  transition: background-color var(--pd-duration-fast) var(--pd-easing-default);
+}
+
+.pd-button--pill {
+  border-radius: var(--pd-radius-full);
+}
+
+@media (hover: hover) {
+  .pd-button:not(:disabled):hover {
+    background-color: var(--pd-color-accent-hover);
+  }
+}
+
+.pd-button:not(:disabled):active {
+  background-color: var(--pd-color-accent-active);
+}
+
+.pd-button:focus-visible {
+  outline: var(--pd-space-1) solid var(--pd-color-border-strong);
+  outline-offset: var(--pd-space-1);
+}
+
+.pd-button:disabled {
+  background-color: var(--pd-color-accent-disabled);
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pd-button {
+    transition: none;
+  }
+}
