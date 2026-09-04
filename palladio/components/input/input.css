@@ -1,0 +1,78 @@
+/*
+ * Product code must load palladio.css first before this stylesheet.
+ * This component only consumes Semantic tokens — no accent usage, and no
+ * color, spacing, radius or motion fallback of its own.
+ */
+.pd-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pd-space-2);
+}
+
+.pd-field__label {
+  color: var(--pd-color-text-primary);
+  font: inherit;
+}
+
+.pd-input {
+  appearance: none;
+  background-color: transparent;
+  border: 1px solid var(--pd-color-input-border);
+  border-radius: var(--pd-radius-sm);
+  box-sizing: border-box;
+  color: var(--pd-color-text-primary);
+  font: inherit;
+  min-block-size: var(--pd-density-component-min-interactive-size);
+  padding-block: var(--pd-density-component-padding-vertical);
+  padding-inline: var(--pd-density-component-padding-horizontal);
+  transition:
+    background-color var(--pd-duration-fast) var(--pd-easing-default),
+    border-color var(--pd-duration-fast) var(--pd-easing-default);
+}
+
+.pd-input::placeholder {
+  color: var(--pd-color-text-placeholder);
+}
+
+@media (hover: hover) {
+  .pd-input:not(:disabled):hover {
+    background-color: var(--pd-color-surface-raised);
+  }
+}
+
+.pd-input:focus-visible {
+  outline: var(--pd-space-1) solid var(--pd-color-border-strong);
+  outline-offset: var(--pd-space-1);
+}
+
+.pd-input:disabled {
+  color: var(--pd-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.pd-input--error,
+.pd-field--error .pd-input {
+  border-color: var(--pd-color-danger);
+}
+
+.pd-field__message {
+  align-items: center;
+  color: var(--pd-color-text-secondary);
+  display: flex;
+  font: inherit;
+  gap: var(--pd-space-1);
+}
+
+.pd-field--error .pd-field__message {
+  color: var(--pd-color-danger);
+}
+
+.pd-field__icon {
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pd-input {
+    transition: none;
+  }
+}
