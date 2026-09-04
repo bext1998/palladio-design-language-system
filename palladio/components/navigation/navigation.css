@@ -1,0 +1,78 @@
+/*
+ * Product code must load palladio.css first before this stylesheet.
+ * The active item's left indicator bar uses the product's own
+ * pd-color-accent slot (spec 2.5) — no fallback or derived value; the
+ * product must verify its contrast against pd-color-surface (see README).
+ * The other two active cues (background elevation + font-weight) are
+ * Foundation-only and need no product verification.
+ *
+ * Rule order below is deliberate, not incidental: several selectors share
+ * the same specificity (0,2,0), so later-in-file wins ties. hover is
+ * defined first, --active after it (so a hovered active item keeps its
+ * indicator), [aria-disabled] after that, and :focus-visible last of all —
+ * guaranteeing the focus ring always lands on the validated
+ * surface-raised backdrop instead of the unvalidated surface-hover one.
+ */
+.pd-nav {
+  background-color: var(--pd-color-surface);
+  display: flex;
+  flex-direction: column;
+}
+
+.pd-nav__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pd-space-1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pd-nav__link {
+  align-items: center;
+  border-inline-start: var(--pd-space-1) solid transparent;
+  box-sizing: border-box;
+  color: var(--pd-color-text-secondary);
+  display: flex;
+  font: inherit;
+  min-block-size: var(--pd-density-component-min-interactive-size);
+  padding-block: var(--pd-density-component-padding-vertical);
+  padding-inline: var(--pd-density-component-padding-horizontal);
+  text-decoration: none;
+  transition:
+    background-color var(--pd-duration-fast) var(--pd-easing-default),
+    border-color var(--pd-duration-fast) var(--pd-easing-default),
+    color var(--pd-duration-fast) var(--pd-easing-default);
+}
+
+@media (hover: hover) {
+  .pd-nav__link:hover {
+    background-color: var(--pd-color-surface-hover);
+    color: var(--pd-color-text-primary);
+  }
+}
+
+.pd-nav__link.pd-nav__link--active {
+  background-color: var(--pd-color-surface-raised);
+  border-inline-start-color: var(--pd-color-accent);
+  color: var(--pd-color-text-primary);
+  font-weight: 600;
+}
+
+.pd-nav__link[aria-disabled='true'] {
+  color: var(--pd-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.pd-nav__link:focus-visible {
+  background-color: var(--pd-color-surface-raised);
+  color: var(--pd-color-text-primary);
+  outline: var(--pd-space-1) solid var(--pd-color-border-strong);
+  outline-offset: calc(-1 * var(--pd-space-1));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pd-nav__link {
+    transition: none;
+  }
+}
