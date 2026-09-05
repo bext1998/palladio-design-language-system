@@ -20,7 +20,9 @@
   min-block-size: var(--pd-density-component-min-interactive-size);
   text-align: inherit;
   text-decoration: none;
-  transition: border-color var(--pd-duration-fast) var(--pd-easing-default);
+  transition:
+    background-color var(--pd-duration-fast) var(--pd-easing-default),
+    border-color var(--pd-duration-fast) var(--pd-easing-default);
   width: 100%;
 }
 
@@ -28,6 +30,11 @@
   .pd-card--interactive:not(:disabled):hover {
     border-color: var(--pd-color-border-strong);
   }
+}
+
+.pd-card--interactive:not(:disabled):active {
+  background-color: var(--pd-color-surface-overlay);
+  border-color: var(--pd-color-border-strong);
 }
 
 .pd-card--interactive:focus-visible {

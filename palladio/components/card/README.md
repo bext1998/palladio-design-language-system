@@ -39,6 +39,7 @@
 - **非互動**：`.pd-card` 單獨使用時（`<div>`／`<article>`／`<section>`）不具游標、hover、focus 語意，純粹是內容容器。
 - **互動**：加上 `.pd-card--interactive` 並改用原生 `<a href="...">`（導向）或 `<button type="button">`（JS 動作），保留原生鍵盤語意——不要用 `role="button"`、`tabindex` 或 JavaScript 在 `<div>` 上重建互動卡片。`<button>` 支援原生 `disabled`；`<a>` 沒有原生 disabled 概念，若連結目前不可用，請不要渲染成看似可點擊的樣子（例如乾脆不輸出該連結），不要用假的 disabled 樣式偽裝。
 - **Hover**（僅互動卡片）：邊框從裝飾性的 `border-default` 換成已驗證通過 A-M2 的 `border-strong`，讓整張卡片在 hover 時明確表達「這裡可以點擊」，同時仍是已驗證安全的 token 組合（`border-strong` 對四層表面 4.29／3.97／3.62／3.16:1，見 `accessibility-contract.md` 第三節）。
+- **Active**（僅互動卡片）：背景額外換成 `pd-color-surface-overlay`（邊框維持 `border-strong`，不受 `hover: hover` media query 限制，觸控／鍵盤啟動也能拿到），提供必要的按壓回饋。原因：`.pd-card--interactive` 對 `<button>` 宣告 `appearance: none`，移除了原生按壓視覺；`<a>` 則從來沒有原生按壓回饋。這裡刻意不用 `pd-color-surface-hover`：規格 2.1 定義的第五層 `surface-hover` 未納入 `accessibility-contract.md` 第三節的 A-M2 稽核範圍，`border-strong` 對它僅 2.99:1、未達 3:1 門檻（Input README 已記錄同一個非阻塞審查遺留）。`surface-overlay` 則是既有「四層表面」之一，`border-strong` 對它 3.16:1（A-M2 ✔），`text-primary` 對它 11.92:1（A-M1 ✔），兩者都已在 `accessibility-contract.md` 驗證過，不需要新增或假設任何配對。
 - **Focus**（僅互動卡片）：`:focus-visible` 顯示 `pd-color-border-strong` 的偏移 outline，與 Button／Input／Badge 使用同一組已驗證的 A-M2 對比與幾何模式（`--pd-space-1` 的 outline width 與 offset）。
 - **Disabled**（僅 `<button>` 變體）：文字改為 `pd-color-text-disabled`（A-M1），`cursor: not-allowed`；邊框維持不變，不使用 opacity（避免連帶降低已驗證的對比）。
-- **Reduced motion**：互動卡片只轉場 `border-color`，使用 `--pd-duration-fast` 與 `--pd-easing-default`；`prefers-reduced-motion: reduce` 時移除 transition。非互動卡片沒有任何轉場，A-M4 自動滿足。
+- **Reduced motion**：互動卡片轉場 `background-color` 與 `border-color`，使用 `--pd-duration-fast` 與 `--pd-easing-default`；`prefers-reduced-motion: reduce` 時移除 transition。非互動卡片沒有任何轉場，A-M4 自動滿足。
