@@ -13,6 +13,7 @@
     "validate:divider": "node components/divider/divider.test.mjs",
     "validate:badge": "node components/badge/badge.test.mjs",
     "validate:card": "node components/card/card.test.mjs",
+    "validate:navigation": "node components/navigation/navigation.test.mjs",
     "validate:tokens": "node pipeline/validate-tokens.mjs",
     "validate:artifacts": "node pipeline/validate-artifacts.mjs",
     "validate:accessibility": "node pipeline/validate-accessibility.mjs"
