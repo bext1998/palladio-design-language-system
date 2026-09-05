@@ -1,0 +1,54 @@
+/*
+ * Product code must load palladio.css first before this stylesheet.
+ * This component only consumes Semantic tokens — no color, spacing or
+ * radius fallback of its own.
+ */
+.pd-card {
+  background-color: var(--pd-color-surface-raised);
+  border: 1px solid var(--pd-color-border-default);
+  border-radius: var(--pd-radius-sm);
+  box-sizing: border-box;
+  color: var(--pd-color-text-primary);
+  padding: var(--pd-space-4);
+}
+
+.pd-card--interactive {
+  appearance: none;
+  cursor: pointer;
+  display: block;
+  font: inherit;
+  min-block-size: var(--pd-density-component-min-interactive-size);
+  text-align: inherit;
+  text-decoration: none;
+  transition:
+    background-color var(--pd-duration-fast) var(--pd-easing-default),
+    border-color var(--pd-duration-fast) var(--pd-easing-default);
+  width: 100%;
+}
+
+@media (hover: hover) {
+  .pd-card--interactive:not(:disabled):hover {
+    border-color: var(--pd-color-border-strong);
+  }
+}
+
+.pd-card--interactive:not(:disabled):active {
+  background-color: var(--pd-color-surface-overlay);
+  border-color: var(--pd-color-border-strong);
+}
+
+.pd-card--interactive:focus-visible {
+  outline: var(--pd-space-1) solid var(--pd-color-border-strong);
+  outline-offset: var(--pd-space-1);
+}
+
+.pd-card--interactive:disabled {
+  color: var(--pd-color-text-disabled);
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pd-card--interactive {
+    transition: none;
+  }
+}
