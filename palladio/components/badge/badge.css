@@ -64,6 +64,7 @@
 }
 
 .pd-badge--interactive:disabled {
+  background-color: var(--pd-color-surface-raised);
   color: var(--pd-color-text-disabled);
   cursor: not-allowed;
 }

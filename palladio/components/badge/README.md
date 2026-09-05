@@ -45,5 +45,6 @@
 
 - **Focus**（僅 `.pd-badge--interactive`）：`:focus-visible` 顯示 `pd-color-border-strong` 的偏移 outline，與 Button／Input 使用同一組已驗證的 A-M2 對比（四層表面 4.29／3.97／3.62／3.16:1）。
 - **Hover／Active**（僅 `.pd-badge--interactive`）：改用 `text-decoration: underline`，而非改變背景色。原因：Badge 的背景依變體而異（中性 `surface-raised`、語意色文字＋中性背景、或產品的 `accent-subtle`），若統一在 hover 時换成 `pd-color-surface-hover`，`accent-subtle` 變體的 `accent-text` 對 `surface-hover` 的對比完全未經驗證（`accent-text` 是為 accent 家族背景設計的前景色，不保證對一個無關的中性灰階背景仍然可讀）。改用 underline 是純文字層面的線索，不引入任何新的前景／背景配對，對所有變體都安全。
+- **Disabled**：`.pd-badge--interactive:disabled` 一律把背景重設為中性 `surface-raised`，文字改為 `text-disabled`——即使套用在 `.pd-badge--accent` 上也一樣。原因與 Hover／Active 相同：`text-disabled` 只對四層中性表面驗證過 A-M1（`accessibility-contract.md` 第二節），未涵蓋 `accent-subtle`。若不重設背景，停用的 `.pd-badge--accent.pd-badge--interactive` 會讓 `text-disabled` 疊在未經驗證的 `accent-subtle` 上，因此一律回到已驗證的中性配對。
 - **Reduced motion**：Badge 沒有任何連續轉場動畫（hover／active 是即時切換的 `text-decoration`，不是漸變），因此沒有需要在 `prefers-reduced-motion: reduce` 下停用的動畫，A-M4 在此元件上是自動滿足、無需額外宣告。
 - **A-M5**：見上方「語意（狀態）變體」——Badge 一律要求文字 label，不提供純色點模式。

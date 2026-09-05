@@ -80,6 +80,9 @@ assert.match(rule('.pd-badge--interactive:focus-visible'), /outline:\s*var\(--pd
   'Focus Badge must use the same validated offset outline ring as Button/Input.');
 assert.match(rule('.pd-badge--interactive:disabled'), /color:\s*var\(--pd-color-text-disabled\);/,
   'Disabled Badge text must use the disabled text token (A-M1).');
+assert.match(rule('.pd-badge--interactive:disabled'), /background-color:\s*var\(--pd-color-surface-raised\);/,
+  'Disabled Badge must reset to the A-M1-validated neutral background — including when combined with ' +
+  '.pd-badge--accent — so text-disabled never lands on the unvalidated accent-subtle background.');
 
 assert.match(readme, /<span\s+class="pd-badge"/,
   'Documentation must show the non-interactive base usage.');
