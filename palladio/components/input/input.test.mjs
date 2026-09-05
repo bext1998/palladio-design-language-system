@@ -25,6 +25,7 @@ for (const token of [
   '--pd-color-border-strong',
   '--pd-color-danger',
   '--pd-color-surface-raised',
+  '--pd-color-surface-overlay',
   '--pd-color-text-primary',
   '--pd-color-text-placeholder',
   '--pd-color-text-disabled',
@@ -49,6 +50,7 @@ assert.match(css, /\.pd-field__icon\b/, 'Input must define a non-color error ico
 assert.match(css, /\.pd-input--error\b/, 'Input must define an error modifier.');
 assert.match(css, /::placeholder\b/, 'Input must style placeholder text.');
 assert.match(css, /:not\(:disabled\):hover/, 'Input must define hover without styling disabled inputs.');
+assert.match(css, /:not\(:disabled\):active/, 'Input must define active without styling disabled inputs.');
 assert.match(css, /:focus-visible/, 'Input must preserve keyboard-visible focus.');
 assert.match(css, /:disabled\b/, 'Input must define a disabled state.');
 assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/, 'Input must define reduced-motion behavior.');
@@ -85,6 +87,9 @@ assert.match(rule('.pd-input::placeholder'), /color:\s*var\(--pd-color-text-plac
   'Placeholder text must use the placeholder text token (A-M1).');
 assert.match(rule('.pd-input:not(:disabled):hover'), /background-color:\s*var\(--pd-color-surface-raised\);/,
   'Hover Input must use surface-raised, not surface-hover (undocumented A-M2 gap — see README).');
+assert.match(rule('.pd-input:not(:disabled):active'), /background-color:\s*var\(--pd-color-surface-overlay\);/,
+  'Active Input must use surface-overlay, not surface-hover (same undocumented A-M2 gap as hover — see README), ' +
+  'so the pressed state stays on an already-validated background (border-strong 3.16:1, text-primary 11.92:1).');
 assert.match(rule('.pd-input:focus-visible'), /outline:\s*var\(--pd-space-1\) solid var\(--pd-color-border-strong\);/,
   'Focus Input must use an offset outline ring, not a same-color border swap.');
 assert.match(rule('.pd-input:focus-visible'), /outline-offset:\s*var\(--pd-space-1\);/,

@@ -42,6 +42,7 @@
 |---|---|---|
 | Idle | 可操作的初始狀態 | `--pd-color-input-border` 邊框、透明背景，讓元件與所在表面融合，僅靠邊框定義邊界 |
 | Hover | 支援 hover 的指標裝置 | 背景切換為 `--pd-color-surface-raised`（見下方「為什麼不用 surface-hover」） |
+| Active | 滑鼠按下（`:active`） | 背景進一步切換為 `--pd-color-surface-overlay`，與 hover 有可見區隔，提供按下時的回饋（見下方「為什麼不用 surface-hover」） |
 | Focus | 鍵盤或滑鼠移入取得焦點 | `:focus-visible` 顯示 `--pd-color-border-strong` 的 outline，偏移 `--pd-space-1`，與靜止邊框產生可見的**幾何差異**（外圈 ring + offset），而非同色覆蓋 |
 | Disabled | 原生 `disabled` 屬性 | 文字改為 `--pd-color-text-disabled`、`cursor: not-allowed`；邊框維持 `--pd-color-input-border` 以保留可辨識邊界，原生 input 不會取得焦點或接受輸入 |
 | Error | 加上 `.pd-input--error`（或父層 `.pd-field--error`） | 邊框改為 `--pd-color-danger`；**不得只靠邊框變色**，必須同時提供 `.pd-field__message` 文字說明與 `.pd-field__icon` 圖示（A-M5） |
@@ -53,6 +54,6 @@
 - **A-M1（placeholder／disabled 文字）**：`--pd-color-text-placeholder` 與 `--pd-color-text-disabled` 對 `bg`／`surface`／`surface-raised`／`surface-overlay` 四層皆已驗證 ≥4.5:1，見 `accessibility-contract.md` 第二節。
 - **靜止邊界只用 `pd-color-input-border`**：不得改用已收窄為純裝飾性 card edge 的 `pd-color-border-default`。
 - **Focus indicator（A-M2 + 幾何差異）**：`pd-color-input-border` 與 `pd-color-border-strong` 目前解析為同一色（`#7A7A7A`），因此 `:focus-visible` 不是把同色邊框「重新套用一次」，而是額外疊加一圈偏移 `--pd-space-1` 的 outline，讓 idle（單一 1px 邊框）與 focus（邊框 + 外擴 ring）在幾何上明顯不同。該 outline 對四層既有表面的 A-M2 對比分別為 4.29:1、3.97:1、3.62:1、3.16:1（與 Button 使用同一驗證結果，見 `accessibility-contract.md` 第三、四節）。已以實際 render（headless Chromium，鍵盤 Tab 觸發 `:focus-visible`）截圖比對 idle 與 focus 兩態，外擴 ring 清晰可辨。
-- **為什麼 hover 用 `surface-raised` 而不是 `surface-hover`**：規格 2.1 定義的第五層 `pd-color-surface-hover`（`#323232`）未納入 `accessibility-contract.md` 第三節的 A-M2 稽核範圍，`input-border`／`border-strong` 對它僅 2.99:1、未達 3:1 門檻（見 `NEXT_ACTION.md` 記錄的非阻塞審查遺留）。為避免讓 Input 的邊界在 hover 時實際跌破 A-M2，本元件改用已驗證通過（3.62:1）的 `pd-color-surface-raised` 作為 hover 填色。
+- **為什麼 hover／active 用 `surface-raised`／`surface-overlay` 而不是 `surface-hover`**：規格 2.1 定義的第五層 `pd-color-surface-hover`（`#323232`）未納入 `accessibility-contract.md` 第三節的 A-M2 稽核範圍，`input-border`／`border-strong` 對它僅 2.99:1、未達 3:1 門檻（見 `NEXT_ACTION.md` 記錄的非阻塞審查遺留）。為避免讓 Input 的邊界跌破 A-M2，hover 改用已驗證通過（3.62:1）的 `pd-color-surface-raised`；active 需要比 hover 更進一步的填色才能形成可見區隔，因此改用同樣已驗證的「四層表面」中的 `pd-color-surface-overlay`（`border-strong` 對它 3.16:1、`text-primary` 對它 11.92:1，皆已在 `accessibility-contract.md` 驗證），而不是引入未經驗證的 `surface-hover`。
 - **A-M5（色彩不可為唯一資訊傳達手段）**：Error state 除了邊框變色，`.pd-field__message` 一律搭配文字說明；範例額外附加 `.pd-field__icon`（⚠，`aria-hidden="true"`）。消費端應搭配 `aria-invalid="true"` 與 `aria-describedby` 指向訊息 id，讓輔助科技也能取得同樣的錯誤語意。
 - **Reduced motion**：一般模式只轉場 `background-color` 與 `border-color`，使用 `--pd-duration-fast` 與 `--pd-easing-default`；`prefers-reduced-motion: reduce` 時移除 transition，不保留漸變。
