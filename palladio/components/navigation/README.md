@@ -44,7 +44,7 @@
 | Hover | 支援 hover 的指標裝置，且非 active 項目 | 背景 `pd-color-surface-hover`、文字轉為 `pd-color-text-primary`（實測對比 11.25:1，遠高於 A-M1） |
 | Active | `.pd-nav__link--active` | 見上一節三種線索；hover 不會稀釋 active 的視覺呈現 |
 | Focus | 鍵盤或滑鼠移入取得焦點 | `:focus-visible` 顯示內縮（inset）的 `pd-color-border-strong` outline，並把背景／文字強制切回 `surface-raised`／`text-primary`——即使該項目同時處於 hover，也不會讓 focus ring 疊在未驗證的 `surface-hover` 背景上（`border-strong` 對 `surface-hover` 只有 2.99:1，未達 A-M2；`accessibility-contract.md` 已記錄這個非阻塞缺口，本元件直接迴避它，而非觸發它）。 |
-| Disabled | 移除 `href`＋`aria-disabled="true"` | 文字改為 `pd-color-text-disabled`（A-M1）、`cursor: not-allowed`；因無 `href` 而自然無法被聚焦或觸發 |
+| Disabled | 移除 `href`＋`aria-disabled="true"` | 文字改為 `pd-color-text-disabled`（A-M1）、`cursor: not-allowed`；因無 `href` 而自然無法被聚焦或觸發。背景也明確還原為 `pd-color-surface`（與容器同色）——`<a>` 元素即使沒有 `href`，指標移入仍會觸發 CSS `:hover`，若 `[aria-disabled='true']` 不覆寫 `background-color`，停用項目會在滑鼠移入時殘留 `surface-hover` 背景，讓 `text-disabled`（`#969696`）疊在 `surface-hover`（`#323232`）上，對比僅 4.33:1，低於 A-M1 的 4.5:1。 |
 
 ## Focus indicator 的幾何選擇（inset outline）
 

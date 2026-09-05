@@ -12,6 +12,9 @@
  * indicator), [aria-disabled] after that, and :focus-visible last of all —
  * guaranteeing the focus ring always lands on the validated
  * surface-raised backdrop instead of the unvalidated surface-hover one.
+ * [aria-disabled] must declare background-color itself (not just color) —
+ * ties are won per property, so omitting it would let a hovered disabled
+ * link keep hover's surface-hover background under a pointer.
  */
 .pd-nav {
   background-color: var(--pd-color-surface);
@@ -60,6 +63,7 @@
 }
 
 .pd-nav__link[aria-disabled='true'] {
+  background-color: var(--pd-color-surface);
   color: var(--pd-color-text-disabled);
   cursor: not-allowed;
 }

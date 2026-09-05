@@ -68,6 +68,11 @@ assert.match(rule('.pd-nav__link.pd-nav__link--active'), /border-inline-start-co
 assert.match(rule('.pd-nav__link'), /min-block-size:\s*var\(--pd-density-component-min-interactive-size\);/,
   'Navigation link must meet A-M6 with the semantic density interactive size.');
 
+const disabledRule = rule(".pd-nav__link[aria-disabled='true']");
+assert.match(disabledRule, /background-color:\s*var\(--pd-color-surface\);/,
+  'Disabled link must restore the container background so a pointer hovering it does not leave behind ' +
+  'surface-hover (property-level ties resolve independently of color, so this must be declared explicitly).');
+
 const focusRule = rule('.pd-nav__link:focus-visible');
 assert.match(focusRule, /background-color:\s*var\(--pd-color-surface-raised\);/,
   'Focus-visible must force a validated backdrop (surface-raised), not leave an unvalidated surface-hover fill under the ring.');
