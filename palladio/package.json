@@ -11,6 +11,7 @@
     "validate:button": "node components/button/button.test.mjs",
     "validate:input": "node components/input/input.test.mjs",
     "validate:divider": "node components/divider/divider.test.mjs",
+    "validate:badge": "node components/badge/badge.test.mjs",
     "validate:tokens": "node pipeline/validate-tokens.mjs",
     "validate:artifacts": "node pipeline/validate-artifacts.mjs",
     "validate:accessibility": "node pipeline/validate-accessibility.mjs"
