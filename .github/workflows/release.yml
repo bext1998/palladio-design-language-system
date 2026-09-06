@@ -68,9 +68,19 @@ jobs:
             npm publish
           fi
 
+      - name: Bundle the agent skill
+        # Snapshot of skills/palladio-design-tokens/ as of this release. The
+        # skill is value-free (points at the installed token artifact), so any
+        # release's copy works; this is just a convenient download.
+        working-directory: ${{ github.workspace }}
+        run: |
+          node skills/palladio-design-tokens/scripts/check-skill.mjs
+          zip -r "palladio-agent-skill-${GITHUB_REF_NAME}.zip" skills/palladio-design-tokens
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          # The npm tarball itself — dist/ + bin/ + package.json + README + CHANGELOG + LICENSE.
-          files: palladio/*.tgz
+          files: |
+            palladio/*.tgz
+            palladio-agent-skill-*.zip
           generate_release_notes: true
