@@ -76,6 +76,7 @@
     "validate:artifacts": "node pipeline/validate-artifacts.mjs",
     "validate:accessibility": "node pipeline/validate-accessibility.mjs",
     "validate:all": "npm run validate:tokens && npm run validate:artifacts && npm run validate:accessibility",
+    "validate:components": "npm run validate:button && npm run validate:input && npm run validate:divider && npm run validate:badge && npm run validate:card && npm run validate:navigation",
     "prepublishOnly": "npm run rebuild && npm run validate:all"
   },
   "devDependencies": {

@@ -1,9 +1,38 @@
 version: 1
 
-# Pipelines for this repo. `watt run package-skill` builds the distributable
-# agent-skill zip. There is no default pipeline; name the one you want.
+# Pipelines for this repo. There is no default pipeline; name the one you want.
+#
+#   watt run validate        # mirror CI locally before pushing
+#   watt run package-skill   # build the distributable agent-skill zip
 
 pipelines:
+  validate:
+    # Mirrors .github/workflows/ci.yml so a local run catches what CI catches.
+    # Assumes deps are installed (`npm ci` in palladio/); CI does that itself.
+    steps:
+      - name: rebuild-artifacts
+        exec: npm
+        args: ["run", "rebuild"]
+        cwd: palladio
+      - name: dist-in-sync
+        exec: git
+        args: ["diff", "--exit-code", "--", "palladio/dist"]
+      - name: validate-token-contract
+        exec: npm
+        args: ["run", "validate:all"]
+        cwd: palladio
+      - name: validate-components
+        exec: npm
+        args: ["run", "validate:components"]
+        cwd: palladio
+      - name: lint-agent-skill
+        exec: node
+        args: ["skills/palladio-design-tokens/scripts/check-skill.mjs"]
+      - name: package-preview
+        exec: npm
+        args: ["pack", "--dry-run"]
+        cwd: palladio
+
   package-skill:
     steps:
       - name: build-skill-package
