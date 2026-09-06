@@ -1,6 +1,6 @@
 name: Release
 
-# Publish @palladio/tokens to npm and cut a GitHub Release when a v* tag is pushed.
+# Publish @pdiodsgn/tokens to npm and cut a GitHub Release when a v* tag is pushed.
 # The tag must match palladio/package.json "version" (e.g. tag v0.1.0 -> version 0.1.0).
 #
 # Auth: npm Trusted Publishing (OIDC) — no NPM_TOKEN secret. One-time setup on

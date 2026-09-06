@@ -1,4 +1,4 @@
-# @palladio/tokens
+# @pdiodsgn/tokens
 
 Generated design-token artifacts for the **Palladio Design Language & System** —
 CSS custom properties, TypeScript, JSON and an agent reference, built from one
@@ -15,7 +15,7 @@ material, not as a consumer contract.
 ## Install
 
 ```sh
-npm install @palladio/tokens
+npm install @pdiodsgn/tokens
 ```
 
 Pin an exact version. Palladio's validation strategy is production-first
@@ -27,12 +27,12 @@ range (`^`) only for non-first-party consumers.
 
 | Entry | File | For |
 |---|---|---|
-| `@palladio/tokens` | `dist/ts/tokens.js` + `.d.ts` | React / TS — `palladioTokens`, `palladioDensity`, `palladioTheme` |
-| `@palladio/tokens/css` | `dist/css/palladio.css` | The custom properties, theme + density variants |
-| `@palladio/tokens/tokens.json` | `dist/json/tokens.json` | Go / Wails / any language — `semantic` · `density` · `theme` |
-| `@palladio/tokens/tokens.ts` | `dist/ts/tokens.ts` | Source form, if you prefer to compile it yourself |
-| `@palladio/tokens/agent-reference.md` | `dist/agent-reference.md` | AI coding agents — token overview + rules |
-| `@palladio/tokens/validate-accents` | `dist/validate-accents.js` + `.d.ts` | `validateAccentPairs()` for your accent slots |
+| `@pdiodsgn/tokens` | `dist/ts/tokens.js` + `.d.ts` | React / TS — `palladioTokens`, `palladioDensity`, `palladioTheme` |
+| `@pdiodsgn/tokens/css` | `dist/css/palladio.css` | The custom properties, theme + density variants |
+| `@pdiodsgn/tokens/tokens.json` | `dist/json/tokens.json` | Go / Wails / any language — `semantic` · `density` · `theme` |
+| `@pdiodsgn/tokens/tokens.ts` | `dist/ts/tokens.ts` | Source form, if you prefer to compile it yourself |
+| `@pdiodsgn/tokens/agent-reference.md` | `dist/agent-reference.md` | AI coding agents — token overview + rules |
+| `@pdiodsgn/tokens/validate-accents` | `dist/validate-accents.js` + `.d.ts` | `validateAccentPairs()` for your accent slots |
 
 Every example below that names a version uses `<version>` — replace it with the
 exact version you installed (see `package.json`). Do not use `latest` or an
@@ -44,8 +44,8 @@ unpinned range for first-party consumers; that breaks the production-first sync
 ### React / bundled web app
 
 ```ts
-import "@palladio/tokens/css";               // registers the custom properties
-import { palladioTokens } from "@palladio/tokens"; // only when you need a value in JS
+import "@pdiodsgn/tokens/css";               // registers the custom properties
+import { palladioTokens } from "@pdiodsgn/tokens"; // only when you need a value in JS
 
 const surface = palladioTokens.color.surface.hex;
 ```
@@ -65,7 +65,7 @@ colour custom properties are declared **only** under `:root[data-theme="dark"]`
 <!-- replace <version> with the exact version you want to pin -->
 <link
   rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@palladio/tokens@<version>/dist/css/palladio.css"
+  href="https://cdn.jsdelivr.net/npm/@pdiodsgn/tokens@<version>/dist/css/palladio.css"
 />
 <link rel="stylesheet" href="/accent.css" /> <!-- your product's own accent slots -->
 ```
@@ -83,7 +83,7 @@ colour custom properties are declared **only** under `:root[data-theme="dark"]`
 ### Go / Wails
 
 At build time, fetch `tokens.json` for the exact version you pin — from
-`https://cdn.jsdelivr.net/npm/@palladio/tokens@<version>/dist/json/tokens.json`
+`https://cdn.jsdelivr.net/npm/@pdiodsgn/tokens@<version>/dist/json/tokens.json`
 or the matching GitHub Release asset — into a temporary file your build script
 writes, then `go:embed` it. Do **not** hand-copy the file into the repo where it
 will never be updated. The Wails WebView loads the same-version CSS. No runtime
@@ -94,7 +94,7 @@ network fetch of tokens.
 Point the consuming product's own `AGENTS.md` / context file at the
 `agent-reference.md` URL for the version you pin (the file itself carries
 release-tagged links back to the spec):
-`https://cdn.jsdelivr.net/npm/@palladio/tokens@<version>/dist/agent-reference.md`.
+`https://cdn.jsdelivr.net/npm/@pdiodsgn/tokens@<version>/dist/agent-reference.md`.
 The agent reads that one document; never feed it the whole Palladio repo.
 
 ## Accent slots
@@ -104,7 +104,7 @@ them. Each product defines all six `--pd-color-accent-*` slots in its own
 stylesheet, then validates them:
 
 ```ts
-import { validateAccentPairs } from "@palladio/tokens/validate-accents";
+import { validateAccentPairs } from "@pdiodsgn/tokens/validate-accents";
 
 validateAccentPairs(
   {
@@ -118,7 +118,7 @@ validateAccentPairs(
 Or in CI, without importing (pin the same version as the rest of your build):
 
 ```sh
-npx --package @palladio/tokens@<version> palladio-validate-accents ./palladio-accent.json
+npx --package @pdiodsgn/tokens@<version> palladio-validate-accents ./palladio-accent.json
 ```
 
 The full contract is `palladio/docs/accessibility/accessibility-contract.md` §9

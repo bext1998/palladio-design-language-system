@@ -264,13 +264,13 @@ function renderAgentReference({ dictionary }) {
 
   return `# Palladio Agent Reference
 
-> 隨 \`@palladio/tokens\` v${pkgVersion} 發佈，每次發版一起更新，請勿手動編輯。
+> 隨 \`@pdiodsgn/tokens\` v${pkgVersion} 發佈，每次發版一起更新，請勿手動編輯。
 > 設計語言全文：${repoTree}/docs/spec.md（章節 9.3–9.4, 13）
 > 可及性契約：${repoTree}/palladio/docs/accessibility/accessibility-contract.md
 
 ## 這份文件是給誰的
 
-當 AI 代理（Claude Code、Codex 等）收到「用 Palladio，某 density」的指令時，這份文件把設計決策的搜索空間從「無限色值／間距／動效」縮小到下面表格列出的**有限選項**。所有值與套件的 \`@palladio/tokens/css\`、\`@palladio/tokens\`、\`@palladio/tokens/tokens.json\` 由同一次 build 產出，保證一致。
+當 AI 代理（Claude Code、Codex 等）收到「用 Palladio，某 density」的指令時，這份文件把設計決策的搜索空間從「無限色值／間距／動效」縮小到下面表格列出的**有限選項**。所有值與套件的 \`@pdiodsgn/tokens/css\`、\`@pdiodsgn/tokens\`、\`@pdiodsgn/tokens/tokens.json\` 由同一次 build 產出，保證一致。
 
 單次 AI 生成的表現只是設計語言的質性訊號，不是完成 gate（規格 9.4）；本文件的職責是提供正確的約束，不是保證生成結果。
 
@@ -279,7 +279,7 @@ function renderAgentReference({ dictionary }) {
 ## 一、使用規則
 
 1. **三層架構**：元件只能引用 Semantic（下表）或可選的 Component 層 token；**不得**直接引用 Primitive 值（例如某個 hex 色碼或裸的 px 數字），即使它剛好等於某個 Semantic token 的值。
-2. **命名空間**：CSS 自訂屬性一律 \`--pd-{role}\`（\`import "@palladio/tokens/css"\`）；TypeScript 透過 \`palladioTokens\` / \`palladioDensity\` / \`palladioTheme\`（\`import ... from "@palladio/tokens"\`）取用；Go／其他消費端讀 \`@palladio/tokens/tokens.json\`（\`semantic\` / \`density\` / \`theme\` 三個頂層 key）。
+2. **命名空間**：CSS 自訂屬性一律 \`--pd-{role}\`（\`import "@pdiodsgn/tokens/css"\`）；TypeScript 透過 \`palladioTokens\` / \`palladioDensity\` / \`palladioTheme\`（\`import ... from "@pdiodsgn/tokens"\`）取用；Go／其他消費端讀 \`@pdiodsgn/tokens/tokens.json\`（\`semantic\` / \`density\` / \`theme\` 三個頂層 key）。
 3. **Density 切換**：透過 \`data-density="compact"\` / \`data-density="spacious"\`（省略時為 Default）套用在容器上；元件結構本身不因 density 改變，只有 padding、最小互動尺寸與 body 字級跟著換。
 4. **Theme**：目前只有暗色主題，選擇器為 \`:root[data-theme="dark"]\`；Light theme 補齊前不要假設有其他主題存在。
 5. **Accent 插槽是產品責任**：見第三節，Palladio 本身不提供 accent 色值。
@@ -332,7 +332,7 @@ ${mdTable(['Token', 'Value', '用途'], colorGroup(colorRecords, (name) => ['suc
 | \`--pd-color-accent-subtle\` | 低飽和背景（badge、tag 底色） | *由產品提供* |
 | \`--pd-color-accent-text\` | 強調色上的文字 | *由產品提供* |
 
-產品必須提供全部六個插槽；\`accent-text\` 對 \`accent\` / \`accent-hover\` / \`accent-active\` / \`accent-disabled\` 四種背景須驗證 ≥4.5:1（A-M1），其餘實際使用的配對依內容判定 A-M1 或 A-M2。用套件的驗證器：\`import { validateAccentPairs } from "@palladio/tokens/validate-accents"\`，或 CLI \`palladio-validate-accents accent.json\`。完整流程見 ${repoTree}/palladio/docs/accessibility/accessibility-contract.md 第九節。
+產品必須提供全部六個插槽；\`accent-text\` 對 \`accent\` / \`accent-hover\` / \`accent-active\` / \`accent-disabled\` 四種背景須驗證 ≥4.5:1（A-M1），其餘實際使用的配對依內容判定 A-M1 或 A-M2。用套件的驗證器：\`import { validateAccentPairs } from "@pdiodsgn/tokens/validate-accents"\`，或 CLI \`palladio-validate-accents accent.json\`。完整流程見 ${repoTree}/palladio/docs/accessibility/accessibility-contract.md 第九節。
 
 ---
 
@@ -407,14 +407,14 @@ ${mdTable(['項目', 'Compact', 'Default', 'Spacious'], densityRows)}
 \`\`\`
 
 \`\`\`ts
-import { palladioTokens, palladioDensity } from '@palladio/tokens';
+import { palladioTokens, palladioDensity } from '@pdiodsgn/tokens';
 
 const bg = palladioTokens.color.surface.hex;
 const compactPadding = palladioDensity.compact.density.component.padding;
 \`\`\`
 
 \`\`\`json
-// @palladio/tokens/tokens.json
+// @pdiodsgn/tokens/tokens.json
 { "semantic": { "color": { "bg": { "hex": "#141414" } } } }
 \`\`\`
 `;

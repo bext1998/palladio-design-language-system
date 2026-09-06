@@ -9,7 +9,7 @@
  * and calls this at build time or in CI.
  *
  * The published package re-exports this file as
- * `@palladio/tokens/validate-accents` (see `pipeline/emit-dist-extras.mjs`).
+ * `@pdiodsgn/tokens/validate-accents` (see `pipeline/emit-dist-extras.mjs`).
  * `pipeline/validate-accessibility.mjs` also re-exports `validateAccentPairs`
  * for in-repo callers, and its own A-M2 border audit reuses `contrastRatio`
  * and `A_M2_THRESHOLD` from here.
