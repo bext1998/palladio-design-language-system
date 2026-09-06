@@ -1,0 +1,14 @@
+version: 1
+
+# Pipelines for this repo. `watt run package-skill` builds the distributable
+# agent-skill zip. There is no default pipeline; name the one you want.
+
+pipelines:
+  package-skill:
+    steps:
+      - name: build-skill-package
+        exec: pwsh
+        args:
+          - "-NoProfile"
+          - "-File"
+          - "skills/palladio-design-tokens/scripts/build-skill-package.ps1"

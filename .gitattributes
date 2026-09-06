@@ -8,3 +8,4 @@
 *.ico  binary
 *.woff  binary
 *.woff2 binary
+skills/palladio-design-tokens/scripts/build-skill-package.ps1 export-ignore
