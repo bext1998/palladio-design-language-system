@@ -1,8 +1,8 @@
 # Palladio Agent Reference
 
-> 隨 `@pdiodsgn/tokens` v0.1.0 發佈，每次發版一起更新，請勿手動編輯。
-> 設計語言全文：https://github.com/bext1998/palladio-design-language-system/blob/v0.1.0/docs/spec.md（章節 9.3–9.4, 13）
-> 可及性契約：https://github.com/bext1998/palladio-design-language-system/blob/v0.1.0/palladio/docs/accessibility/accessibility-contract.md
+> 隨 `@pdiodsgn/tokens` v0.1.1 發佈，每次發版一起更新，請勿手動編輯。
+> 設計語言全文：https://github.com/bext1998/palladio-design-language-system/blob/v0.1.1/docs/spec.md（章節 9.3–9.4, 13）
+> 可及性契約：https://github.com/bext1998/palladio-design-language-system/blob/v0.1.1/palladio/docs/accessibility/accessibility-contract.md
 
 ## 這份文件是給誰的
 
@@ -91,7 +91,7 @@
 | `--pd-color-accent-subtle` | 低飽和背景（badge、tag 底色） | *由產品提供* |
 | `--pd-color-accent-text` | 強調色上的文字 | *由產品提供* |
 
-產品必須提供全部六個插槽；`accent-text` 對 `accent` / `accent-hover` / `accent-active` / `accent-disabled` 四種背景須驗證 ≥4.5:1（A-M1），其餘實際使用的配對依內容判定 A-M1 或 A-M2。用套件的驗證器：`import { validateAccentPairs } from "@pdiodsgn/tokens/validate-accents"`，或 CLI `palladio-validate-accents accent.json`。完整流程見 https://github.com/bext1998/palladio-design-language-system/blob/v0.1.0/palladio/docs/accessibility/accessibility-contract.md 第九節。
+產品必須提供全部六個插槽；`accent-text` 對 `accent` / `accent-hover` / `accent-active` / `accent-disabled` 四種背景須驗證 ≥4.5:1（A-M1），其餘實際使用的配對依內容判定 A-M1 或 A-M2。用套件的驗證器：`import { validateAccentPairs } from "@pdiodsgn/tokens/validate-accents"`，或 CLI `palladio-validate-accents accent.json`。完整流程見 https://github.com/bext1998/palladio-design-language-system/blob/v0.1.1/palladio/docs/accessibility/accessibility-contract.md 第九節。
 
 ---
 
@@ -195,7 +195,7 @@
 | A-M5 | 色彩不可為唯一資訊傳達手段 | 需搭配非色彩線索 |
 | A-M6 | 互動元素最小尺寸依 density | 32 / 36 / 48px（見第六節） |
 
-完整驗收說明、對比計算結果與已確認缺漏見 https://github.com/bext1998/palladio-design-language-system/blob/v0.1.0/palladio/docs/accessibility/accessibility-contract.md。
+完整驗收說明、對比計算結果與已確認缺漏見 https://github.com/bext1998/palladio-design-language-system/blob/v0.1.1/palladio/docs/accessibility/accessibility-contract.md。
 
 ---
 
