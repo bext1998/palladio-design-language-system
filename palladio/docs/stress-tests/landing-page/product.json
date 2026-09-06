@@ -1,0 +1,27 @@
+{
+  "product": "Palladio 專案官網（Landing page，虛構檢視素材）",
+  "issue": 4,
+  "note": "六個 accent 插槽由本（虛構）產品明確提供；Palladio 不推導、不 fallback（規格 2.5）。此資料不滿足 Issue #15（需兩個真實產品的實際色彩）。",
+  "accent": {
+    "accent": "#7154E8",
+    "accentHover": "#7157DA",
+    "accentActive": "#5138B8",
+    "accentDisabled": "#433A6B",
+    "accentSubtle": "#262040",
+    "accentText": "#F5F3FF"
+  },
+  "extraPairs": [
+    {
+      "name": "badge--accent：accent-text on accent-subtle（pd-badge--accent 實際渲染）",
+      "foreground": "#F5F3FF",
+      "background": "#262040",
+      "kind": "text"
+    },
+    {
+      "name": "任意元件2 accent 圖示 on surface-raised",
+      "foreground": "#7154E8",
+      "background": "#242424",
+      "kind": "ui"
+    }
+  ]
+}

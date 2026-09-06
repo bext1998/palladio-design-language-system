@@ -1,0 +1,193 @@
+<!doctype html>
+<!--
+  Palladio Design Language & System — 專案官網壓力測試原型（檢視素材，Issue #4）
+  佈局依使用者 2026-09-06 草圖重建，文案採本專案 README／規格的實際說明：
+    左側 2×2 格（圖片1／任意元件1／任意元件2／圖片2）
+    右側反白 H1 + Hero 說明段（Regular）+ Getting Started 按鈕
+    右下角 Palladio 形象 logo；背景深灰色
+  對應決策分類表：decisions.md
+  載入順序（元件契約要求）：先 palladio.css（token 產物），再元件 CSS。
+  路徑基準：本檔位於 palladio/docs/stress-tests/landing-page/，故 ../../../ = palladio/。
+-->
+<html lang="zh-Hant" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Palladio — Design Language & System</title>
+<link rel="stylesheet" href="../../../dist/css/palladio.css">
+<link rel="stylesheet" href="../../../components/button/button.css">
+<link rel="stylesheet" href="../../../components/card/card.css">
+<link rel="stylesheet" href="../../../components/badge/badge.css">
+<style>
+  /* 產品層樣式：僅版面佈局與引用 Semantic token，不定義新色彩。
+     字體規則（spec 3.3 / agent-reference 四）：--pd-text-* 的 CSS 值是
+     描述性組合字串、非合法 font shorthand，故以「個別屬性 + 註解標註
+     來源 token」的方式消費，值一律取自 agent-reference.md 第四節表格；
+     body 基底字級直接引用 density 變數，跟著 Compact/Default/Spacious 切換。 */
+  * { box-sizing: border-box; }
+
+  /* 產品責任（spec 2.5 / 元件 CSS 契約）：產品必須提供全部六個 accent 插槽，
+     值與 product.json 一致；Palladio 不推導、不 fallback，缺了就是沒有。 */
+  :root {
+    --pd-color-accent: #7154E8;
+    --pd-color-accent-hover: #7157DA;
+    --pd-color-accent-active: #5138B8;
+    --pd-color-accent-disabled: #433A6B;
+    --pd-color-accent-subtle: #262040;
+    --pd-color-accent-text: #F5F3FF;
+  }
+
+  body {
+    margin: 0;
+    background: var(--pd-color-bg);
+    color: var(--pd-color-text-primary);
+    font-family: 'Noto Sans', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+    font-size: var(--pd-density-typography-body-font-size); /* density body size */
+    font-weight: 400;                                        /* pd-text-body-md */
+    line-height: 1.6;
+  }
+
+  /* 單一畫面主框（Spacious density） */
+  .mm-frame {
+    align-content: center;
+    display: grid;
+    gap: var(--pd-space-10);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    min-block-size: 100vh;
+    padding: var(--pd-space-16);
+  }
+
+  /* 左：2×2 格（圖片／元件交錯，同草圖位置），跨兩列 */
+  .mm-grid {
+    align-content: center;
+    display: grid;
+    gap: var(--pd-space-6);
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    grid-template-columns: 1fr 1fr;
+  }
+  .mm-cell { aspect-ratio: 4 / 3; }
+  .mm-shot {
+    background: var(--pd-color-surface-raised);
+    border: 1px solid var(--pd-color-border-default);
+    border-radius: var(--pd-radius-sm);
+    block-size: 100%;
+    display: grid;
+    place-items: center;
+  }
+  .mm-shot > span {
+    color: var(--pd-color-text-secondary);
+    font-size: 12px; line-height: 1.5; font-weight: 400; /* pd-text-body-sm */
+  }
+
+  /* 右：文案欄，與左側 2×2 格同高 */
+  .mm-copy {
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    justify-content: center;
+  }
+  /* pd-text-display；草圖「H1 反白」→ text-primary */
+  .mm-hero h1 {
+    font-size: 32px; line-height: 1.2; font-weight: 600; letter-spacing: -0.64px;
+    margin: var(--pd-space-4) 0 var(--pd-space-6);
+  }
+  /* pd-text-body-lg；草圖「Hero 內文說明，字體 Regular」 */
+  .mm-hero p {
+    color: var(--pd-color-text-secondary);
+    font-size: 16px; line-height: 1.6; font-weight: 400; letter-spacing: 0;
+    margin: 0 0 var(--pd-space-8);
+    max-width: 56ch;
+  }
+  .mm-hero-cta { align-items: center; display: flex; gap: var(--pd-space-4); justify-content: flex-end; }
+  /* pd-text-body-sm */
+  .mm-note {
+    color: var(--pd-color-text-secondary);
+    font-size: 12px; line-height: 1.5; font-weight: 400;
+    margin: 0;
+  }
+
+  /* 右下角 logo 佔位（內容素材，非 UI 決策） */
+  .mm-logo {
+    align-self: end;
+    justify-self: end;
+  }
+  .mm-logo-box {
+    border: 1px dashed var(--pd-color-border-strong);
+    border-radius: var(--pd-radius-sm);
+    color: var(--pd-color-text-secondary);
+    display: grid;
+    font-size: 12px; line-height: 1.5; font-weight: 400; /* pd-text-body-sm */
+    min-block-size: 64px;
+    place-items: center;
+    inline-size: 160px;
+  }
+
+  /* 草圖註解標籤（檢視素材用，驗收後移除） */
+  .mm-anno {
+    color: var(--pd-color-text-secondary);
+    font-size: 12px; line-height: 1.5; font-weight: 400; /* pd-text-body-sm */
+    margin-top: var(--pd-space-2);
+  }
+
+  .mm-focusable:focus-visible {
+    outline: var(--pd-space-1) solid var(--pd-color-border-strong);
+    outline-offset: var(--pd-space-1);
+  }
+</style>
+</head>
+<body>
+
+<div class="mm-frame" data-density="spacious">
+
+  <!-- 左：2×2 格（決策 #4–#11） -->
+  <div class="mm-grid">
+    <div class="mm-cell">
+      <div class="mm-shot" role="img" aria-label="圖片1：token pipeline 產物畫面示意">圖片1</div>
+    </div>
+
+    <!-- 任意元件1：Card + accent badge（Default density，對照頁面 Spacious） -->
+    <div class="mm-cell" data-density="default">
+      <article class="pd-card" style="block-size: 100%; display: flex; flex-direction: column; gap: var(--pd-space-2)">
+        <h2 style="margin: 0; color: var(--pd-color-text-primary); font-size: 14px; line-height: 1.4; font-weight: 600; letter-spacing: -0.14px">三層 Token 架構</h2><!-- pd-text-heading-sm -->
+        <p class="mm-anno" style="margin: 0">Primitive、Semantic、Component；元件不得直接引用 Primitive 值。</p><!-- pd-text-body-sm -->
+        <span style="margin-top: auto"><span class="pd-badge pd-badge--accent">DTCG 2025.10</span></span>
+      </article>
+    </div>
+
+    <!-- 任意元件2：Card + accent 圖示（Default density） -->
+    <div class="mm-cell" data-density="default">
+      <article class="pd-card" style="block-size: 100%; display: flex; align-items: center; gap: var(--pd-space-3)">
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2 17 17 10 13 3 17Z" fill="var(--pd-color-accent)"/></svg>
+        <p class="mm-anno" style="margin: 0; color: var(--pd-color-text-primary)">Agent Reference：AI 代理的 token 總覽與使用規則</p><!-- pd-text-body-sm -->
+      </article>
+    </div>
+
+    <div class="mm-cell">
+      <div class="mm-shot" role="img" aria-label="圖片2：三種 density 畫面示意">圖片2</div>
+    </div>
+  </div>
+
+  <!-- 右：H1 + Hero 段 + CTA（決策 #1–#3、#12–#14） -->
+  <section class="mm-copy">
+    <div class="mm-hero">
+      <h1>以 token 提供共同規則，而不是同一套 UI kit</h1><!-- pd-text-display + text-primary -->
+      <p>Palladio 是一套開源設計語言與 design-token system：以深碳灰的表面層級、精準線條與流體有機動效建立共同基礎，同時讓每個產品自行定義品牌強調色。所有 accent 狀態由產品明確提供並驗證對比，系統不推導色值；支援 Compact、Default、Spacious 三種密度與 reduced-motion 行為。</p>
+      <div class="mm-hero-cta">
+        <button class="pd-button mm-focusable" type="button">Getting Started</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 決策 #15：右下角 logo（內容素材佔位） -->
+  <span class="mm-anno" aria-hidden="true">背景：深灰色（--pd-color-bg）</span>
+  <div class="mm-logo">
+    <div class="mm-logo-box" role="img" aria-label="Palladio 形象 logo 放置於此">Palladio<br>形象 logo 放置於此</div>
+  </div>
+
+</div>
+
+</body>
+</html>
