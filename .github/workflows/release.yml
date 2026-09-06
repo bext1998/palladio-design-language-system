@@ -55,8 +55,18 @@ jobs:
       - name: Pack (same tarball that will be published)
         run: npm pack
 
-      - name: Publish to npm
-        run: npm publish   # OIDC via id-token: write; provenance is automatic
+      - name: Publish to npm (skip if this version is already on the registry)
+        # OIDC via id-token: write; provenance is automatic. Idempotent: a
+        # version that was hand-published (e.g. the 0.1.0 bootstrap) is skipped
+        # so re-tagging or a forgotten version bump does not fail the run.
+        run: |
+          name="$(node -p "require('./package.json').name")"
+          version="$(node -p "require('./package.json').version")"
+          if npm view "$name@$version" version >/dev/null 2>&1; then
+            echo "$name@$version is already on npm — skipping npm publish."
+          else
+            npm publish
+          fi
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
