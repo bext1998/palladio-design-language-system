@@ -1,6 +1,6 @@
 {
   "name": "@pdiodsgn/tokens",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "Palladio design tokens — generated CSS custom properties, TypeScript, JSON and agent-reference for consuming products. Not a UI kit.",
   "license": "MIT",
