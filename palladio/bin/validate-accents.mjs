@@ -24,7 +24,7 @@
 
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { validateAccentPairs } from '../dist/validate-accents.mjs';
+import { validateAccentPairs } from '../dist/validate-accents.js';
 
 const file = process.argv[2];
 if (!file) {

@@ -8,9 +8,14 @@ minor bump (visually breaking) with its impact noted here. See `README.md`
 
 - Package renamed `@palladio/design-system` → `@palladio/tokens`; set up for
   public npm publish (`files`/`exports`/`publishConfig`, `bin`, compiled
-  `dist/ts/tokens.js` + `.d.ts`, `dist/validate-accents.mjs`).
+  `dist/ts/tokens.js` + `.d.ts`).
 - `validateAccentPairs()` extracted to a dependency-free module and shipped as
-  `@palladio/tokens/validate-accents` + `palladio-validate-accents` CLI.
+  `@palladio/tokens/validate-accents` (`dist/validate-accents.js` + `.d.ts`,
+  `exports` declares `types`) + `palladio-validate-accents` CLI.
+- `LICENSE` (MIT) now included in the package and the Release tarball.
+- `agent-reference.md` rewritten for consumers who never clone the repo:
+  package entry points and `v<version>`-tagged URLs instead of repo-relative
+  paths and `npm run` scripts.
 - No token values changed.
 
 ## 0.1.0

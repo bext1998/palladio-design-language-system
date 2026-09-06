@@ -13,7 +13,8 @@ for (const relativePath of [
   'ts/tokens.d.ts',
   'json/tokens.json',
   'agent-reference.md',
-  'validate-accents.mjs'
+  'validate-accents.js',
+  'validate-accents.d.ts'
 ]) {
   fs.rmSync(path.join(distDir, relativePath), { force: true });
 }

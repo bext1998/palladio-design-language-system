@@ -9,7 +9,10 @@
     "removeComments": false,
     "strict": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "newLine": "lf"
   },
-  "include": ["dist/ts/tokens.ts"]
+  "include": [
+    "dist/ts/tokens.ts"
+  ]
 }
