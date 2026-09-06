@@ -43,3 +43,7 @@ jobs:
 
       - name: Package preview
         run: npm pack --dry-run
+
+      - name: Lint agent skill
+        working-directory: ${{ github.workspace }}
+        run: node skills/palladio-design-tokens/scripts/check-skill.mjs
