@@ -33,6 +33,44 @@
 
 ---
 
+## 追加修正 — AI 欄多餘捲軸（原「待決事項」）
+
+### 根因
+`styles.css` 的 `.suggestion-card { min-height: 548px }` 把 AI 建議卡強制撐到 548px，
+即使建議文字很短。加上 `.ai-panel__content` 的上下 padding 與 section label，內容內在高度
+遠超建議實際內容。視窗一不最大化（高度變矮），`.ai-panel__content`（`overflow: auto`）
+就溢出並長出捲軸——這就是「不最大化才出現、最大化就消失」的原因。
+`.primary-action` 的 `margin-top: auto`（把 Apply 推到卡片底部）本來就是靠這個固定高度撐出空間。
+
+### 改法（`prototype/src/styles.css`，`.suggestion-card`）
+```diff
+ .suggestion-card {
+   display: flex;
++  flex: 1 1 auto;
+   flex-direction: column;
+-  min-height: 548px;
++  min-height: min-content;
+   padding: var(--pd-space-4);
+```
+卡片改為隨 AI 欄可用高度伸縮：夠高時 `flex: 1 1 auto` 撐滿、Apply 仍靠底（視覺不變）；
+視窗矮時縮到 `min-content` 為止，不再硬撐 548px。
+
+### 驗證（實機，視窗刻意不最大化）
+| viewport | 修正前 | 修正後 |
+|---|---|---|
+| 1440×809 | `ai-panel__content` 出現捲軸 | 只剩 `chapter-list` 內捲（設計內），AI 欄無捲軸 | `v2-15` |
+| 1440×654 | AI 欄捲軸 + manuscript 內容溢出 | AI 欄無捲軸；`manuscript` 因長文比視窗高而內捲（預期） | `v2-12` |
+| 1440×569（極端） | — | AI 欄仍無捲軸，卡片優雅收縮，Apply 仍可見 | `v2-14` |
+| 1400×864（高） | — | 版面與 Apply 位置與修正前一致，無回歸 | `v2-13` |
+
+所有高度下 `html` 無垂直捲動、`body` 無水平捲動。剩餘捲軸皆為：章節清單內捲（設計）、
+或視窗真的矮到放不下長文時 manuscript 內捲（預期且必要）。
+
+> 註：此 CSS 改動位於尚未納入 git 追蹤的 `prototype/` 樹內，需由原型開發者併入其提交；
+> 已重新 `npm run build`、`layout-contract.test.mjs` 2/2 通過。
+
+---
+
 ## 總結
 
 - D-1～D-4 四項在瀏覽器中皆通過重驗；D-1 從 merge blocker 解除。
