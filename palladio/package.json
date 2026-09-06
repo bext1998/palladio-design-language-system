@@ -1,11 +1,64 @@
 {
-  "name": "@palladio/design-system",
+  "name": "@palladio/tokens",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
-  "description": "Palladio design tokens and generated artifacts.",
+  "description": "Palladio design tokens — generated CSS custom properties, TypeScript, JSON and agent-reference for consuming products. Not a UI kit.",
+  "license": "MIT",
+  "author": "Tiger Zhang",
+  "homepage": "https://github.com/bext1998/palladio-design-language-system/tree/main/palladio#readme",
+  "bugs": {
+    "url": "https://github.com/bext1998/palladio-design-language-system/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bext1998/palladio-design-language-system.git",
+    "directory": "palladio"
+  },
+  "keywords": [
+    "design-tokens",
+    "design-system",
+    "css-variables",
+    "custom-properties",
+    "style-dictionary",
+    "palladio",
+    "dark-theme",
+    "density"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "main": "./dist/ts/tokens.js",
+  "module": "./dist/ts/tokens.js",
+  "types": "./dist/ts/tokens.d.ts",
+  "sideEffects": [
+    "./dist/css/palladio.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/ts/tokens.d.ts",
+      "import": "./dist/ts/tokens.js"
+    },
+    "./css": "./dist/css/palladio.css",
+    "./tokens.json": "./dist/json/tokens.json",
+    "./tokens.ts": "./dist/ts/tokens.ts",
+    "./agent-reference.md": "./dist/agent-reference.md",
+    "./validate-accents": "./dist/validate-accents.mjs",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "palladio-validate-accents": "./bin/validate-accents.mjs"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "scripts": {
-    "build": "node pipeline/config.js",
+    "build": "node pipeline/config.js && node pipeline/emit-dist-extras.mjs && tsc -p tsconfig.build.json",
     "clean": "node pipeline/clean.mjs",
     "rebuild": "npm run clean && npm run build",
     "validate:button": "node components/button/button.test.mjs",
@@ -16,12 +69,12 @@
     "validate:navigation": "node components/navigation/navigation.test.mjs",
     "validate:tokens": "node pipeline/validate-tokens.mjs",
     "validate:artifacts": "node pipeline/validate-artifacts.mjs",
-    "validate:accessibility": "node pipeline/validate-accessibility.mjs"
-  },
-  "engines": {
-    "node": ">=22"
+    "validate:accessibility": "node pipeline/validate-accessibility.mjs",
+    "validate:all": "npm run validate:tokens && npm run validate:artifacts && npm run validate:accessibility",
+    "prepublishOnly": "npm run rebuild && npm run validate:all"
   },
   "devDependencies": {
-    "style-dictionary": "^5.5.2"
+    "style-dictionary": "^5.5.2",
+    "typescript": "^5.7.2"
   }
 }

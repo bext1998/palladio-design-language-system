@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+defaults:
+  run:
+    working-directory: palladio
+
+jobs:
+  build-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: palladio/package-lock.json
+
+      - run: npm ci
+
+      - name: Rebuild generated artifacts
+        run: npm run rebuild
+
+      - name: Committed dist/ must match a fresh build
+        run: git diff --exit-code -- dist
+
+      - name: Validate token contract
+        run: npm run validate:all
+
+      - name: Validate components
+        run: |
+          npm run validate:button
+          npm run validate:input
+          npm run validate:divider
+          npm run validate:badge
+          npm run validate:card
+          npm run validate:navigation
+
+      - name: Package preview
+        run: npm pack --dry-run

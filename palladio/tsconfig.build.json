@@ -1,0 +1,15 @@
+{
+  "//": "Emits dist/ts/tokens.js + tokens.d.ts alongside the generated tokens.ts so consumers do not have to compile the package. Run by `npm run build` after the Style Dictionary step.",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "declaration": true,
+    "emitDeclarationOnly": false,
+    "removeComments": false,
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["dist/ts/tokens.ts"]
+}

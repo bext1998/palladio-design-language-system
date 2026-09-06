@@ -6,6 +6,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const distDir = path.resolve(__dirname, '../dist');
 
-for (const relativePath of ['css/palladio.css', 'ts/tokens.ts', 'json/tokens.json', 'agent-reference.md']) {
+for (const relativePath of [
+  'css/palladio.css',
+  'ts/tokens.ts',
+  'ts/tokens.js',
+  'ts/tokens.d.ts',
+  'json/tokens.json',
+  'agent-reference.md',
+  'validate-accents.mjs'
+]) {
   fs.rmSync(path.join(distDir, relativePath), { force: true });
 }

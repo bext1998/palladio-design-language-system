@@ -399,7 +399,7 @@ ${mdTable(['項目', 'Compact', 'Default', 'Spacious'], densityRows)}
 \`\`\`
 
 \`\`\`ts
-import { palladioTokens, palladioDensity } from '@palladio/design-system/dist/ts/tokens';
+import { palladioTokens, palladioDensity } from '@palladio/tokens';
 
 const bg = palladioTokens.color.surface.hex;
 const compactPadding = palladioDensity.compact.density.component.padding;
