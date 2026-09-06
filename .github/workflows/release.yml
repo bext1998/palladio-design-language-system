@@ -2,6 +2,12 @@ name: Release
 
 # Publish @palladio/tokens to npm and cut a GitHub Release when a v* tag is pushed.
 # The tag must match palladio/package.json "version" (e.g. tag v0.1.0 -> version 0.1.0).
+#
+# Auth: npm Trusted Publishing (OIDC) — no NPM_TOKEN secret. One-time setup on
+# npmjs.com: package Settings -> Trusted Publisher -> GitHub Actions, repo
+# bext1998/palladio-design-language-system, workflow release.yml. The package
+# must exist first, so the very first version is published manually
+# (`npm login && npm publish --provenance=false` from palladio/).
 
 on:
   push:
@@ -14,7 +20,7 @@ defaults:
 
 permissions:
   contents: write   # create the GitHub Release
-  id-token: write   # npm provenance
+  id-token: write   # npm Trusted Publishing (OIDC) + provenance
 
 jobs:
   publish:
@@ -24,10 +30,13 @@ jobs:
 
       - uses: actions/setup-node@v5
         with:
-          node-version: 22
+          node-version: 24
           registry-url: https://registry.npmjs.org
           cache: npm
           cache-dependency-path: palladio/package-lock.json
+
+      # OIDC trusted publishing needs npm >= 11.5.1; make sure the runner has it.
+      - run: npm install -g npm@latest
 
       - run: npm ci
 
@@ -47,9 +56,7 @@ jobs:
         run: npm pack
 
       - name: Publish to npm
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish   # OIDC via id-token: write; provenance is automatic
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
