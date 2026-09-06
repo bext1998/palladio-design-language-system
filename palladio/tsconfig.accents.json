@@ -1,5 +1,5 @@
 {
-  "//": "Emits dist/validate-accents.d.ts from the shipped JS + its JSDoc, so strict TypeScript consumers of @palladio/tokens/validate-accents do not hit TS7016. Run by `npm run build` after emit-dist-extras.mjs.",
+  "//": "Emits dist/validate-accents.d.ts from the shipped JS + its JSDoc, so strict TypeScript consumers of @pdiodsgn/tokens/validate-accents do not hit TS7016. Run by `npm run build` after emit-dist-extras.mjs.",
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",

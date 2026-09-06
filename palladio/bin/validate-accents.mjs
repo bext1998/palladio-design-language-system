@@ -2,7 +2,7 @@
 /**
  * CLI wrapper around `validateAccentPairs()` for a product's CI / build.
  *
- *   npx --package @palladio/tokens palladio-validate-accents ./palladio-accent.json
+ *   npx --package @pdiodsgn/tokens palladio-validate-accents ./palladio-accent.json
  *
  * Input JSON shape:
  *   {

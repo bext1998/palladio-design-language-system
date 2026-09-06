@@ -1,4 +1,4 @@
-# Changelog — @palladio/tokens
+# Changelog — @pdiodsgn/tokens
 
 SemVer across all formats; they move together. A token **value** change is a
 minor bump (visually breaking) with its impact noted here. See `README.md`
@@ -6,11 +6,11 @@ minor bump (visually breaking) with its impact noted here. See `README.md`
 
 ## Unreleased
 
-- Package renamed `@palladio/design-system` → `@palladio/tokens`; set up for
+- Package renamed `@palladio/design-system` → `@pdiodsgn/tokens`; set up for
   public npm publish (`files`/`exports`/`publishConfig`, `bin`, compiled
   `dist/ts/tokens.js` + `.d.ts`).
 - `validateAccentPairs()` extracted to a dependency-free module and shipped as
-  `@palladio/tokens/validate-accents` (`dist/validate-accents.js` + `.d.ts`,
+  `@pdiodsgn/tokens/validate-accents` (`dist/validate-accents.js` + `.d.ts`,
   `exports` declares `types`) + `palladio-validate-accents` CLI.
 - `LICENSE` (MIT) now included in the package and the Release tarball.
 - `agent-reference.md` rewritten for consumers who never clone the repo:
