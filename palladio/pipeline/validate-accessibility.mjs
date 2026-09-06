@@ -26,26 +26,19 @@
 
 import { fileURLToPath } from 'node:url';
 import { loadTokenSources, resolveRef } from './token-model.mjs';
+import {
+  contrastRatio,
+  hexToColorObj,
+  A_M1_THRESHOLD,
+  A_M2_THRESHOLD,
+  validateAccentPairs
+} from './accent-contract.mjs';
 
-function srgbToLinear(c) {
-  return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-}
+// `validateAccentPairs` lives in the dependency-free accent-contract module so
+// the published package can ship it without the pipeline. Re-exported here for
+// in-repo callers that historically imported it from this file.
+export { validateAccentPairs } from './accent-contract.mjs';
 
-function luminance(colorObj) {
-  const [r, g, b] = colorObj.components;
-  return 0.2126 * srgbToLinear(r) + 0.7152 * srgbToLinear(g) + 0.0722 * srgbToLinear(b);
-}
-
-function contrastRatio(a, b) {
-  const l1 = luminance(a);
-  const l2 = luminance(b);
-  const lighter = Math.max(l1, l2);
-  const darker = Math.min(l1, l2);
-  return (lighter + 0.05) / (darker + 0.05);
-}
-
-const A_M1_THRESHOLD = 4.5;
-const A_M2_THRESHOLD = 3.0;
 const DRIFT_TOLERANCE = 0.01;
 
 // Expected ratios below are the ones documented and explained in
@@ -147,83 +140,9 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   runAccentPairsRegression();
 }
 
-function hexToColorObj(hex) {
-  const clean = String(hex).replace('#', '');
-  if (!/^[0-9a-fA-F]{6}$/.test(clean)) {
-    throw new Error(`Invalid hex color: ${hex}`);
-  }
-  const components = [0, 2, 4].map((i) => parseInt(clean.slice(i, i + 2), 16) / 255);
-  return { components, hex: `#${clean.toUpperCase()}` };
-}
-
-/**
- * Validate a product's accent slot pairs per accessibility-contract.md §9
- * (docs/spec.md 2.5). Palladio does not derive or hold any product's accent
- * values, so this function is NOT called by this script's own run above —
- * it is exported for the product's own validation (Issue #15) to import
- * and call once real accent hex values are available.
- *
- * @param {{ accent: string, accentHover: string, accentActive: string, accentDisabled: string, accentSubtle: string, accentText: string }} accent
- *   All six required accent slots as "#rrggbb" strings (spec 2.5 mandates every slot; the product
- *   provides them, Palladio never derives or falls back). accentSubtle is presence-validated here but
- *   has no mandated fixed foreground/background pair of its own, so it is not part of the contrast
- *   checks below — list any pair a product actually renders on it via `extraPairs`.
- * @param {Array<{ name: string, foreground: string, background: string, kind: 'text' | 'largeText' | 'ui' }>} [extraPairs]
- *   Additional foreground/background pairs the product actually uses (spec 2.5 requires listing these
- *   in the product's own token docs). `kind` selects the required threshold and must be one of:
- *   - 'text'      → normal text, A-M1 (>= 4.5:1)
- *   - 'largeText' → large text (>=24px regular / >=18.5px bold), A-M2 (>= 3:1)
- *   - 'ui'        → non-text UI element (border/icon/etc.), A-M2 (>= 3:1)
- *   An unrecognised `kind` is rejected — it is never silently downgraded to a laxer threshold.
- * @returns {Array<{ pair: string, ratio: number, threshold: number, passes: boolean }>}
- */
-export function validateAccentPairs(accent, extraPairs = []) {
-  const required = ['accent', 'accentHover', 'accentActive', 'accentDisabled', 'accentSubtle', 'accentText'];
-  for (const key of required) {
-    if (!accent?.[key]) {
-      throw new Error(`Missing required accent slot "${key}". Palladio does not fall back or derive accent values (spec 2.5).`);
-    }
-    // Every slot must be a well-formed "#rrggbb" hex color, even accentSubtle,
-    // which has no mandated fixed contrast pair of its own (see JSDoc above) —
-    // format validity is still required, it is just not paired against anything here.
-    try {
-      hexToColorObj(accent[key]);
-    } catch {
-      throw new Error(`Accent slot "${key}" is not a valid "#rrggbb" hex color: ${accent[key]}`);
-    }
-  }
-
-  const results = [];
-
-  // Mandatory pairs (spec 2.5): accent-text against accent / hover / active / disabled — A-M1 (4.5:1).
-  for (const bg of ['accent', 'accentHover', 'accentActive', 'accentDisabled']) {
-    const ratio = contrastRatio(hexToColorObj(accent.accentText), hexToColorObj(accent[bg]));
-    results.push({ pair: `accent-text on ${bg}`, ratio, threshold: A_M1_THRESHOLD, passes: ratio >= A_M1_THRESHOLD });
-  }
-
-  // Product-listed extra pairs — the caller classifies each pair's `kind`, which
-  // selects the required threshold. Unknown kinds are rejected, never downgraded.
-  const KIND_THRESHOLDS = { text: A_M1_THRESHOLD, largeText: A_M2_THRESHOLD, ui: A_M2_THRESHOLD };
-  for (const { name, foreground, background, kind } of extraPairs) {
-    const threshold = KIND_THRESHOLDS[kind];
-    if (threshold === undefined) {
-      throw new Error(
-        `Unknown extraPairs kind "${kind}" for pair "${name}". Use 'text' (A-M1 4.5:1), 'largeText' (A-M2 3:1) or 'ui' (A-M2 3:1).`
-      );
-    }
-    const ratio = contrastRatio(hexToColorObj(foreground), hexToColorObj(background));
-    results.push({ pair: name, ratio, threshold, passes: ratio >= threshold });
-  }
-
-  const failures = results.filter((r) => !r.passes);
-  if (failures.length > 0) {
-    throw new Error(
-      `Accent contrast validation failed: ${failures.map((f) => `${f.pair} is ${f.ratio.toFixed(2)}:1 (< ${f.threshold}:1)`).join('; ')}`
-    );
-  }
-
-  return results;
-}
+// `hexToColorObj` and `validateAccentPairs` now live in `./accent-contract.mjs`
+// (imported and re-exported at the top of this file) so the published package
+// can ship the accent validator without the Style Dictionary pipeline.
 
 /**
  * Regression coverage for validateAccentPairs() — the behaviours the PR #22

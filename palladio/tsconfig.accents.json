@@ -1,0 +1,18 @@
+{
+  "//": "Emits dist/validate-accents.d.ts from the shipped JS + its JSDoc, so strict TypeScript consumers of @palladio/tokens/validate-accents do not hit TS7016. Run by `npm run build` after emit-dist-extras.mjs.",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowJs": true,
+    "checkJs": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "newLine": "lf"
+  },
+  "include": [
+    "dist/validate-accents.js"
+  ]
+}
