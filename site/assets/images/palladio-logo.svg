@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="466" height="176" viewBox="0 0 466 176" fill="none" role="img" aria-labelledby="title description">
+  <title id="title">Palladio</title>
+  <desc id="description">Palladio Design Language &amp; System 的開放門廊標誌。</desc>
+  <g stroke-linecap="square" stroke-linejoin="miter">
+    <path d="M22 44V133" stroke="#F0F0F0" stroke-width="11"/>
+    <path d="M22 44H56C75 44 87 55 87 68C87 81 75 92 56 92H22" stroke="#F0F0F0" stroke-width="11"/>
+    <path d="M14 138H95" stroke="#D9814F" stroke-width="11"/>
+  </g>
+  <text x="155" y="102" fill="#F0F0F0" font-family="Noto Serif, Georgia, serif" font-size="76" font-weight="500" letter-spacing="-1.52">Palladio</text>
+  <text x="159" y="138" fill="#9A9A9A" font-family="Noto Serif, Georgia, serif" font-size="15" font-weight="500" letter-spacing="2.4">DESIGN LANGUAGE &amp; SYSTEM</text>
+</svg>

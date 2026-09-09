@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176 176" fill="none" role="img" aria-labelledby="title">
+  <title id="title">Palladio</title>
+  <g stroke="#D9814F" stroke-width="14" stroke-linecap="square" stroke-linejoin="miter">
+    <path d="M28 18V158"/>
+    <path d="M28 18H88C126 18 156 46 156 84C156 121 126 134 88 134H28"/>
+  </g>
+</svg>
