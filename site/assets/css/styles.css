@@ -1,0 +1,295 @@
+/* Palladio site — line-and-space first, one measured column, serif voice + sans mechanism. */
+
+:root {
+  /* surface ladder (matches Palladio spec §2) */
+  --bg: #141414;
+  --surface: #1C1C1C;
+  --raised: #242424;
+  --line: #333333;
+  --strong: #7A7A7A;
+  --text: #F0F0F0;
+  --muted: #9A9A9A;
+
+  /* this site's own brand accent — NOT a Palladio token */
+  --brand: #D9814F;
+  --brand-hover: #E4A079;
+  --on-brand: #141414;
+
+  /* spacing — Palladio's real scale (4px base) */
+  --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px; --s5: 20px;
+  --s6: 24px; --s8: 32px; --s10: 40px; --s12: 48px; --s16: 64px;
+
+  --frame: 1080px;     /* outer page width — keeps things sane on large monitors */
+  --measure: 60ch;     /* prose column inside a section — readability cap */
+  --wide: 1040px;
+  --pad-inline: clamp(20px, 5vw, 48px);
+
+  --serif: "Noto Serif", Georgia, serif;
+  --sans: "Noto Sans", Arial, sans-serif;
+  --mono: "Noto Sans Mono", ui-monospace, monospace;
+
+  /* motion — Palladio spec §5 (fluid, organic; never linear, never spring) */
+  --dur-fast: 120ms;
+  --dur-normal: 220ms;
+  --ease-default: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-enter: cubic-bezier(0, 0, 0.2, 1);
+  --ease-expressive: cubic-bezier(0.34, 1.10, 0.64, 1); /* signature overshoot — used once */
+
+  color: var(--text);
+  background: var(--bg);
+  font: 400 100%/1.65 var(--serif);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; background: none; border: 0; color: inherit; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--strong); outline-offset: 3px; border-radius: 2px; }
+::selection { background: var(--brand); color: var(--on-brand); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    transition-duration: 0ms !important;
+    animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  .reveal, .reveal * { opacity: 1 !important; transform: none !important; }
+}
+
+/* entrance: content settles in as it scrolls into view (§1.1 "elements enter
+   like breathing"). Hidden state only applies when JS ran AND motion is welcome,
+   so a failed script or reduced-motion never leaves content invisible. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .reveal { opacity: 0; transform: translateY(10px); }
+  html.js .reveal.in {
+    opacity: 1; transform: none;
+    transition: opacity var(--dur-normal) var(--ease-enter),
+                transform var(--dur-normal) var(--ease-enter);
+  }
+  html.js .steps.reveal li { opacity: 0; transform: translateY(10px); }
+  html.js .steps.reveal.in li {
+    opacity: 1; transform: none;
+    transition: opacity var(--dur-normal) var(--ease-enter),
+                transform var(--dur-normal) var(--ease-enter);
+  }
+  html.js .steps.reveal.in li:nth-child(2) { transition-delay: 60ms; }
+  html.js .steps.reveal.in li:nth-child(3) { transition-delay: 120ms; }
+  html.js .steps.reveal.in li:nth-child(4) { transition-delay: 180ms; }
+}
+
+/* ---- shared type ---- */
+h1, h2, h3 { margin: 0; font-family: var(--serif); font-weight: 500; line-height: 1.15; letter-spacing: -0.011em; }
+h1 { font-size: clamp(2.25rem, 5vw, 3.25rem); line-height: 1.1; }
+h2 { font-size: clamp(1.625rem, 3vw, 2.25rem); }
+h3 { font-size: 1.5rem; }
+p  { margin: 0; }
+
+.eyebrow {
+  margin: 0; color: var(--brand);
+  font: 600 0.6875rem/1.4 var(--sans);
+  letter-spacing: 0.12em; text-transform: uppercase;
+}
+.lede  { font-size: clamp(1.125rem, 1.6vw, 1.3125rem); line-height: 1.55; }
+.prose { color: var(--muted); }
+.meta  { color: var(--muted); font: 400 0.8125rem/1.5 var(--sans); }
+code   { font: 400 0.8125rem/1.6 var(--mono); }
+
+.link-arrow { color: var(--brand); font: 500 0.875rem var(--sans); transition: color var(--dur-fast) var(--ease-default); }
+.link-arrow::after {
+  content: " \2192"; display: inline-block;
+  transition: transform var(--dur-fast) var(--ease-default);
+}
+.link-arrow:hover { color: var(--brand-hover); }
+.link-arrow:hover::after { transform: translateX(3px); }
+
+.btn-primary {
+  display: inline-block;
+  padding: 12px 18px; min-height: 40px;
+  border-radius: 6px;
+  background: var(--brand); color: var(--on-brand);
+  font: 600 0.875rem/1 var(--sans);
+  transition: background var(--dur-fast) var(--ease-default);
+}
+.btn-primary:hover { background: var(--brand-hover); }
+
+/* ---- layout spine ----
+   .measure = the outer page frame (centered, capped for large monitors).
+   Prose inside a section is further capped at --measure-prose so lines stay
+   readable while headings and interactive blocks may run wider. */
+.measure { max-width: var(--frame); margin-inline: auto; padding-inline: var(--pad-inline); }
+.section { padding-block: var(--s16); }
+.section + .section, .resources { border-top: 1px solid var(--line); }
+
+.section > h2 { margin-top: var(--s3); max-width: 24ch; }
+.section > .prose, .section > .steps, .section > .code,
+.section > .note, .section > .scale, .section > .btn-demo,
+.section > .seg, .section > .demo, .section > .command,
+.section > p { margin-top: var(--s6); }
+.section > .prose, .section > .note, .section > p { max-width: var(--measure); }
+
+/* ---- header (logo lockup) ---- */
+.site-head {
+  max-width: var(--frame); margin-inline: auto;
+  padding: var(--s4) var(--pad-inline);
+  border-bottom: 1px solid var(--line);
+}
+.brand { display: inline-flex; align-items: stretch; gap: var(--s3); }
+.brand-mark { display: block; align-self: center; height: 40px; width: auto; flex-shrink: 0; }
+.brand-word {
+  align-self: center;
+  font: 500 1.5rem/1 var(--serif);
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.brand-tag {
+  display: flex; flex-direction: column; justify-content: center;
+  padding-left: var(--s3);
+  border-left: 1px solid var(--line);
+  color: var(--muted);
+  font: 600 0.625rem/1.45 var(--sans);
+  letter-spacing: 0.16em;
+}
+
+/* ---- hero ---- */
+.hero { padding-block: clamp(var(--s16), 10vw, 120px) var(--s16); }
+.hero > * { max-width: 42rem; }
+.hero h1 { max-width: 19ch; }
+.hero .eyebrow { margin-bottom: var(--s4); }
+.hero h1 { margin-bottom: var(--s5); }
+.hero .lede { margin-bottom: var(--s4); }
+.hero .prose { margin-bottom: var(--s6); }
+.actions { display: flex; align-items: center; gap: var(--s5); flex-wrap: wrap; }
+.pull {
+  margin: var(--s12) 0 0;
+  padding-left: var(--s4);
+  border-left: 2px solid var(--brand);
+  color: var(--muted);
+  font: italic 400 1.125rem/1.6 var(--serif);
+}
+
+/* ---- how: steps ---- */
+.steps { list-style: none; margin: 0; padding: 0; position: relative; max-width: 40rem; }
+.code, .scale, .seg, .demo { max-width: 40rem; }
+.steps::before {
+  content: ""; position: absolute; left: 13px; top: 14px; bottom: 14px;
+  width: 1px; background: var(--line);
+}
+.steps li { display: grid; grid-template-columns: 28px 1fr; gap: var(--s4); }
+.steps li + li { margin-top: var(--s5); }
+.steps .n {
+  display: grid; place-items: center;
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1px solid var(--brand); background: var(--bg);
+  color: var(--brand); font: 400 0.8125rem var(--sans);
+}
+.steps b { font: 500 1rem var(--serif); }
+.steps p { margin-top: 4px; color: var(--muted); font-size: 0.9375rem; }
+
+/* ---- how: the one earned panel ---- */
+.code {
+  margin-inline: 0;
+  border: 1px solid var(--line); border-radius: 6px;
+  background: var(--surface); overflow: hidden;
+}
+.code .tabs { display: flex; gap: var(--s5); padding: var(--s3) var(--s4) 0; border-bottom: 1px solid var(--line); }
+.code .tabs button {
+  padding-bottom: 10px; border-bottom: 2px solid transparent;
+  color: var(--muted); font: 400 0.75rem var(--mono);
+  transition: color var(--dur-fast) var(--ease-default), border-color var(--dur-fast) var(--ease-default);
+}
+.code .tabs button[aria-selected="true"] { color: var(--brand); border-color: var(--brand); }
+.code pre { margin: 0; padding: var(--s4); color: var(--text); font: 400 0.8125rem/1.7 var(--mono); white-space: pre-wrap; }
+@media (prefers-reduced-motion: no-preference) {
+  .code pre:not([hidden]) { animation: rise var(--dur-fast) var(--ease-enter); }
+}
+@keyframes rise { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+.note { color: var(--muted); font-size: 0.9375rem; }
+.note b { color: var(--text); font-family: var(--sans); font-weight: 600; }
+.brand-hex { color: var(--brand); font-family: var(--mono); }
+
+/* ---- how: spacing scale (no box) ---- */
+.scale .eyebrow { margin-bottom: var(--s3); }
+.scale-row {
+  display: grid; grid-template-columns: 10em 3.5em 1fr; align-items: center;
+  gap: var(--s3); min-height: 22px;
+  color: var(--muted); font: 400 0.8125rem var(--mono);
+}
+.scale-row i { height: 2px; background: var(--brand); }
+
+.btn-demo { display: flex; align-items: center; gap: var(--s4); flex-wrap: wrap; }
+.btn-demo .meta b { color: var(--text); }
+
+/* ---- density ---- */
+.seg { display: flex; gap: var(--s6); flex-wrap: wrap; }
+.seg button {
+  padding-bottom: 6px; border-bottom: 2px solid transparent;
+  color: var(--muted); font: 500 0.9375rem var(--sans);
+  transition: color var(--dur-fast) var(--ease-default), border-color var(--dur-fast) var(--ease-default);
+}
+.seg button span { display: block; font: 400 0.75rem var(--mono); color: var(--muted); }
+.seg button[aria-selected="true"] { color: var(--text); border-color: var(--brand); }
+
+/* the one signature moment: switching density visibly *settles*, using the
+   expressive overshoot easing (§5.3) — demonstrates "structure holds, space adapts". */
+.demo {
+  border-radius: 6px; background: var(--raised);
+  padding: var(--s2) var(--s3);
+  transition: padding var(--dur-normal) var(--ease-expressive),
+              font-size var(--dur-normal) var(--ease-expressive);
+}
+.demo[data-density="compact"]  { padding: var(--s1) var(--s2); font-size: 0.8125rem; }
+.demo[data-density="default"]  { padding: var(--s2) var(--s3); font-size: 0.875rem; }
+.demo[data-density="spacious"] { padding: var(--s3) var(--s5); font-size: 0.9375rem; }
+.demo .demo-head b { display: block; margin-top: 4px; font-family: var(--sans); }
+.demo > p { margin: var(--s3) 0; color: var(--muted); font-size: inherit; }
+
+/* ---- resources (line-first, no cards) ---- */
+.resources {
+  max-width: var(--wide); margin-inline: auto; padding-inline: var(--pad-inline);
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s8);
+}
+.res { border-top: 1px solid var(--line); padding-top: var(--s4); }
+.res-n { color: var(--brand); font: 500 1rem var(--mono); }
+.res h3 { margin: var(--s3) 0 var(--s2); }
+.res p { color: var(--muted); font-size: 0.9375rem; margin-bottom: var(--s3); }
+
+/* ---- install ---- */
+.command {
+  display: flex; align-items: center; gap: var(--s3);
+  padding: 0 var(--s3); min-height: 44px;
+  border: 1px solid var(--strong); border-radius: 6px;
+  background: var(--bg); font: 400 0.8125rem var(--mono);
+}
+.command button { margin-left: auto; color: var(--muted); font: 600 0.75rem var(--sans); transition: color var(--dur-fast) var(--ease-default); }
+.command button:hover { color: var(--text); }
+
+/* ---- footer ---- */
+.site-foot {
+  max-width: var(--wide); margin-inline: auto;
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s5);
+  padding: var(--s6) var(--pad-inline);
+  border-top: 1px solid var(--line);
+  color: var(--muted); font: 400 0.75rem/1.6 var(--sans);
+}
+.site-foot b { color: var(--text); font-family: var(--serif); font-weight: 500; }
+.site-foot .foot-links a { transition: color var(--dur-fast) var(--ease-default); }
+.site-foot .foot-links a:hover { color: var(--brand); }
+
+/* personal brand mark, far right */
+.foot-brand {
+  flex-shrink: 0; display: inline-flex; align-items: center;
+  opacity: 0.6; transition: opacity var(--dur-fast) var(--ease-default);
+}
+.foot-brand:hover { opacity: 1; }
+.foot-brand img { display: block; width: auto; height: 18px; }
+
+/* ---- responsive ---- */
+@media (max-width: 720px) {
+  .brand-mark { height: 32px; }
+  .brand-word { font-size: 1.3125rem; }
+  .resources { grid-template-columns: 1fr; gap: var(--s6); }
+  .site-foot { flex-direction: column; align-items: flex-start; gap: var(--s3); }
+}

@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Palladio — 設計語言與系統</title>
+  <meta name="description" content="Palladio 是一套開源的 design-token 系統：包含語意 token、無障礙元件與三種密度模式，專為跨產品複用而生。">
+  <link rel="icon" href="assets/images/palladio-favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;500&family=Noto+Sans:wght@400;500;600&family=Noto+Serif:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<script>document.documentElement.classList.add('js');</script>
+
+<header class="site-head">
+  <a class="brand" href="#top" aria-label="Palladio，設計語言與系統">
+    <svg class="brand-mark" xmlns="http://www.w3.org/2000/svg" viewBox="7 37 95 108" fill="none" aria-hidden="true" focusable="false">
+      <g stroke-linecap="square" stroke-linejoin="miter">
+        <path d="M22 44V133" stroke="#F0F0F0" stroke-width="11"/>
+        <path d="M22 44H56C75 44 87 55 87 68C87 81 75 92 56 92H22" stroke="#F0F0F0" stroke-width="11"/>
+        <path d="M14 138H95" stroke="#D9814F" stroke-width="11"/>
+      </g>
+    </svg>
+    <span class="brand-word">Palladio</span>
+    <span class="brand-tag">DESIGN LANGUAGE<br>&amp; SYSTEM</span>
+  </a>
+</header>
+
+<main id="top">
+
+  <section class="hero measure">
+    <p class="eyebrow">開源。跨平台。以人為本。</p>
+    <h1>專為打造產品的人們而生。</h1>
+    <p class="lede">Palladio 為團隊建立共同語言，串聯起最初的構想與人們每天使用的產品介面。</p>
+    <p class="prose">清晰的基礎規範讓設計與工程團隊減少溝通轉譯的時間，把心力專注在共同做出深思熟慮的決定。</p>
+    <p class="actions"><a class="btn-primary" href="#how">閱讀設計原則</a><a class="link-arrow" href="https://github.com/bext1998/palladio-design-language-system">在 GitHub 上查看</a></p>
+    <blockquote class="pull">目的不是讓每個產品長得一模一樣，而是讓每一次關鍵決策都清晰易懂、可重複實踐，並對使用它們的人友善體貼。</blockquote>
+  </section>
+
+  <section class="section measure reveal" id="how">
+    <p class="eyebrow">從設計意圖到產品介面</p>
+    <h2>留給良好判斷發揮空間，系統才能長久實用。</h2>
+
+    <ol class="steps reveal">
+      <li><span class="n">1</span><div><b>語意色彩 token</b><p>命名承載用途與意圖，數值調整時無需大費周章重新命名。</p></div></li>
+      <li><span class="n">2</span><div><b>共同語言</b><p>設計與程式碼對齊相同角色語意，而非硬編碼的色碼。</p></div></li>
+      <li><span class="n">3</span><div><b>有意識的留白與間距</b><p>一套標準尺度，確保所有介面表面具備一致的節奏感。</p></div></li>
+      <li><span class="n">4</span><div><b>無障礙介面</b><p>對比度、焦點狀態與動效皆在 token 層級定義，不需在每個畫面個別重複摸索。</p></div></li>
+    </ol>
+
+    <figure class="code">
+      <div class="tabs" role="tablist">
+        <button role="tab" aria-selected="true" data-tab="json">JSON</button>
+        <button role="tab" aria-selected="false" data-tab="css">CSS</button>
+      </div>
+      <pre data-panel="json">{
+  "site": {
+    "brand": { "accent": "#D9814F" }
+  }
+}</pre>
+      <pre data-panel="css" hidden>:root {
+  --site-brand-accent: #D9814F;
+}</pre>
+    </figure>
+
+    <p class="note"><b>本站強調色。</b> <code>site.brand.accent</code> = <span class="brand-hex">#D9814F</span>。Palladio 僅提供開放的 accent 插槽 &mdash; <span class="brand-hex">#D9814F</span> 是本站自身的選擇，不是系統預設值。</p>
+
+    <div class="scale">
+      <p class="eyebrow">語意間距尺度</p>
+      <div class="scale-row"><code>--pd-space-2</code><span>8px</span><i style="inline-size:8px"></i></div>
+      <div class="scale-row"><code>--pd-space-4</code><span>16px</span><i style="inline-size:16px"></i></div>
+      <div class="scale-row"><code>--pd-space-6</code><span>24px</span><i style="inline-size:24px"></i></div>
+      <div class="scale-row"><code>--pd-space-10</code><span>40px</span><i style="inline-size:40px"></i></div>
+      <div class="scale-row"><code>--pd-space-16</code><span>64px</span><i style="inline-size:64px"></i></div>
+    </div>
+
+    <div class="btn-demo">
+      <button class="btn-primary" type="button">儲存變更</button>
+      <p class="meta"><code>#D9814F</code> 襯於 <code>#141414</code> &mdash; <b>6.35:1</b> &middot; AA</p>
+    </div>
+  </section>
+
+  <section class="section measure reveal" id="density">
+    <p class="eyebrow">為各種情境量身打造</p>
+    <h2>三種密度模式。同一套共用節奏。</h2>
+    <p class="prose">每種模式都能在保持元件結構不變的前提下，靈活調整間距、字級與點擊熱區，完美契合不同操作情境。</p>
+
+    <div class="seg" role="tablist">
+      <button role="tab" data-density="compact">緊湊 <span>13px &middot; 32px</span></button>
+      <button role="tab" data-density="default" aria-selected="true">預設 <span>14px &middot; 36px</span></button>
+      <button role="tab" data-density="spacious">寬裕 <span>15px &middot; 48px</span></button>
+    </div>
+
+    <div class="demo" data-density="default">
+      <div class="demo-head">
+        <span class="meta">專案狀態</span>
+        <b>待審查</b>
+      </div>
+      <p>單一結構，透過 Palladio 發佈的密度預設值自由切換。</p>
+      <a class="link-arrow" href="#resources">檢視元件細節</a>
+    </div>
+  </section>
+
+  <section class="section measure reveal" id="made">
+    <p class="eyebrow">公開透明的開源成果</p>
+    <h2>由個人獨立開發。因眾人參與而更完整。</h2>
+    <p class="prose">Palladio 是一位獨立開發者發起並維護的開源專案，採用 MIT 授權條款。無論你是設計師、工程師還是產品愛好者，都歡迎一起貢獻程式碼、撰寫文件、回報問題，共同塑造未來的發展藍圖。</p>
+    <p><a class="link-arrow" href="https://github.com/bext1998/palladio-design-language-system">前往 GitHub 參與貢獻</a></p>
+  </section>
+
+  <section class="section resources" id="resources">
+    <div class="res reveal">
+      <span class="res-n">01</span>
+      <h3>設計基礎</h3>
+      <p>色彩、字體、間距、圓角與動效等規範 &mdash; 為一致的使用者體驗奠定堅實基礎。</p>
+      <a class="link-arrow" href="#how">探索設計基礎</a>
+    </div>
+    <div class="res reveal">
+      <span class="res-n">02</span>
+      <h3>元件</h3>
+      <p>基於語意角色打造的無障礙元件，專為跨產品複用而設計。</p>
+      <a class="link-arrow" href="#density">探索元件</a>
+    </div>
+    <div class="res reveal">
+      <span class="res-n">03</span>
+      <h3>無障礙</h3>
+      <p>對比度規則、可見焦點、減少動態效果與密度適配，皆已深深植入系統基礎。</p>
+      <a class="link-arrow" href="#how">閱讀無障礙契約</a>
+    </div>
+  </section>
+
+  <section class="section measure install" id="install">
+    <p class="eyebrow">從源頭開始接入</p>
+    <h2>將 Palladio 融入你的產品日常。</h2>
+    <div class="command">
+      <code>npm install @pdiodsgn/tokens</code>
+      <button type="button" id="copy">複製</button>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <span><b>Palladio</b> 設計語言與系統</span>
+  <span class="foot-links"><a href="https://github.com/bext1998/palladio-design-language-system/blob/main/LICENSE">MIT 授權條款</a> &middot; <a href="https://github.com/bext1998/palladio-design-language-system">GitHub</a></span>
+  <a class="foot-brand" href="https://bext1998.github.io/personalhub/" target="_blank" rel="noopener" aria-label="mazemaze — personal hub">
+    <img src="assets/images/mazemaze-logo.png" alt="mazemaze" width="616" height="61">
+  </a>
+</footer>
+
+<script>
+  document.querySelectorAll('.tabs').forEach(function (tabs) {
+    var fig = tabs.closest('.code');
+    tabs.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-tab]');
+      if (!btn) return;
+      tabs.querySelectorAll('[data-tab]').forEach(function (b) {
+        b.setAttribute('aria-selected', String(b === btn));
+      });
+      fig.querySelectorAll('[data-panel]').forEach(function (p) {
+        p.hidden = p.dataset.panel !== btn.dataset.tab;
+      });
+    });
+  });
+
+  var seg = document.querySelector('.seg');
+  var demo = document.querySelector('.demo');
+  if (seg && demo) {
+    seg.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-density]');
+      if (!btn) return;
+      seg.querySelectorAll('[data-density]').forEach(function (b) {
+        b.setAttribute('aria-selected', String(b === btn));
+      });
+      demo.dataset.density = btn.dataset.density;
+    });
+  }
+
+  var copy = document.getElementById('copy');
+  if (copy) {
+    copy.addEventListener('click', function () {
+      var text = copy.previousElementSibling.textContent.trim();
+      if (navigator.clipboard) navigator.clipboard.writeText(text);
+      var label = copy.textContent;
+      copy.textContent = 'Copied';
+      setTimeout(function () { copy.textContent = label; }, 1400);
+    });
+  }
+
+  // Entrance: reveal content as it scrolls into view. Skipped entirely under
+  // reduced-motion or when IntersectionObserver is unavailable (content stays visible).
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+  }
+</script>
+
+</body>
+</html>
