@@ -18,7 +18,7 @@
 
 - **#45 前提過期（文件層，非阻塞）**：Issue 描述「行銷官網（concept B，`Palladio-static-site/`，目前在桌面、尚未進 repo）」與現況不符——`site/` 已於 PR #47 遷入並經 PR #48 部署；文件站規劃本體（IA、生成來源、技術選型、部署）仍有效。
 - **待決策：Select／Dropdown 的浮層疊序（#49）**：需使用者明確要求才能修改 `docs/spec.md` 功能範圍；目前僅記錄、不實作。面板本體現有 token 已足夠——§2.1 已把 dropdown 歸入 `pd-color-surface-raised`、§4.1 歸入 `pd-radius-md`；依 §1.2 P2（線條優先、elevation 保守）不引入陰影 token，待決策者僅為 z-index／疊序語意是否 token 化。
-- **待決策：缺漏 C-1（擱置）**——「版面容器欄寬／欄數／格比／對齊策略無 token 規範」原記錄於 `palladio/docs/stress-tests/landing-page/decisions.md`，該檔隨 PR #32 撤回而不在 `main`（僅存於撤回分支 `origin/maze/2026-09-06-e69e`）。合成壓力測試已非完成 gate，此事項擱置，待真實產品接入再提。
+- **待決策：缺漏 C-1（擱置）**——「版面容器欄寬／欄數／格比／對齊策略無 token 規範」原記錄於 `palladio/docs/stress-tests/landing-page/decisions.md`，該檔隨 PR #32 撤回而不在 `main`（該撤回分支已刪除；內容仍可由 PR ref `refs/pull/32/head` 取回）。合成壓力測試已非完成 gate，此事項擱置，待真實產品接入再提。
 - 無其他阻塞。
 
 ## 工作區現況（未追蹤，勿誤刪）
