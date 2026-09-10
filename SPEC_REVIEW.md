@@ -1,6 +1,6 @@
 # Specification Review
 
-> Source spec: `D:\AgentCoding\PalladioDesignLanguage&System\docs\spec.md`
+> Source spec: `D:\AgentCoding\PalladioDesignLanguageSystem\docs\spec.md`
 > Previous revision: `SHA-256 CBEFF93A72D252E889069CC2928C2E8387E05623E70F21E1487E3163422F5D5F`
 > Revision: `SHA-256 82A73CC5200A1FA85F4F5A0FC174C3AAC827094EB69D69BEB350761EED2261D9`
 > Mode: `verify`
@@ -89,6 +89,6 @@
 
 ## Source Identification
 
-- Path: `D:\AgentCoding\PalladioDesignLanguage&System\docs\spec.md`
+- Path: `D:\AgentCoding\PalladioDesignLanguageSystem\docs\spec.md`
 - Previous revision: `SHA-256 CBEFF93A72D252E889069CC2928C2E8387E05623E70F21E1487E3163422F5D5F`
 - Revision: `SHA-256 82A73CC5200A1FA85F4F5A0FC174C3AAC827094EB69D69BEB350761EED2261D9`
