@@ -46,10 +46,14 @@
       "types": "./dist/validate-accents.d.ts",
       "import": "./dist/validate-accents.js"
     },
+    "./validate-components": {
+      "import": "./dist/validate-components.js"
+    },
     "./package.json": "./package.json"
   },
   "bin": {
-    "palladio-validate-accents": "bin/validate-accents.mjs"
+    "palladio-validate-accents": "bin/validate-accents.mjs",
+    "palladio-validate-components": "bin/validate-components.mjs"
   },
   "files": [
     "dist",
@@ -75,8 +79,9 @@
     "validate:tokens": "node pipeline/validate-tokens.mjs",
     "validate:artifacts": "node pipeline/validate-artifacts.mjs",
     "validate:accessibility": "node pipeline/validate-accessibility.mjs",
-    "validate:all": "npm run validate:tokens && npm run validate:artifacts && npm run validate:accessibility",
-    "validate:components": "npm run validate:button && npm run validate:input && npm run validate:divider && npm run validate:badge && npm run validate:card && npm run validate:navigation",
+    "validate:component-contracts": "node pipeline/component-contract.test.mjs",
+    "validate:all": "npm run validate:tokens && npm run validate:artifacts && npm run validate:accessibility && npm run validate:components",
+    "validate:components": "npm run validate:button && npm run validate:input && npm run validate:divider && npm run validate:badge && npm run validate:card && npm run validate:navigation && npm run validate:component-contracts",
     "prepublishOnly": "npm run rebuild && npm run validate:all"
   },
   "devDependencies": {

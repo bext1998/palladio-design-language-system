@@ -4,9 +4,10 @@ Generated design-token artifacts for the **Palladio Design Language & System** �
 CSS custom properties, TypeScript, JSON and an agent reference, built from one
 token source of truth.
 
-This package is **not a UI kit**. It ships values and the accent-contrast
-validator, nothing else. Components live in the source repo as spec-validation
-material, not as a consumer contract.
+This package is **not a UI kit**. It ships token values plus validation tools;
+it does not ship component CSS. Components remain source-repo spec-validation
+material, while the component validator gives consumers a build/CI guard for
+their copied component markup.
 
 - Design language: `docs/spec.md` chapters 1–8 in the [source repo](https://github.com/bext1998/palladio-design-language-system).
 - The source repo (pipeline, spec, stress-test prototypes) is for Palladio
@@ -33,6 +34,7 @@ range (`^`) only for non-first-party consumers.
 | `@pdiodsgn/tokens/tokens.ts` | `dist/ts/tokens.ts` | Source form, if you prefer to compile it yourself |
 | `@pdiodsgn/tokens/agent-reference.md` | `dist/agent-reference.md` | AI coding agents — token overview + rules |
 | `@pdiodsgn/tokens/validate-accents` | `dist/validate-accents.js` + `.d.ts` | `validateAccentPairs()` for your accent slots |
+| `@pdiodsgn/tokens/validate-components` | `dist/validate-components.js` | Validate component HTML class, native-element and required ARIA contracts |
 
 Every example below that names a version uses `<version>` — replace it with the
 exact version you installed (see `package.json`). Do not use `latest` or an
@@ -123,6 +125,36 @@ npx --package @pdiodsgn/tokens@<version> palladio-validate-accents ./palladio-ac
 
 The full contract is `palladio/docs/accessibility/accessibility-contract.md` §9
 in the source repo, at the `v<version>` tag.
+
+## Component markup contracts
+
+Use the validator against built HTML fragments that are expected to contain a
+specific Palladio component. It rejects unknown `pd-*` classes and validates
+the native-element and required-ARIA rules for the selected component. This is
+intended for build/CI, including generated output; it is not a replacement for
+reviewing component behavior or visual rendering.
+
+```sh
+npx --package @pdiodsgn/tokens@<version> palladio-validate-components \
+  --component navigation ./dist/docs-navigation.html
+```
+
+The `navigation` target would reject the PR #70 regression: a `<nav>` using
+`docs-nav__link--current` instead of `pd-nav__link--active` fails because the
+root, list and active link no longer meet the Navigation contract. Pass each
+component only for a focused HTML fragment (or a page section containing only
+that component's native root); a selected target treats every matching native
+element in that input as Palladio markup.
+
+For programmatic use, the function returns errors without writing to stdout or
+throwing, so the consumer controls its test framework:
+
+```js
+import { validateComponentHtml } from '@pdiodsgn/tokens/validate-components';
+
+const errors = validateComponentHtml(html, { components: ['navigation'] });
+if (errors.length > 0) throw new Error(errors.join('\n'));
+```
 
 ## Versioning
 
