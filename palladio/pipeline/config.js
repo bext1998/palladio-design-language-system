@@ -294,8 +294,8 @@ function renderAgentReference({ dictionary }) {
 - **不得只用色彩傳達資訊或狀態**（A-M5）——語意色需搭配文字、圖示或其他非色彩線索。
 - **不得使用 font-weight 100–300**（規格 3.3，深色背景上過細難以閱讀）。
 - **不得用 \`outline: none\` 移除 focus 樣式卻不提供替代的可見 focus indicator**（A-M3）。
-- **focus indicator 應使用 \`pd-color-border-strong\`**——規格 2.2 的 focus ring 底色 \`#7A7A7A\` 已對四層既有表面通過 A-M2（最低 3.16:1）；保留 \`:focus-visible\` 語意，完整契約見 \`accessibility-contract.md\` 第四節。
-- **不得將 \`pd-color-border-default\` 當作 Input 可識別邊界**——它只用於裝飾性 card edge。**Input 可識別邊界應使用 \`pd-color-input-border\`**——它對四層既有表面均通過 A-M2（最低 3.16:1），完整契約見 \`accessibility-contract.md\` 第三節。
+- **focus indicator 預設使用 \`pd-color-focus-ring\`**——只能透過 \`enableValidatedAccentFocusRing()\` 在驗證 \`pd-color-accent\` 對所有實際 focus backdrop 都通過 A-M2 後啟用；未呼叫、驗證失敗或重驗失敗時，元件 CSS 自動回退到 \`pd-color-border-strong\`（\`#777777\`，最低 3.03:1）。保留 \`:focus-visible\` 語意，完整契約見 \`accessibility-contract.md\` 第四、九節。
+- **不得將 \`pd-color-border-default\` 當作 Input 可識別邊界**——它只用於裝飾性 card edge。**Input 可識別邊界應使用 \`pd-color-input-border\`**——它對四層既有表面均通過 A-M2（最低 3.03:1），完整契約見 \`accessibility-contract.md\` 第三節。
 
 ## 三、色彩
 
@@ -319,7 +319,7 @@ ${mdTable(['Token', 'Value', '用途'], colorGroup(colorRecords, (name) => name.
 
 ${mdTable(['Token', 'Value', '用途'], colorGroup(colorRecords, (name) => ['success', 'warning', 'danger', 'info'].includes(name)))}
 
-> 語意色與上列所有文字色，在四層表面上皆已驗證達 A-M1（≥4.5:1），見 \`accessibility-contract.md\` 第二節。
+> 語意色、主要／次要／placeholder 文字在四層表面上皆已驗證達 A-M1（≥4.5:1）。\`text-disabled\` 依 WCAG inactive UI component exemption 記錄對比但不納入 A-M1 gate，見 \`accessibility-contract.md\` 第二節。
 
 ### Accent 插槽（各產品自行提供，Palladio 不定義值）
 
@@ -332,7 +332,7 @@ ${mdTable(['Token', 'Value', '用途'], colorGroup(colorRecords, (name) => ['suc
 | \`--pd-color-accent-subtle\` | 低飽和背景（badge、tag 底色） | *由產品提供* |
 | \`--pd-color-accent-text\` | 強調色上的文字 | *由產品提供* |
 
-產品必須提供全部六個插槽；\`accent-text\` 對 \`accent\` / \`accent-hover\` / \`accent-active\` / \`accent-disabled\` 四種背景須驗證 ≥4.5:1（A-M1），其餘實際使用的配對依內容判定 A-M1 或 A-M2。用套件的驗證器：\`import { validateAccentPairs } from "@pdiodsgn/tokens/validate-accents"\`，或 CLI \`palladio-validate-accents accent.json\`。完整流程見 ${repoTree}/palladio/docs/accessibility/accessibility-contract.md 第九節。
+產品必須提供全部六個插槽；\`accent-text\` 對 \`accent\` / \`accent-hover\` / \`accent-active\` / \`accent-disabled\` 四種背景須驗證 ≥4.5:1（A-M1），其餘實際使用的配對依內容判定 A-M1 或 A-M2。用套件的驗證器：\`import { enableValidatedAccentFocusRing, validateAccentPairs } from "@pdiodsgn/tokens/validate-accents"\`，或 CLI \`palladio-validate-accents accent.json\`。若用 accent 作 focus ring，必須以 \`enableValidatedAccentFocusRing(document.documentElement.style, accent, focusBackdrops)\` 驗證全部實際 backdrop；失敗時不要設定 \`--pd-color-focus-ring\`，元件會回退到中性 ring。完整流程見 ${repoTree}/palladio/docs/accessibility/accessibility-contract.md 第九節。
 
 ---
 
@@ -384,7 +384,7 @@ ${mdTable(['項目', 'Compact', 'Default', 'Spacious'], densityRows)}
 
 | 規則 | 摘要 | 門檻 |
 |---|---|---|
-| A-M1 | 一般文字（含 placeholder、disabled）對比 | ≥ 4.5:1 |
+| A-M1 | 一般文字（含 placeholder；不含 inactive UI 的 disabled 文字）對比 | ≥ 4.5:1 |
 | A-M2 | 大字（≥24px regular / ≥18.5px bold）與 UI 元件對比 | ≥ 3:1 |
 | A-M3 | 所有互動元件需有可見 focus indicator | 不得僅 \`outline: none\` 無替代 |
 | A-M4 | \`prefers-reduced-motion\` 觸發時停用非必要動畫 | 見第五節契約 |

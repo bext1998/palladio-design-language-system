@@ -67,8 +67,8 @@ Palladio 的表面系統由五層構成，從最深的背景往上疊加。每�
 |-------|------|--------|
 | `pd-color-border-subtle` | 最輕量的分隔（幾乎與表面融合） | `#242424` |
 | `pd-color-border-default` | 標準裝飾性 border（card edge） | `#333333` |
-| `pd-color-input-border` | Input 可識別邊界 | `#7A7A7A` |
-| `pd-color-border-strong` | 強調邊框（focus ring 底色） | `#7A7A7A` |
+| `pd-color-input-border` | Input 可識別邊界 | `#777777` |
+| `pd-color-border-strong` | 互動元件的強調邊框與 focus ring fallback | `#777777` |
 
 ### 2.3 文字層級
 
@@ -77,7 +77,7 @@ Palladio 的表面系統由五層構成，從最深的背景往上疊加。每�
 | `pd-color-text-primary` | 主要文字 | `#F0F0F0` |
 | `pd-color-text-secondary` | 次要文字（meta、說明） | `#9A9A9A` |
 | `pd-color-text-placeholder` | placeholder 文字 | `#9A9A9A` |
-| `pd-color-text-disabled` | disabled 元件的文字 | `#969696` |
+| `pd-color-text-disabled` | disabled 元件的文字 | `#7A7A7A` |
 | `pd-color-text-inverse` | 深色背景上的反白文字（用於強調色按鈕） | `#141414` |
 
 ### 2.4 語意色彩
@@ -247,7 +247,7 @@ Palladio 使用 **4px 基礎單位**。所有間距均為 4 的倍數。
 
 | 規則 | 標準 |
 |------|------|
-| A-M1 | 一般文字（含 placeholder、disabled 文字）contrast ratio ≥ 4.5:1 |
+| A-M1 | 一般文字（含 placeholder；inactive UI 的 disabled 文字依 WCAG 豁免）contrast ratio ≥ 4.5:1 |
 | A-M2 | 大字（≥24px regular / ≥18.5px bold）及 UI 元件 contrast ratio ≥ 3:1 |
 | A-M3 | 所有互動元件必須有可見的 focus indicator（不得僅依賴 outline: none 後無替代方案） |
 | A-M4 | `prefers-reduced-motion` 觸發時，所有非必要動畫停用 |

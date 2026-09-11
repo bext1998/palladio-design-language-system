@@ -55,8 +55,8 @@ const spaciousBlock = cssBlock(css, ':root[data-density="spacious"]');
 
 assertEqual(cssVariable(themeBlock, 'pd-color-bg'), '#141414', 'Dark theme background');
 assertEqual(cssVariable(themeBlock, 'pd-color-text-primary'), '#F0F0F0', 'Dark theme primary text');
-assertEqual(cssVariable(themeBlock, 'pd-color-border-strong'), '#7A7A7A', 'Dark theme focus ring');
-assertEqual(cssVariable(themeBlock, 'pd-color-input-border'), '#7A7A7A', 'Dark theme input border');
+assertEqual(cssVariable(themeBlock, 'pd-color-border-strong'), '#777777', 'Dark theme strong border fallback');
+assertEqual(cssVariable(themeBlock, 'pd-color-input-border'), '#777777', 'Dark theme input border');
 assertEqual(cssVariable(rootBlock, 'pd-density-component-min-interactive-size'), '36px', 'Default density minimum interactive size');
 assertEqual(cssVariable(compactBlock, 'pd-density-component-min-interactive-size'), '32px', 'Compact density minimum interactive size');
 assertEqual(cssVariable(spaciousBlock, 'pd-density-component-min-interactive-size'), '48px', 'Spacious density minimum interactive size');
@@ -69,8 +69,9 @@ assert(JSON.stringify(Object.keys(json)) === JSON.stringify(['semantic', 'densit
 assert(JSON.stringify(Object.keys(json.density)) === JSON.stringify(['compact', 'default', 'spacious']), 'JSON density keys are incorrect');
 assert(JSON.stringify(Object.keys(json.theme)) === JSON.stringify(['dark']), 'JSON theme keys are incorrect');
 assertEqual(json.semantic.color.bg.hex, '#141414', 'JSON semantic background');
-assertEqual(json.semantic.color['border-strong'].hex, '#7A7A7A', 'JSON semantic focus ring');
-assertEqual(json.semantic.color['input-border'].hex, '#7A7A7A', 'JSON semantic input border');
+assertEqual(json.semantic.color['border-strong'].hex, '#777777', 'JSON semantic strong border fallback');
+assertEqual(json.semantic.color['input-border'].hex, '#777777', 'JSON semantic input border');
+assertEqual(json.semantic.color['text-disabled'].hex, '#7A7A7A', 'JSON semantic disabled text');
 assertEqual(json.density.default.density.component['min-interactive-size'].value, 36, 'JSON default density minimum interactive size');
 assertEqual(json.theme.dark.color.bg.hex, '#141414', 'JSON dark theme background');
 
@@ -96,8 +97,8 @@ assert(
   'agent-reference.md must explicitly prohibit accent fallback/derivation.'
 );
 assert(
-  /focus indicator 應使用\s*`?pd-color-border-strong`?/.test(agentReference),
-  'agent-reference.md must recommend pd-color-border-strong for focus indicators.'
+  /focus indicator 預設使用\s*`?pd-color-focus-ring`?/.test(agentReference),
+  'agent-reference.md must document the validated accent focus ring.'
 );
 assert(
   /Input 可識別邊界應使用\s*`?pd-color-input-border`?/.test(agentReference),

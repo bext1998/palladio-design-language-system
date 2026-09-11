@@ -46,14 +46,14 @@ export const palladioTokens = {
     },
     "input-border": {
       "colorSpace": "srgb",
-      "components": [0.478431, 0.478431, 0.478431],
-      "hex": "#7A7A7A",
+      "components": [0.466667, 0.466667, 0.466667],
+      "hex": "#777777",
       "alpha": 1
     },
     "border-strong": {
       "colorSpace": "srgb",
-      "components": [0.478431, 0.478431, 0.478431],
-      "hex": "#7A7A7A",
+      "components": [0.466667, 0.466667, 0.466667],
+      "hex": "#777777",
       "alpha": 1
     },
     "text-primary": {
@@ -76,8 +76,8 @@ export const palladioTokens = {
     },
     "text-disabled": {
       "colorSpace": "srgb",
-      "components": [0.588235, 0.588235, 0.588235],
-      "hex": "#969696",
+      "components": [0.478431, 0.478431, 0.478431],
+      "hex": "#7A7A7A",
       "alpha": 1
     },
     "text-inverse": {
@@ -481,14 +481,14 @@ export const palladioTheme = {
       },
       "input-border": {
         "colorSpace": "srgb",
-        "components": [0.478431, 0.478431, 0.478431],
-        "hex": "#7A7A7A",
+        "components": [0.466667, 0.466667, 0.466667],
+        "hex": "#777777",
         "alpha": 1
       },
       "border-strong": {
         "colorSpace": "srgb",
-        "components": [0.478431, 0.478431, 0.478431],
-        "hex": "#7A7A7A",
+        "components": [0.466667, 0.466667, 0.466667],
+        "hex": "#777777",
         "alpha": 1
       },
       "text-primary": {
@@ -511,8 +511,8 @@ export const palladioTheme = {
       },
       "text-disabled": {
         "colorSpace": "srgb",
-        "components": [0.588235, 0.588235, 0.588235],
-        "hex": "#969696",
+        "components": [0.478431, 0.478431, 0.478431],
+        "hex": "#7A7A7A",
         "alpha": 1
       },
       "text-inverse": {

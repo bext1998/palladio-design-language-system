@@ -71,7 +71,7 @@
 .pd-nav__link:focus-visible {
   background-color: var(--pd-color-surface-raised);
   color: var(--pd-color-text-primary);
-  outline: var(--pd-space-1) solid var(--pd-color-border-strong);
+  outline: var(--pd-space-1) solid var(--pd-color-focus-ring, var(--pd-color-border-strong));
   outline-offset: calc(-1 * var(--pd-space-1));
 }
 

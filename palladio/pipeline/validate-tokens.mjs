@@ -291,7 +291,7 @@ console.log('✔ DTCG 2025.10 Payload types verified: color (srgb object), dimen
 // 5. Validate Primitive Scales content
 const expectedCharcoal = {
   '950': '#141414', '900': '#1C1C1C', '850': '#242424', '800': '#2E2E2E', '750': '#323232',
-  '700': '#333333', '600': '#7A7A7A', '450': '#969696', '400': '#9A9A9A', '100': '#F0F0F0'
+  '700': '#333333', '625': '#777777', '600': '#7A7A7A', '450': '#969696', '400': '#9A9A9A', '100': '#F0F0F0'
 };
 for (const [key, expectedHex] of Object.entries(expectedCharcoal)) {
   const actualColor = resolveRef(`{color.charcoal.${key}}`, registry);
@@ -299,7 +299,7 @@ for (const [key, expectedHex] of Object.entries(expectedCharcoal)) {
     throw new Error(`Primitive charcoal.${key} expected hex ${expectedHex} in srgb but got ${JSON.stringify(actualColor)}`);
   }
 }
-console.log('✔ Primitive charcoal ladder verified (10 steps, DTCG colorSpace srgb).');
+console.log('✔ Primitive charcoal ladder verified (11 steps, DTCG colorSpace srgb).');
 
 // Space scale
 const expectedSpaces = {
@@ -512,6 +512,9 @@ for (const [surfName, surfObj] of Object.entries(resolvedSurfaces)) {
   for (const [textName, textObj] of Object.entries(resolvedTextColors)) {
     const ratio = getContrastRatio(textObj, surfObj);
     console.log(`[Text] ${textName} (${textObj.hex}) on ${surfName} (${surfObj.hex}) => ${ratio.toFixed(2)}:1`);
+    if (textName === 'text-disabled') {
+      continue;
+    }
     if (ratio < 4.5) {
       throw new Error(`A-M1 Contrast failure: ${textName} on ${surfName} is ${ratio.toFixed(2)}:1 (< 4.5:1)`);
     }
@@ -524,7 +527,7 @@ for (const [surfName, surfObj] of Object.entries(resolvedSurfaces)) {
     }
   }
 }
-console.log('✔ All dynamic WCAG A-M1 contrast ratios >= 4.5:1 verified.');
+console.log('✔ All required dynamic WCAG A-M1 contrast ratios >= 4.5:1 verified; text-disabled is logged under the inactive UI exemption.');
 
 console.log('\n========================================');
 console.log('🎉 All DTCG 2025.10 Token Checks Passed!');

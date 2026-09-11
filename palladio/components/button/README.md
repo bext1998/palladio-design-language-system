@@ -21,13 +21,15 @@
 | Default | 可操作的初始狀態 | `--pd-color-accent` 背景與 `--pd-color-accent-text` 文字 |
 | Hover | 支援 hover 的指標裝置 | `--pd-color-accent-hover` 背景 |
 | Active | 按住滑鼠或觸控，或鍵盤啟動期間 | `--pd-color-accent-active` 背景 |
-| Focus | 鍵盤移入 | `:focus-visible` 的 `--pd-color-border-strong` outline |
+| Focus | 鍵盤移入 | `:focus-visible` 的已驗證 accent outline；未驗證時回退 `--pd-color-border-strong` |
 | Disabled | 原生 `disabled` 屬性 | `--pd-color-accent-disabled` 背景，且原生按鈕不會取得焦點或觸發操作 |
 
 保留原生按鈕語意：Tab 進入可操作 Button，Enter 與 Space 觸發它。不要以 `role="button"`、`tabindex` 或 JavaScript 重建原生鍵盤行為。
 
 ## 可及性與動效
 
-Focus ring 使用 `:focus-visible`，以 `--pd-color-border-strong` 描邊並用 `--pd-space-1` 與元件分離。該 token 對 `bg`、`surface`、`surface-raised`、`surface-overlay` 的 A-M2 對比分別為 4.29:1、3.97:1、3.62:1、3.16:1。產品仍須依 accent 插槽契約驗證 `accent-text` 對 `accent`、`accent-hover`、`accent-active`、`accent-disabled` 的 A-M1 對比皆至少 4.5:1。
+Focus ring 使用 `:focus-visible`，以 `var(--pd-color-focus-ring, var(--pd-color-border-strong))` 描邊並用 `--pd-space-1` 與元件分離。產品必須用 `enableValidatedAccentFocusRing()` 驗證 accent 對所有實際 focus backdrop 的 A-M2 後才會啟用 accent；未啟用或驗證失敗時回退 `border-strong`（`#777777`，四層表面 4.11／3.81／3.47／3.03:1）。產品仍須依 accent 插槽契約驗證 `accent-text` 對 `accent`、`accent-hover`、`accent-active`、`accent-disabled` 的 A-M1 對比皆至少 4.5:1。
+
+Disabled Button 保留原生 `disabled` 語意、`cursor: not-allowed`，而且 hover／active selector 排除 disabled；`accent-disabled` 背景不是唯一的停用線索，符合 A-M5。
 
 一般模式只轉場背景色，使用 `--pd-duration-fast` 與 `--pd-easing-default`。`prefers-reduced-motion: reduce` 時移除 transition，不保留漸變或 transform 動畫。

@@ -31,6 +31,7 @@ for (const token of [
   '--pd-color-info',
   '--pd-color-accent-subtle',
   '--pd-color-accent-text',
+  '--pd-color-focus-ring',
   '--pd-color-border-strong',
   '--pd-density-component-min-interactive-size',
   '--pd-density-component-padding-horizontal',
@@ -51,7 +52,7 @@ assert.match(css, /:not\(:disabled\):hover/, 'Badge must define hover without st
 assert.match(css, /:not\(:disabled\):active/, 'Badge must define active without styling disabled badges.');
 assert.match(css, /:focus-visible/, 'Badge must preserve keyboard-visible focus on the interactive variant.');
 assert.match(css, /:disabled\b/, 'Badge must define a disabled state on the interactive variant.');
-assert.doesNotMatch(css, /var\(--pd-color-[a-z-]+[^)]*,/,
+assert.doesNotMatch(css.replaceAll('var(--pd-color-focus-ring, var(--pd-color-border-strong))', 'var(--pd-color-focus-ring)'), /var\(--pd-color-[a-z-]+[^)]*,/,
   'Badge must not provide a color token fallback.');
 assert.doesNotMatch(css, /#[0-9a-f]{3,8}\b/i,
   'Badge must not hardcode color values.');
@@ -76,10 +77,12 @@ assert.match(rule('.pd-badge--accent'), /color:\s*var\(--pd-color-accent-text\);
   'Accent Badge must use the product accent-text slot.');
 assert.match(rule('.pd-badge--interactive'), /min-block-size:\s*var\(--pd-density-component-min-interactive-size\);/,
   'Interactive Badge must meet A-M6 with the semantic density interactive size.');
-assert.match(rule('.pd-badge--interactive:focus-visible'), /outline:\s*var\(--pd-space-1\) solid var\(--pd-color-border-strong\);/,
-  'Focus Badge must use the same validated offset outline ring as Button/Input.');
+assert.match(rule('.pd-badge--interactive:focus-visible'), /outline:\s*var\(--pd-space-1\) solid var\(--pd-color-focus-ring, var\(--pd-color-border-strong\)\);/,
+  'Focus Badge must use the validated accent ring with the semantic fallback.');
 assert.match(rule('.pd-badge--interactive:disabled'), /color:\s*var\(--pd-color-text-disabled\);/,
-  'Disabled Badge text must use the disabled text token (A-M1).');
+  'Disabled Badge text must use the disabled text token.');
+assert.match(rule('.pd-badge--interactive:disabled'), /cursor:\s*not-allowed;/,
+  'Disabled Badge must retain a non-color unavailable cue (A-M5).');
 assert.match(rule('.pd-badge--interactive:disabled'), /background-color:\s*var\(--pd-color-surface-raised\);/,
   'Disabled Badge must reset to the A-M1-validated neutral background — including when combined with ' +
   '.pd-badge--accent — so text-disabled never lands on the unvalidated accent-subtle background.');

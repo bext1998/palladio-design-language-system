@@ -31,13 +31,14 @@ import {
   hexToColorObj,
   A_M1_THRESHOLD,
   A_M2_THRESHOLD,
+  enableValidatedAccentFocusRing,
   validateAccentPairs
 } from './accent-contract.mjs';
 
 // `validateAccentPairs` lives in the dependency-free accent-contract module so
 // the published package can ship it without the pipeline. Re-exported here for
 // in-repo callers that historically imported it from this file.
-export { validateAccentPairs } from './accent-contract.mjs';
+export { enableValidatedAccentFocusRing, validateAccentPairs } from './accent-contract.mjs';
 
 const DRIFT_TOLERANCE = 0.01;
 
@@ -56,14 +57,14 @@ const EXPECTED = [
   { token: 'border-default', surface: 'surface', ratio: 1.35, gated: false },
   { token: 'border-default', surface: 'surface-raised', ratio: 1.23, gated: false },
   { token: 'border-default', surface: 'surface-overlay', ratio: 1.07, gated: false },
-  { token: 'input-border', surface: 'bg', ratio: 4.29, gated: true },
-  { token: 'input-border', surface: 'surface', ratio: 3.97, gated: true },
-  { token: 'input-border', surface: 'surface-raised', ratio: 3.62, gated: true },
-  { token: 'input-border', surface: 'surface-overlay', ratio: 3.16, gated: true },
-  { token: 'border-strong', surface: 'bg', ratio: 4.29, gated: true },
-  { token: 'border-strong', surface: 'surface', ratio: 3.97, gated: true },
-  { token: 'border-strong', surface: 'surface-raised', ratio: 3.62, gated: true },
-  { token: 'border-strong', surface: 'surface-overlay', ratio: 3.16, gated: true }
+  { token: 'input-border', surface: 'bg', ratio: 4.11, gated: true },
+  { token: 'input-border', surface: 'surface', ratio: 3.81, gated: true },
+  { token: 'input-border', surface: 'surface-raised', ratio: 3.47, gated: true },
+  { token: 'input-border', surface: 'surface-overlay', ratio: 3.03, gated: true },
+  { token: 'border-strong', surface: 'bg', ratio: 4.11, gated: true },
+  { token: 'border-strong', surface: 'surface', ratio: 3.81, gated: true },
+  { token: 'border-strong', surface: 'surface-raised', ratio: 3.47, gated: true },
+  { token: 'border-strong', surface: 'surface-overlay', ratio: 3.03, gated: true }
 ];
 
 // Confirmed gaps register — see accessibility-contract.md §11. A gated pair
@@ -191,5 +192,34 @@ function runAccentPairsRegression() {
   // 4. An unknown kind is rejected, not silently downgraded.
   expectThrow(() => validateAccentPairs(goodAccent, [{ ...midPair, kind: 'decorative' }]), 'unknown extraPairs kind rejected');
 
-  console.log('\n✔ validateAccentPairs regression checks passed (accentSubtle required; largeText/text/unknown kind handling).');
+  // 5. A validated accent activates the CSS alias. The component CSS still
+  // supplies border-strong when this property is absent.
+  const styleValues = new Map();
+  const style = {
+    setProperty: (name, value) => styleValues.set(name, value),
+    removeProperty: (name) => styleValues.delete(name)
+  };
+  const focusAccent = {
+    accent: '#FFFFFF', accentHover: '#FFFFFF', accentActive: '#FFFFFF',
+    accentDisabled: '#FFFFFF', accentSubtle: '#333333', accentText: '#141414'
+  };
+  expectPass(
+    () => enableValidatedAccentFocusRing(style, focusAccent, [{ name: 'surface', background: '#141414' }]),
+    'validated accent focus ring activation'
+  );
+  if (styleValues.get('--pd-color-focus-ring') !== 'var(--pd-color-accent)') {
+    throw new Error('Accent regression failed: a validated accent did not activate --pd-color-focus-ring.');
+  }
+
+  // 6. A failed re-validation clears a previously activated ring so the CSS
+  // fallback takes over; a failed accent must never leave a stale ring active.
+  expectThrow(
+    () => enableValidatedAccentFocusRing(style, goodAccent, [{ name: 'surface', background: '#141414' }]),
+    'invalid accent focus ring falls back'
+  );
+  if (styleValues.has('--pd-color-focus-ring')) {
+    throw new Error('Accent regression failed: a failed focus validation did not restore the border-strong fallback.');
+  }
+
+  console.log('\n✔ Accent regression checks passed (slot validation, pair kinds, validated focus activation and fallback).');
 }

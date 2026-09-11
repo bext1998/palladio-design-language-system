@@ -63,7 +63,16 @@
           "hex": "#7A7A7A",
           "alpha": 1
         },
-        "$description": "強調邊框（focus ring 底色）"
+        "$description": "Input 可識別邊界與 disabled 文字"
+      },
+      "625": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.466667, 0.466667, 0.466667],
+          "hex": "#777777",
+          "alpha": 1
+        },
+        "$description": "強調邊框；對既有四層表面的 A-M2 最暗合格值"
       },
       "450": {
         "$value": {
