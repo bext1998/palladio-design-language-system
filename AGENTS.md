@@ -19,6 +19,7 @@ Palladio Design Language & System 是可跨消費端使用的開源設計語言�
 3. GitHub Issue／PR 與 Git 是工作狀態權威；只有明確 closeout 才重建 `NEXT_ACTION.md`。
 4. 修改前確認對應 token、輸出產物、可及性規則與消費端契約。
 5. Git Worktrees 請集中放置於 `D:\AgentCoding\.codex\worktrees\PalladioDesignLanguageSystem`；建立 Git Worktree 時的分支名稱一律採用 `maze/YYYY-MM-DD-short-hash`，其中 `short-hash` 為隨機值，字尾不得再加任何字樣。
+6. 美學／視覺審查（含外部 agent，例如 `maze-design-review`）在提出改動建議前，須先確認對應元件 `README.md` 是否已記錄該設計決策的理由（Palladio 的元件 README 慣例會寫明「為什麼」，不只是「是什麼」）。若已有記錄仍建議推翻，需明確引用該記錄並說明為何值得重新考慮，不得把已記錄的刻意取捨當成未知的新發現提出。
 
 ---
 
