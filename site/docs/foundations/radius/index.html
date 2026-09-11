@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="dark" data-docs-base="../../">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Palladio 設計系統文件 — Radius">
+  <title>Radius · Palladio</title>
+  <link rel="stylesheet" href="../../assets/palladio/palladio.css">
+  <link rel="stylesheet" href="../../assets/palladio/navigation.css">
+  <link rel="stylesheet" href="../../assets/palladio/card.css">
+  <link rel="stylesheet" href="../../assets/palladio/badge.css">
+  <link rel="stylesheet" href="../../assets/palladio/divider.css">
+  <link rel="stylesheet" href="../../assets/docs.css">
+</head>
+<body>
+  <a class="docs-skip-link" href="#content">跳至主要內容</a>
+  <header class="docs-header">
+    <a class="docs-brand" href="../../">Palladio</a>
+    <span class="pd-badge">Token 套件 v0.1.1</span>
+    <button class="docs-panel-toggle" data-nav-toggle type="button" aria-controls="docs-nav" aria-expanded="false">文件導覽選單</button>
+  </header>
+  <div class="docs-layout">
+    <aside class="docs-sidebar" data-nav-panel id="docs-nav">
+      <nav class="pd-nav" aria-label="文件導覽">
+        <ul class="pd-nav__list"><li><a class="pd-nav__link" href="../../">Overview</a></li><li><a class="pd-nav__link" href="../../principles/">Principles</a></li><li><a class="pd-nav__link" href="../color/">Foundations</a></li><li><a class="pd-nav__link" href="../../components/">Components</a></li><li><a class="pd-nav__link" href="../../accessibility/">Accessibility</a></li><li><a class="pd-nav__link" href="../../tokens/">Tokens</a></li><li><a class="pd-nav__link" href="../../guides/consuming-tokens/">Guides</a></li></ul>
+      </nav>
+    </aside>
+    <main class="docs-content" id="content">
+      
+      <article class="docs-document"><h1>Radius</h1><h2 id="四-形狀">四、形狀</h2>
+<h3 id="4-1-圓角比例">4.1 圓角比例</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>值</th>
+<th>適用場景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pd-radius-none</code></td>
+<td><code>0px</code></td>
+<td>全出血元素、刻意強調硬邊的場景</td>
+</tr>
+<tr>
+<td><code>pd-radius-sm</code></td>
+<td><code>4px</code></td>
+<td>輕微圓角（input、大型 card）</td>
+</tr>
+<tr>
+<td><code>pd-radius-md</code></td>
+<td><code>8px</code></td>
+<td>中型元件（dropdown panel、tooltip）</td>
+</tr>
+<tr>
+<td><code>pd-radius-lg</code></td>
+<td><code>12px</code></td>
+<td>大型容器（modal、side panel）</td>
+</tr>
+<tr>
+<td><code>pd-radius-xl</code></td>
+<td><code>16px</code></td>
+<td>刻意圓潤的大型容器（保守使用）</td>
+</tr>
+<tr>
+<td><code>pd-radius-full</code></td>
+<td><code>9999px</code></td>
+<td>膠囊形狀（badge、tag、pill button）、圓形頭像</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-2-圓角使用原則-should">4.2 圓角使用原則（<code>[SHOULD]</code>）</h3>
+<ul>
+<li>大面積容器（panel、sidebar、modal）傾向 <code>sm</code> 或 <code>md</code></li>
+<li>按鈕預設 <code>md</code>；pill 變體使用 <code>full</code></li>
+<li><code>xl</code> 和 <code>full</code> 是點綴，不是預設</li>
+<li>同一層級的元件保持圓角一致性——混用多個不同圓角值會產生視覺噪音</li>
+</ul>
+<hr>
+</article>
+    </main>
+    <aside class="docs-reference-panel">
+      <section aria-labelledby="page-token-references-title"><h2 id="page-token-references-title">本頁引用 Token</h2><ul class="docs-token-list" data-page-token-references data-token-names="[&quot;--pd-radius-full&quot;,&quot;--pd-radius-lg&quot;,&quot;--pd-radius-md&quot;,&quot;--pd-radius-none&quot;,&quot;--pd-radius-sm&quot;,&quot;--pd-radius-xl&quot;]"><li class="docs-muted">載入 Token 資料…</li></ul></section><hr class="pd-divider">
+      <nav aria-label="本頁目錄">
+        <h2>本頁目錄</h2>
+        <ul class="docs-toc"><li class="docs-toc__item docs-toc__item--2"><a href="#四-形狀">四、形狀</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#4-1-圓角比例">4.1 圓角比例</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#4-2-圓角使用原則-should">4.2 圓角使用原則（[SHOULD]）</a></li></ul>
+      </nav>
+    </aside>
+  </div>
+  <script src="../../assets/docs.js" defer></script>
+</body>
+</html>

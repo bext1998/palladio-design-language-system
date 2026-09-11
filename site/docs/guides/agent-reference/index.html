@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="dark" data-docs-base="../../">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Palladio 設計系統文件 — Agent reference">
+  <title>Agent reference · Palladio</title>
+  <link rel="stylesheet" href="../../assets/palladio/palladio.css">
+  <link rel="stylesheet" href="../../assets/palladio/navigation.css">
+  <link rel="stylesheet" href="../../assets/palladio/card.css">
+  <link rel="stylesheet" href="../../assets/palladio/badge.css">
+  <link rel="stylesheet" href="../../assets/palladio/divider.css">
+  <link rel="stylesheet" href="../../assets/docs.css">
+</head>
+<body>
+  <a class="docs-skip-link" href="#content">跳至主要內容</a>
+  <header class="docs-header">
+    <a class="docs-brand" href="../../">Palladio</a>
+    <span class="pd-badge">Token 套件 v0.1.1</span>
+    <button class="docs-panel-toggle" data-nav-toggle type="button" aria-controls="docs-nav" aria-expanded="false">文件導覽選單</button>
+  </header>
+  <div class="docs-layout">
+    <aside class="docs-sidebar" data-nav-panel id="docs-nav">
+      <nav class="pd-nav" aria-label="文件導覽">
+        <ul class="pd-nav__list"><li><a class="pd-nav__link" href="../../">Overview</a></li><li><a class="pd-nav__link" href="../../principles/">Principles</a></li><li><a class="pd-nav__link" href="../../foundations/color/">Foundations</a></li><li><a class="pd-nav__link" href="../../components/">Components</a></li><li><a class="pd-nav__link" href="../../accessibility/">Accessibility</a></li><li><a class="pd-nav__link" href="../../tokens/">Tokens</a></li><li><a class="pd-nav__link" href="../consuming-tokens/">Guides</a></li></ul>
+      </nav>
+    </aside>
+    <main class="docs-content" id="content">
+      
+      <article class="docs-document"><p><span class="pd-badge">AI agent 使用契約</span></p><h1>Agent reference</h1><blockquote>
+<p>隨 <code>@pdiodsgn/tokens</code> v0.1.1 發佈，每次發版一起更新，請勿手動編輯。
+設計語言全文：<a href="https://github.com/bext1998/palladio-design-language-system/blob/v0.1.1/docs/spec.md">https://github.com/bext1998/palladio-design-language-system/blob/v0.1.1/docs/spec.md</a>（章節 9.3–9.4, 13）
+可及性契約：<a href="https://github.com/bext1998/palladio-design-language-system/blob/v0.1.1/palladio/docs/accessibility/accessibility-contract.md">https://github.com/bext1998/palladio-design-language-system/blob/v0.1.1/palladio/docs/accessibility/accessibility-contract.md</a></p>
+</blockquote>
+<h2 id="這份文件是給誰的">這份文件是給誰的</h2>
+<p>當 AI 代理（Claude Code、Codex 等）收到「用 Palladio，某 density」的指令時，這份文件把設計決策的搜索空間從「無限色值／間距／動效」縮小到下面表格列出的<strong>有限選項</strong>。所有值與套件的 <code>@pdiodsgn/tokens/css</code>、<code>@pdiodsgn/tokens</code>、<code>@pdiodsgn/tokens/tokens.json</code> 由同一次 build 產出，保證一致。</p>
+<p>單次 AI 生成的表現只是設計語言的質性訊號，不是完成 gate（規格 9.4）；本文件的職責是提供正確的約束，不是保證生成結果。</p>
+<hr>
+<h2 id="一-使用規則">一、使用規則</h2>
+<ol>
+<li><strong>三層架構</strong>：元件只能引用 Semantic（下表）或可選的 Component 層 token；<strong>不得</strong>直接引用 Primitive 值（例如某個 hex 色碼或裸的 px 數字），即使它剛好等於某個 Semantic token 的值。</li>
+<li><strong>命名空間</strong>：CSS 自訂屬性一律 <code>--pd-{role}</code>（<code>import &quot;@pdiodsgn/tokens/css&quot;</code>）；TypeScript 透過 <code>palladioTokens</code> / <code>palladioDensity</code> / <code>palladioTheme</code>（<code>import ... from &quot;@pdiodsgn/tokens&quot;</code>）取用；Go／其他消費端讀 <code>@pdiodsgn/tokens/tokens.json</code>（<code>semantic</code> / <code>density</code> / <code>theme</code> 三個頂層 key）。</li>
+<li><strong>Density 切換</strong>：透過 <code>data-density=&quot;compact&quot;</code> / <code>data-density=&quot;spacious&quot;</code>（省略時為 Default）套用在容器上；元件結構本身不因 density 改變，只有 padding、最小互動尺寸與 body 字級跟著換。</li>
+<li><strong>Theme</strong>：目前只有暗色主題，選擇器為 <code>:root[data-theme=&quot;dark&quot;]</code>；Light theme 補齊前不要假設有其他主題存在。</li>
+<li><strong>Accent 插槽是產品責任</strong>：見第三節，Palladio 本身不提供 accent 色值。</li>
+<li><strong>Motion</strong>：一般狀態使用 <code>pd-duration-*</code> 搭配 <code>pd-easing-*</code>；<code>prefers-reduced-motion: reduce</code> 觸發時的行為是唯一、已定案的契約（見第五節），不是自由發揮空間。</li>
+<li><strong>可及性 MUST 規則（A-M1–A-M6）不是建議</strong>，是每個元件驗收都要過的硬門檻，摘要見第五節，完整驗證方式見 <code>accessibility-contract.md</code>。</li>
+</ol>
+<h2 id="二-禁止事項">二、禁止事項</h2>
+<ul>
+<li><strong>不得將 Primitive token 直接用於 UI 元件</strong>——所有 UI 樣式只能引用下面的 Semantic 表格。</li>
+<li><strong>不得為 accent 插槽加入 fallback、推導色值，或跨消費端的混色公式</strong>——缺哪個插槽就是缺，不得用其他插槽湊。</li>
+<li><strong>不得放寬任何 A-M1–A-M6 的 MUST 門檻</strong>（例如把 4.5:1 降成 4:1，或幫某個元件開特例）。</li>
+<li><strong>不得只用色彩傳達資訊或狀態</strong>（A-M5）——語意色需搭配文字、圖示或其他非色彩線索。</li>
+<li><strong>不得使用 font-weight 100–300</strong>（規格 3.3，深色背景上過細難以閱讀）。</li>
+<li><strong>不得用 <code>outline: none</code> 移除 focus 樣式卻不提供替代的可見 focus indicator</strong>（A-M3）。</li>
+<li><strong>focus indicator 應使用 <code>pd-color-border-strong</code></strong>——規格 2.2 的 focus ring 底色 <code>#7A7A7A</code> 已對四層既有表面通過 A-M2（最低 3.16:1）；保留 <code>:focus-visible</code> 語意，完整契約見 <code>accessibility-contract.md</code> 第四節。</li>
+<li><strong>不得將 <code>pd-color-border-default</code> 當作 Input 可識別邊界</strong>——它只用於裝飾性 card edge。<strong>Input 可識別邊界應使用 <code>pd-color-input-border</code></strong>——它對四層既有表面均通過 A-M2（最低 3.16:1），完整契約見 <code>accessibility-contract.md</code> 第三節。</li>
+</ul>
+<h2 id="三-色彩">三、色彩</h2>
+<h3 id="表面層級">表面層級</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Value</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--pd-color-bg</code></td>
+<td>#141414</td>
+<td>頁面最底層背景</td>
+</tr>
+<tr>
+<td><code>--pd-color-surface</code></td>
+<td>#1C1C1C</td>
+<td>主要內容表面（sidebar、panel）</td>
+</tr>
+<tr>
+<td><code>--pd-color-surface-raised</code></td>
+<td>#242424</td>
+<td>提升一層的表面（card、dropdown）</td>
+</tr>
+<tr>
+<td><code>--pd-color-surface-overlay</code></td>
+<td>#2E2E2E</td>
+<td>最高層（modal、tooltip、popover）</td>
+</tr>
+<tr>
+<td><code>--pd-color-surface-hover</code></td>
+<td>#323232</td>
+<td>互動 hover 狀態的表面變化</td>
+</tr>
+</tbody>
+</table>
+<h3 id="線條與分隔">線條與分隔</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Value</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--pd-color-border-subtle</code></td>
+<td>#242424</td>
+<td>最輕量的分隔（幾乎與表面融合）</td>
+</tr>
+<tr>
+<td><code>--pd-color-border-default</code></td>
+<td>#333333</td>
+<td>標準裝飾性 border（card edge）</td>
+</tr>
+<tr>
+<td><code>--pd-color-border-strong</code></td>
+<td>#7A7A7A</td>
+<td>強調邊框（focus ring 底色）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="input-可識別邊界">Input 可識別邊界</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Value</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--pd-color-input-border</code></td>
+<td>#7A7A7A</td>
+<td>Input 可識別邊界</td>
+</tr>
+</tbody>
+</table>
+<h3 id="文字層級">文字層級</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Value</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--pd-color-text-primary</code></td>
+<td>#F0F0F0</td>
+<td>主要文字</td>
+</tr>
+<tr>
+<td><code>--pd-color-text-secondary</code></td>
+<td>#9A9A9A</td>
+<td>次要文字（meta、說明）</td>
+</tr>
+<tr>
+<td><code>--pd-color-text-placeholder</code></td>
+<td>#9A9A9A</td>
+<td>placeholder 文字</td>
+</tr>
+<tr>
+<td><code>--pd-color-text-disabled</code></td>
+<td>#969696</td>
+<td>disabled 元件的文字</td>
+</tr>
+<tr>
+<td><code>--pd-color-text-inverse</code></td>
+<td>#141414</td>
+<td>深色背景上的反白文字（用於強調色按鈕）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="語意色-success-warning-danger-info">語意色（success / warning / danger / info）</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Value</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--pd-color-success</code></td>
+<td>#5CB87A</td>
+<td>成功、完成</td>
+</tr>
+<tr>
+<td><code>--pd-color-warning</code></td>
+<td>#E5A93C</td>
+<td>警告、需注意</td>
+</tr>
+<tr>
+<td><code>--pd-color-danger</code></td>
+<td>#EB7878</td>
+<td>錯誤、危險操作</td>
+</tr>
+<tr>
+<td><code>--pd-color-info</code></td>
+<td>#64B5F6</td>
+<td>資訊、提示</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>語意色與上列所有文字色，在四層表面上皆已驗證達 A-M1（≥4.5:1），見 <code>accessibility-contract.md</code> 第二節。</p>
+</blockquote>
+<h3 id="accent-插槽-各產品自行提供-palladio-不定義值">Accent 插槽（各產品自行提供，Palladio 不定義值）</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>說明</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--pd-color-accent</code></td>
+<td>主強調色</td>
+<td><em>由產品提供</em></td>
+</tr>
+<tr>
+<td><code>--pd-color-accent-hover</code></td>
+<td>hover 狀態</td>
+<td><em>由產品提供</em></td>
+</tr>
+<tr>
+<td><code>--pd-color-accent-active</code></td>
+<td>active 狀態</td>
+<td><em>由產品提供</em></td>
+</tr>
+<tr>
+<td><code>--pd-color-accent-disabled</code></td>
+<td>disabled 狀態</td>
+<td><em>由產品提供</em></td>
+</tr>
+<tr>
+<td><code>--pd-color-accent-subtle</code></td>
+<td>低飽和背景（badge、tag 底色）</td>
+<td><em>由產品提供</em></td>
+</tr>
+<tr>
+<td><code>--pd-color-accent-text</code></td>
+<td>強調色上的文字</td>
+<td><em>由產品提供</em></td>
+</tr>
+</tbody>
+</table>
+<p>產品必須提供全部六個插槽；<code>accent-text</code> 對 <code>accent</code> / <code>accent-hover</code> / <code>accent-active</code> / <code>accent-disabled</code> 四種背景須驗證 ≥4.5:1（A-M1），其餘實際使用的配對依內容判定 A-M1 或 A-M2。用套件的驗證器：<code>import { validateAccentPairs } from &quot;@pdiodsgn/tokens/validate-accents&quot;</code>，或 CLI <code>palladio-validate-accents accent.json</code>。完整流程見 <a href="https://github.com/bext1998/palladio-design-language-system/blob/v0.1.1/palladio/docs/accessibility/accessibility-contract.md">https://github.com/bext1998/palladio-design-language-system/blob/v0.1.1/palladio/docs/accessibility/accessibility-contract.md</a> 第九節。</p>
+<hr>
+<h2 id="四-字體">四、字體</h2>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Font</th>
+<th>Size</th>
+<th>Weight</th>
+<th>Line-height</th>
+<th>Letter-spacing</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--pd-text-display</code></td>
+<td>Noto Sans</td>
+<td>32px</td>
+<td>600</td>
+<td>1.2</td>
+<td>-0.64px</td>
+<td>頁面大標題</td>
+</tr>
+<tr>
+<td><code>--pd-text-heading-lg</code></td>
+<td>Noto Sans</td>
+<td>24px</td>
+<td>600</td>
+<td>1.3</td>
+<td>-0.48px</td>
+<td>段落主標題</td>
+</tr>
+<tr>
+<td><code>--pd-text-heading-md</code></td>
+<td>Noto Sans</td>
+<td>18px</td>
+<td>600</td>
+<td>1.35</td>
+<td>-0.18px</td>
+<td>段落次標題</td>
+</tr>
+<tr>
+<td><code>--pd-text-heading-sm</code></td>
+<td>Noto Sans</td>
+<td>14px</td>
+<td>600</td>
+<td>1.4</td>
+<td>-0.14px</td>
+<td>小標題、sidebar 分組標題</td>
+</tr>
+<tr>
+<td><code>--pd-text-body-lg</code></td>
+<td>Noto Sans</td>
+<td>16px</td>
+<td>400</td>
+<td>1.6</td>
+<td>0px</td>
+<td>主要內文</td>
+</tr>
+<tr>
+<td><code>--pd-text-body-md</code></td>
+<td>Noto Sans</td>
+<td>14px</td>
+<td>400</td>
+<td>1.6</td>
+<td>0px</td>
+<td>標準 UI 文字</td>
+</tr>
+<tr>
+<td><code>--pd-text-body-sm</code></td>
+<td>Noto Sans</td>
+<td>12px</td>
+<td>400</td>
+<td>1.5</td>
+<td>0px</td>
+<td>次要資訊、meta</td>
+</tr>
+<tr>
+<td><code>--pd-text-label-md</code></td>
+<td>Noto Sans</td>
+<td>14px</td>
+<td>500</td>
+<td>1</td>
+<td>0px</td>
+<td>按鈕、tab 標籤</td>
+</tr>
+<tr>
+<td><code>--pd-text-label-sm</code></td>
+<td>Noto Sans</td>
+<td>12px</td>
+<td>500</td>
+<td>1</td>
+<td>0px</td>
+<td>小型標籤、badge</td>
+</tr>
+<tr>
+<td><code>--pd-text-mono</code></td>
+<td>Noto Sans Mono</td>
+<td>13px</td>
+<td>400</td>
+<td>1.6</td>
+<td>0px</td>
+<td>程式碼、資料欄位</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><code>--pd-text-*</code> 的 CSS 值是描述性組合字串（非標準 <code>font</code> shorthand），元件實作請個別讀取上表的 Size／Weight／Line-height／Letter-spacing 欄位，或改用 TS／JSON 產物中對應的結構化欄位（<code>fontSize</code>、<code>fontWeight</code>、<code>lineHeight</code>、<code>letterSpacing</code>）。</p>
+</blockquote>
+<h2 id="五-形狀-間距與動效">五、形狀、間距與動效</h2>
+<h3 id="圓角">圓角</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Value</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--pd-radius-none</code></td>
+<td>0px</td>
+<td>全出血元素、刻意強調硬邊的場景</td>
+</tr>
+<tr>
+<td><code>--pd-radius-sm</code></td>
+<td>4px</td>
+<td>輕微圓角（input、大型 card）</td>
+</tr>
+<tr>
+<td><code>--pd-radius-md</code></td>
+<td>8px</td>
+<td>中型元件（dropdown panel、tooltip、button）</td>
+</tr>
+<tr>
+<td><code>--pd-radius-lg</code></td>
+<td>12px</td>
+<td>大型容器（modal、side panel）</td>
+</tr>
+<tr>
+<td><code>--pd-radius-xl</code></td>
+<td>16px</td>
+<td>刻意圓潤的大型容器</td>
+</tr>
+<tr>
+<td><code>--pd-radius-full</code></td>
+<td>9999px</td>
+<td>膠囊形狀（badge、tag、pill button）、圓形頭像</td>
+</tr>
+</tbody>
+</table>
+<h3 id="間距-4px-基礎單位">間距（4px 基礎單位）</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Value</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--pd-space-1</code></td>
+<td>4px</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>--pd-space-2</code></td>
+<td>8px</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>--pd-space-3</code></td>
+<td>12px</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>--pd-space-4</code></td>
+<td>16px</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>--pd-space-5</code></td>
+<td>20px</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>--pd-space-6</code></td>
+<td>24px</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>--pd-space-8</code></td>
+<td>32px</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>--pd-space-10</code></td>
+<td>40px</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>--pd-space-12</code></td>
+<td>48px</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>--pd-space-16</code></td>
+<td>64px</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><code>pd-space-{n}</code> 的 <code>n</code> 就是 4px 的倍數（<code>space-3</code> = 3 × 4px = 12px）。所有間距必須是 4 的倍數。</p>
+</blockquote>
+<h3 id="duration">Duration</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Value</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--pd-duration-instant</code></td>
+<td>0ms</td>
+<td>prefers-reduced-motion fallback</td>
+</tr>
+<tr>
+<td><code>--pd-duration-fast</code></td>
+<td>120ms</td>
+<td>Micro-interaction（hover 顏色變化、checkbox toggle）</td>
+</tr>
+<tr>
+<td><code>--pd-duration-normal</code></td>
+<td>220ms</td>
+<td>狀態轉場（panel expand、fade in/out）</td>
+</tr>
+<tr>
+<td><code>--pd-duration-slow</code></td>
+<td>380ms</td>
+<td>頁面層級轉場、signature animation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="easing">Easing</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Value</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--pd-easing-default</code></td>
+<td>cubic-bezier(0.25, 0.46, 0.45, 0.94)</td>
+<td>通用（自然感）</td>
+</tr>
+<tr>
+<td><code>--pd-easing-enter</code></td>
+<td>cubic-bezier(0, 0, 0.2, 1)</td>
+<td>元素進場（慢進快出）</td>
+</tr>
+<tr>
+<td><code>--pd-easing-exit</code></td>
+<td>cubic-bezier(0.4, 0, 1, 1)</td>
+<td>元素退場（快進慢出）</td>
+</tr>
+<tr>
+<td><code>--pd-easing-expressive</code></td>
+<td>cubic-bezier(0.34, 1.1, 0.64, 1)</td>
+<td>Signature animation（輕微超出再回落，有機感）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="reduced-motion-契約-唯一-已定案-見-accessibility-contract-md-第六節">Reduced Motion 契約（唯一、已定案，見 accessibility-contract.md 第六節）</h3>
+<table>
+<thead>
+<tr>
+<th>情境</th>
+<th>一般</th>
+<th><code>prefers-reduced-motion: reduce</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Transform 類動畫</td>
+<td>依 <code>pd-duration-*</code> / <code>pd-easing-*</code> 正常播放</td>
+<td><strong>完全移除</strong>，不套用任何 transition／animation</td>
+</tr>
+<tr>
+<td>必要保留的 opacity 狀態切換</td>
+<td>正常過渡</td>
+<td><strong>瞬時切換</strong>（<code>pd-duration-instant</code> / <code>0ms</code>），不保留 transition</td>
+</tr>
+<tr>
+<td>非必要裝飾性動畫</td>
+<td>正常播放</td>
+<td>直接停用</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="六-density-preset">六、Density Preset</h2>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>Compact</th>
+<th>Default</th>
+<th>Spacious</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base spacing unit</td>
+<td>4px</td>
+<td>4px</td>
+<td>4px</td>
+</tr>
+<tr>
+<td>Component padding — vertical</td>
+<td>4px</td>
+<td>8px</td>
+<td>12px</td>
+</tr>
+<tr>
+<td>Component padding — horizontal</td>
+<td>8px</td>
+<td>12px</td>
+<td>20px</td>
+</tr>
+<tr>
+<td>Min interactive size (A-M6)</td>
+<td>32px</td>
+<td>36px</td>
+<td>48px</td>
+</tr>
+<tr>
+<td>Body font size</td>
+<td>13px</td>
+<td>14px</td>
+<td>15px</td>
+</tr>
+</tbody>
+</table>
+<p>套用方式：容器加上 <code>data-density=&quot;compact&quot;</code> 或 <code>data-density=&quot;spacious&quot;</code>；省略時套用 Default（Default 值定義在 <code>:root</code>，無須任何屬性）。三種 density 下元件結構保持不變，只有上表五個值跟著切換。</p>
+<hr>
+<h2 id="七-可及性-must-規則摘要-a-m1-a-m6">七、可及性 MUST 規則摘要（A-M1–A-M6）</h2>
+<table>
+<thead>
+<tr>
+<th>規則</th>
+<th>摘要</th>
+<th>門檻</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A-M1</td>
+<td>一般文字（含 placeholder、disabled）對比</td>
+<td>≥ 4.5:1</td>
+</tr>
+<tr>
+<td>A-M2</td>
+<td>大字（≥24px regular / ≥18.5px bold）與 UI 元件對比</td>
+<td>≥ 3:1</td>
+</tr>
+<tr>
+<td>A-M3</td>
+<td>所有互動元件需有可見 focus indicator</td>
+<td>不得僅 <code>outline: none</code> 無替代</td>
+</tr>
+<tr>
+<td>A-M4</td>
+<td><code>prefers-reduced-motion</code> 觸發時停用非必要動畫</td>
+<td>見第五節契約</td>
+</tr>
+<tr>
+<td>A-M5</td>
+<td>色彩不可為唯一資訊傳達手段</td>
+<td>需搭配非色彩線索</td>
+</tr>
+<tr>
+<td>A-M6</td>
+<td>互動元素最小尺寸依 density</td>
+<td>32 / 36 / 48px（見第六節）</td>
+</tr>
+</tbody>
+</table>
+<p>完整驗收說明、對比計算結果與已確認缺漏見 <a href="https://github.com/bext1998/palladio-design-language-system/blob/v0.1.1/palladio/docs/accessibility/accessibility-contract.md">https://github.com/bext1998/palladio-design-language-system/blob/v0.1.1/palladio/docs/accessibility/accessibility-contract.md</a>。</p>
+<hr>
+<h2 id="八-消費範例">八、消費範例</h2>
+<pre><code class="language-css">.card {
+  background: var(--pd-color-surface-raised);
+  border: 1px solid var(--pd-color-border-subtle);
+  border-radius: var(--pd-radius-md);
+  padding: var(--pd-space-4);
+}
+</code></pre>
+<pre><code class="language-ts">import { palladioTokens, palladioDensity } from '@pdiodsgn/tokens';
+
+const bg = palladioTokens.color.surface.hex;
+const compactPadding = palladioDensity.compact.density.component.padding;
+</code></pre>
+<pre><code class="language-json">// @pdiodsgn/tokens/tokens.json
+{ &quot;semantic&quot;: { &quot;color&quot;: { &quot;bg&quot;: { &quot;hex&quot;: &quot;#141414&quot; } } } }
+</code></pre>
+<hr class="pd-divider"><p class="docs-muted">以下章節原文為套件 README（英文）。</p><h2>Accent slots</h2><h2 id="accent-slots">Accent slots</h2>
+<p>Palladio does <strong>not</strong> ship accent values and never derives or falls back for
+them. Each product defines all six <code>--pd-color-accent-*</code> slots in its own
+stylesheet, then validates them:</p>
+<pre><code class="language-ts">import { validateAccentPairs } from &quot;@pdiodsgn/tokens/validate-accents&quot;;
+
+validateAccentPairs(
+  {
+    accent: &quot;#8E82F0&quot;, accentHover: &quot;#A59BFF&quot;, accentActive: &quot;#8170EA&quot;,
+    accentDisabled: &quot;#8F84B9&quot;, accentSubtle: &quot;#1F1A38&quot;, accentText: &quot;#141414&quot;,
+  },
+  [{ name: &quot;icon on accent-subtle&quot;, foreground: &quot;#A59BFF&quot;, background: &quot;#1F1A38&quot;, kind: &quot;ui&quot; }],
+); // throws if a slot is missing/invalid or a pair is below its A-M1 / A-M2 threshold
+</code></pre>
+<p>Or in CI, without importing (pin the same version as the rest of your build):</p>
+<pre><code class="language-sh">npx --package @pdiodsgn/tokens@&lt;version&gt; palladio-validate-accents ./palladio-accent.json
+</code></pre>
+<p>The full contract is <code>palladio/docs/accessibility/accessibility-contract.md</code> §9
+in the source repo, at the <code>v&lt;version&gt;</code> tag.</p>
+</article>
+    </main>
+    <aside class="docs-reference-panel">
+      <section aria-labelledby="page-token-references-title"><h2 id="page-token-references-title">本頁引用 Token</h2><ul class="docs-token-list" data-page-token-references data-token-names="[&quot;--pd-color-accent&quot;,&quot;--pd-color-accent-active&quot;,&quot;--pd-color-accent-disabled&quot;,&quot;--pd-color-accent-hover&quot;,&quot;--pd-color-accent-subtle&quot;,&quot;--pd-color-accent-text&quot;,&quot;--pd-color-bg&quot;,&quot;--pd-color-border-default&quot;,&quot;--pd-color-border-strong&quot;,&quot;--pd-color-border-subtle&quot;,&quot;--pd-color-danger&quot;,&quot;--pd-color-info&quot;,&quot;--pd-color-input-border&quot;,&quot;--pd-color-success&quot;,&quot;--pd-color-surface&quot;,&quot;--pd-color-surface-hover&quot;,&quot;--pd-color-surface-overlay&quot;,&quot;--pd-color-surface-raised&quot;,&quot;--pd-color-text-disabled&quot;,&quot;--pd-color-text-inverse&quot;,&quot;--pd-color-text-placeholder&quot;,&quot;--pd-color-text-primary&quot;,&quot;--pd-color-text-secondary&quot;,&quot;--pd-color-warning&quot;,&quot;--pd-duration-fast&quot;,&quot;--pd-duration-instant&quot;,&quot;--pd-duration-normal&quot;,&quot;--pd-duration-slow&quot;,&quot;--pd-easing-default&quot;,&quot;--pd-easing-enter&quot;,&quot;--pd-easing-exit&quot;,&quot;--pd-easing-expressive&quot;,&quot;--pd-radius-full&quot;,&quot;--pd-radius-lg&quot;,&quot;--pd-radius-md&quot;,&quot;--pd-radius-none&quot;,&quot;--pd-radius-sm&quot;,&quot;--pd-radius-xl&quot;,&quot;--pd-space-1&quot;,&quot;--pd-space-10&quot;,&quot;--pd-space-12&quot;,&quot;--pd-space-16&quot;,&quot;--pd-space-2&quot;,&quot;--pd-space-3&quot;,&quot;--pd-space-4&quot;,&quot;--pd-space-5&quot;,&quot;--pd-space-6&quot;,&quot;--pd-space-8&quot;,&quot;--pd-text-body-lg&quot;,&quot;--pd-text-body-md&quot;,&quot;--pd-text-body-sm&quot;,&quot;--pd-text-display&quot;,&quot;--pd-text-heading-lg&quot;,&quot;--pd-text-heading-md&quot;,&quot;--pd-text-heading-sm&quot;,&quot;--pd-text-label-md&quot;,&quot;--pd-text-label-sm&quot;,&quot;--pd-text-mono&quot;]"><li class="docs-muted">載入 Token 資料…</li></ul></section><hr class="pd-divider">
+      <nav aria-label="本頁目錄">
+        <h2>本頁目錄</h2>
+        <ul class="docs-toc"><li class="docs-toc__item docs-toc__item--2"><a href="#這份文件是給誰的">這份文件是給誰的</a></li><li class="docs-toc__item docs-toc__item--2"><a href="#一-使用規則">一、使用規則</a></li><li class="docs-toc__item docs-toc__item--2"><a href="#二-禁止事項">二、禁止事項</a></li><li class="docs-toc__item docs-toc__item--2"><a href="#三-色彩">三、色彩</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#表面層級">表面層級</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#線條與分隔">線條與分隔</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#input-可識別邊界">Input 可識別邊界</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#文字層級">文字層級</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#語意色-success-warning-danger-info">語意色（success / warning / danger / info）</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#accent-插槽-各產品自行提供-palladio-不定義值">Accent 插槽（各產品自行提供，Palladio 不定義值）</a></li><li class="docs-toc__item docs-toc__item--2"><a href="#四-字體">四、字體</a></li><li class="docs-toc__item docs-toc__item--2"><a href="#五-形狀-間距與動效">五、形狀、間距與動效</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#圓角">圓角</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#間距-4px-基礎單位">間距（4px 基礎單位）</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#duration">Duration</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#easing">Easing</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#reduced-motion-契約-唯一-已定案-見-accessibility-contract-md-第六節">Reduced Motion 契約（唯一、已定案，見 accessibility-contract.md 第六節）</a></li><li class="docs-toc__item docs-toc__item--2"><a href="#六-density-preset">六、Density Preset</a></li><li class="docs-toc__item docs-toc__item--2"><a href="#七-可及性-must-規則摘要-a-m1-a-m6">七、可及性 MUST 規則摘要（A-M1–A-M6）</a></li><li class="docs-toc__item docs-toc__item--2"><a href="#八-消費範例">八、消費範例</a></li></ul>
+      </nav>
+    </aside>
+  </div>
+  <script src="../../assets/docs.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+/*
+ * Product code must load palladio.css first before this stylesheet.
+ * This component only consumes Semantic tokens — no color or spacing
+ * fallback of its own. Divider is a non-interactive visual element: it
+ * defines no hover, active, focus or disabled state (spec 7 — Divider is a
+ * grouping technique, not a control).
+ */
+.pd-divider {
+  background: none;
+  block-size: 0;
+  border: none;
+  border-block-start: 1px solid var(--pd-color-border-subtle);
+  box-sizing: border-box;
+  inline-size: 100%;
+  margin-block: var(--pd-space-4);
+  margin-inline: 0;
+}
+
+.pd-divider--vertical {
+  align-self: stretch;
+  block-size: auto;
+  border-block-start: none;
+  border-inline-start: 1px solid var(--pd-color-border-subtle);
+  inline-size: 0;
+  margin-block: 0;
+  margin-inline: var(--pd-space-4);
+}

@@ -1,0 +1,13 @@
+{
+  "name": "palladio-documentation-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:docs": "node scripts/build-docs.mjs",
+    "check:docs": "node scripts/build-docs.mjs --check",
+    "test:docs": "node --test scripts/build-docs.test.mjs"
+  },
+  "devDependencies": {
+    "markdown-it": "15.0.1"
+  }
+}

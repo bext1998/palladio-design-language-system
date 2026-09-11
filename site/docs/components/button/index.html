@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="dark" data-docs-base="../../">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Palladio 設計系統文件 — Button">
+  <title>Button · Palladio</title>
+  <link rel="stylesheet" href="../../assets/palladio/palladio.css">
+  <link rel="stylesheet" href="../../assets/palladio/navigation.css">
+  <link rel="stylesheet" href="../../assets/palladio/card.css">
+  <link rel="stylesheet" href="../../assets/palladio/badge.css">
+  <link rel="stylesheet" href="../../assets/palladio/divider.css">
+  <link rel="stylesheet" href="../../assets/docs.css">
+</head>
+<body>
+  <a class="docs-skip-link" href="#content">跳至主要內容</a>
+  <header class="docs-header">
+    <a class="docs-brand" href="../../">Palladio</a>
+    <span class="pd-badge">Token 套件 v0.1.1</span>
+    <button class="docs-panel-toggle" data-nav-toggle type="button" aria-controls="docs-nav" aria-expanded="false">文件導覽選單</button>
+  </header>
+  <div class="docs-layout">
+    <aside class="docs-sidebar" data-nav-panel id="docs-nav">
+      <nav class="pd-nav" aria-label="文件導覽">
+        <ul class="pd-nav__list"><li><a class="pd-nav__link" href="../../">Overview</a></li><li><a class="pd-nav__link" href="../../principles/">Principles</a></li><li><a class="pd-nav__link" href="../../foundations/color/">Foundations</a></li><li><a class="pd-nav__link" href="../">Components</a></li><li><a class="pd-nav__link" href="../../accessibility/">Accessibility</a></li><li><a class="pd-nav__link" href="../../tokens/">Tokens</a></li><li><a class="pd-nav__link" href="../../guides/consuming-tokens/">Guides</a></li></ul>
+      </nav>
+    </aside>
+    <main class="docs-content" id="content">
+      
+      <article class="docs-document"><h1>Button</h1><p><code>Button</code> 是原生 <code>&lt;button&gt;</code> 的框架無關樣式。根元素須先套用 Foundation 的 <code>data-theme=&quot;dark&quot;</code>，載入 <code>palladio/dist/css/palladio.css</code> 後再載入 <code>button.css</code>。產品必須在 Button 所在作用域提供全部六個 accent 插槽；元件不提供 fallback，也不推導 hover、active 或 disabled 色值。</p>
+<pre><code class="language-html">&lt;button class=&quot;pd-button&quot; type=&quot;button&quot;&gt;儲存&lt;/button&gt;
+&lt;button class=&quot;pd-button pd-button--pill&quot; type=&quot;button&quot;&gt;發佈&lt;/button&gt;
+&lt;button class=&quot;pd-button&quot; type=&quot;button&quot; disabled&gt;無法儲存&lt;/button&gt;
+</code></pre>
+<h2 id="變體與-density">變體與 density</h2>
+<ul>
+<li>預設變體使用 <code>--pd-radius-md</code>；加入 <code>pd-button--pill</code> 後使用 <code>--pd-radius-full</code>。</li>
+<li>元件結構固定為原生 <code>&lt;button&gt;</code>。padding 和 <code>min-block-size</code> 分別使用 <code>--pd-density-component-padding-*</code> 與 <code>--pd-density-component-min-interactive-size</code>。</li>
+<li>將 <code>data-density=&quot;compact&quot;</code> 或 <code>data-density=&quot;spacious&quot;</code> 設在 Foundation CSS 套用的根元素；省略時為 Default。三種 density 的最小互動尺寸為 32、36、48px。</li>
+</ul>
+<h2 id="狀態與鍵盤">狀態與鍵盤</h2>
+<table>
+<thead>
+<tr>
+<th>狀態</th>
+<th>觸發方式</th>
+<th>呈現</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default</td>
+<td>可操作的初始狀態</td>
+<td><code>--pd-color-accent</code> 背景與 <code>--pd-color-accent-text</code> 文字</td>
+</tr>
+<tr>
+<td>Hover</td>
+<td>支援 hover 的指標裝置</td>
+<td><code>--pd-color-accent-hover</code> 背景</td>
+</tr>
+<tr>
+<td>Active</td>
+<td>按住滑鼠或觸控，或鍵盤啟動期間</td>
+<td><code>--pd-color-accent-active</code> 背景</td>
+</tr>
+<tr>
+<td>Focus</td>
+<td>鍵盤移入</td>
+<td><code>:focus-visible</code> 的 <code>--pd-color-border-strong</code> outline</td>
+</tr>
+<tr>
+<td>Disabled</td>
+<td>原生 <code>disabled</code> 屬性</td>
+<td><code>--pd-color-accent-disabled</code> 背景，且原生按鈕不會取得焦點或觸發操作</td>
+</tr>
+</tbody>
+</table>
+<p>保留原生按鈕語意：Tab 進入可操作 Button，Enter 與 Space 觸發它。不要以 <code>role=&quot;button&quot;</code>、<code>tabindex</code> 或 JavaScript 重建原生鍵盤行為。</p>
+<h2 id="可及性與動效">可及性與動效</h2>
+<p>Focus ring 使用 <code>:focus-visible</code>，以 <code>--pd-color-border-strong</code> 描邊並用 <code>--pd-space-1</code> 與元件分離。該 token 對 <code>bg</code>、<code>surface</code>、<code>surface-raised</code>、<code>surface-overlay</code> 的 A-M2 對比分別為 4.29:1、3.97:1、3.62:1、3.16:1。產品仍須依 accent 插槽契約驗證 <code>accent-text</code> 對 <code>accent</code>、<code>accent-hover</code>、<code>accent-active</code>、<code>accent-disabled</code> 的 A-M1 對比皆至少 4.5:1。</p>
+<p>一般模式只轉場背景色，使用 <code>--pd-duration-fast</code> 與 <code>--pd-easing-default</code>。<code>prefers-reduced-motion: reduce</code> 時移除 transition，不保留漸變或 transform 動畫。</p>
+</article>
+    </main>
+    <aside class="docs-reference-panel">
+      <section aria-labelledby="page-token-references-title"><h2 id="page-token-references-title">本頁引用 Token</h2><ul class="docs-token-list" data-page-token-references data-token-names="[&quot;--pd-button&quot;,&quot;--pd-button--pill&quot;,&quot;--pd-color-accent&quot;,&quot;--pd-color-accent-active&quot;,&quot;--pd-color-accent-disabled&quot;,&quot;--pd-color-accent-hover&quot;,&quot;--pd-color-accent-text&quot;,&quot;--pd-color-border-strong&quot;,&quot;--pd-density-component-min-interactive-size&quot;,&quot;--pd-duration-fast&quot;,&quot;--pd-easing-default&quot;,&quot;--pd-radius-full&quot;,&quot;--pd-radius-md&quot;,&quot;--pd-space-1&quot;]"><li class="docs-muted">載入 Token 資料…</li></ul></section><hr class="pd-divider">
+      <nav aria-label="本頁目錄">
+        <h2>本頁目錄</h2>
+        <ul class="docs-toc"><li class="docs-toc__item docs-toc__item--2"><a href="#變體與-density">變體與 density</a></li><li class="docs-toc__item docs-toc__item--2"><a href="#狀態與鍵盤">狀態與鍵盤</a></li><li class="docs-toc__item docs-toc__item--2"><a href="#可及性與動效">可及性與動效</a></li></ul>
+      </nav>
+    </aside>
+  </div>
+  <script src="../../assets/docs.js" defer></script>
+</body>
+</html>

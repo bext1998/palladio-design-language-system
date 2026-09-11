@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="dark" data-docs-base="../../">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Palladio 設計系統文件 — Type">
+  <title>Type · Palladio</title>
+  <link rel="stylesheet" href="../../assets/palladio/palladio.css">
+  <link rel="stylesheet" href="../../assets/palladio/navigation.css">
+  <link rel="stylesheet" href="../../assets/palladio/card.css">
+  <link rel="stylesheet" href="../../assets/palladio/badge.css">
+  <link rel="stylesheet" href="../../assets/palladio/divider.css">
+  <link rel="stylesheet" href="../../assets/docs.css">
+</head>
+<body>
+  <a class="docs-skip-link" href="#content">跳至主要內容</a>
+  <header class="docs-header">
+    <a class="docs-brand" href="../../">Palladio</a>
+    <span class="pd-badge">Token 套件 v0.1.1</span>
+    <button class="docs-panel-toggle" data-nav-toggle type="button" aria-controls="docs-nav" aria-expanded="false">文件導覽選單</button>
+  </header>
+  <div class="docs-layout">
+    <aside class="docs-sidebar" data-nav-panel id="docs-nav">
+      <nav class="pd-nav" aria-label="文件導覽">
+        <ul class="pd-nav__list"><li><a class="pd-nav__link" href="../../">Overview</a></li><li><a class="pd-nav__link" href="../../principles/">Principles</a></li><li><a class="pd-nav__link" href="../color/">Foundations</a></li><li><a class="pd-nav__link" href="../../components/">Components</a></li><li><a class="pd-nav__link" href="../../accessibility/">Accessibility</a></li><li><a class="pd-nav__link" href="../../tokens/">Tokens</a></li><li><a class="pd-nav__link" href="../../guides/consuming-tokens/">Guides</a></li></ul>
+      </nav>
+    </aside>
+    <main class="docs-content" id="content">
+      
+      <article class="docs-document"><h1>Type</h1><h2 id="三-字體">三、字體</h2>
+<h3 id="3-1-字體選擇">3.1 字體選擇</h3>
+<table>
+<thead>
+<tr>
+<th>用途</th>
+<th>字體</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主字體（UI、內容）</td>
+<td><strong>Noto Sans</strong></td>
+<td>個人偏好；多語言覆蓋完整；人文無襯線風格與流體動效方向一致</td>
+</tr>
+<tr>
+<td>等寬（code、data）</td>
+<td><strong>Noto Sans Mono</strong></td>
+<td>與主字體同族，視覺一致性高</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-2-字體比例">3.2 字體比例</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Size</th>
+<th>Weight</th>
+<th>Line Height</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pd-text-display</code></td>
+<td>32px</td>
+<td>600</td>
+<td>1.2</td>
+<td>頁面大標題</td>
+</tr>
+<tr>
+<td><code>pd-text-heading-lg</code></td>
+<td>24px</td>
+<td>600</td>
+<td>1.3</td>
+<td>段落主標題</td>
+</tr>
+<tr>
+<td><code>pd-text-heading-md</code></td>
+<td>18px</td>
+<td>600</td>
+<td>1.35</td>
+<td>段落次標題</td>
+</tr>
+<tr>
+<td><code>pd-text-heading-sm</code></td>
+<td>14px</td>
+<td>600</td>
+<td>1.4</td>
+<td>小標題、sidebar 分組標題</td>
+</tr>
+<tr>
+<td><code>pd-text-body-lg</code></td>
+<td>16px</td>
+<td>400</td>
+<td>1.6</td>
+<td>主要內文</td>
+</tr>
+<tr>
+<td><code>pd-text-body-md</code></td>
+<td>14px</td>
+<td>400</td>
+<td>1.6</td>
+<td>標準 UI 文字</td>
+</tr>
+<tr>
+<td><code>pd-text-body-sm</code></td>
+<td>12px</td>
+<td>400</td>
+<td>1.5</td>
+<td>次要資訊、meta</td>
+</tr>
+<tr>
+<td><code>pd-text-label-md</code></td>
+<td>14px</td>
+<td>500</td>
+<td>1.0</td>
+<td>按鈕、tab 標籤</td>
+</tr>
+<tr>
+<td><code>pd-text-label-sm</code></td>
+<td>12px</td>
+<td>500</td>
+<td>1.0</td>
+<td>小型標籤、badge</td>
+</tr>
+<tr>
+<td><code>pd-text-mono</code></td>
+<td>13px</td>
+<td>400</td>
+<td>1.6</td>
+<td>程式碼、資料欄位</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-3-字體規則">3.3 字體規則</h3>
+<ul>
+<li>Letter-spacing：標題使用 <code>-0.01em</code> 到 <code>-0.02em</code>（輕微收緊），body 維持 <code>0</code></li>
+<li>不使用 font-weight 100–300（在深色背景上過細，難以閱讀）</li>
+<li>最小可用字體尺寸：<code>10px</code>（僅限極端場景，例如 chart axis label）</li>
+</ul>
+<hr>
+</article>
+    </main>
+    <aside class="docs-reference-panel">
+      <section aria-labelledby="page-token-references-title"><h2 id="page-token-references-title">本頁引用 Token</h2><ul class="docs-token-list" data-page-token-references data-token-names="[&quot;--pd-text-body-lg&quot;,&quot;--pd-text-body-md&quot;,&quot;--pd-text-body-sm&quot;,&quot;--pd-text-display&quot;,&quot;--pd-text-heading-lg&quot;,&quot;--pd-text-heading-md&quot;,&quot;--pd-text-heading-sm&quot;,&quot;--pd-text-label-md&quot;,&quot;--pd-text-label-sm&quot;,&quot;--pd-text-mono&quot;]"><li class="docs-muted">載入 Token 資料…</li></ul></section><hr class="pd-divider">
+      <nav aria-label="本頁目錄">
+        <h2>本頁目錄</h2>
+        <ul class="docs-toc"><li class="docs-toc__item docs-toc__item--2"><a href="#三-字體">三、字體</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#3-1-字體選擇">3.1 字體選擇</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#3-2-字體比例">3.2 字體比例</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#3-3-字體規則">3.3 字體規則</a></li></ul>
+      </nav>
+    </aside>
+  </div>
+  <script src="../../assets/docs.js" defer></script>
+</body>
+</html>
