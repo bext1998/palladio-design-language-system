@@ -13,6 +13,28 @@ const DOCS_CSS = `
   color-scheme: dark;
 }
 
+/*
+ * This site's own accent slots (spec 2.5) — Palladio never defines or derives
+ * these, every consuming product supplies all six. This was missing entirely,
+ * which is why Navigation's active-item indicator bar
+ * (border-inline-start-color: var(--pd-color-accent) in navigation.css) had no
+ * color to show. Reused from this project's own brand accent, already
+ * established in site/assets/css/styles.css (--brand: #D9814F) for the
+ * landing page, so the docs site and the landing page share one hue instead of
+ * inventing a second one.
+ * All four mandatory accent-text pairs verified via
+ * palladio/dist/validate-accents.js validateAccentPairs() — A-M1 (>=4.5:1):
+ * accent 6.32:1, accentHover 8.42:1, accentActive 4.70:1, accentDisabled 5.08:1.
+ */
+:root[data-theme="dark"] {
+  --pd-color-accent: #D9814F;
+  --pd-color-accent-hover: #E4A079;
+  --pd-color-accent-active: #C06A38;
+  --pd-color-accent-disabled: #9C8171;
+  --pd-color-accent-subtle: #2E2118;
+  --pd-color-accent-text: #141414;
+}
+
 * { box-sizing: border-box; }
 
 html { background: var(--pd-color-bg); }

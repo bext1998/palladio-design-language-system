@@ -67,6 +67,23 @@ Issue 原始 IA 的六個群組合理，保留其意圖並做兩項調整：
 
 三種 density 與 A-M1–A-M6 對文件站完整適用，沒有例外：預設為 Default；以 `data-density="compact"` 與 `data-density="spacious"` 進行渲染驗收，且不因 density 改變 DOM 結構。文字與 UI 對比遵守 A-M1／A-M2；所有互動控制保留可見 focus（A-M3）並在 reduced motion 下移除非必要 transition／transform（A-M4）；Navigation active 與 Badge 均具文字或其他非色彩線索（A-M5）；連結、搜尋、篩選與可互動 Card 遵守各 density 的最小互動尺寸（A-M6）。
 
+#### 文件站自己的 accent 插槽（規格 2.5，必須列出實際配對）
+
+文件站是消費端，依規格 2.5 必須自行提供全部六個 `pd-color-accent-*` 插槽，Palladio 不提供 fallback 或推導。第一版實作漏了這步——`Navigation` 的 active 項目左側色條（`navigation.css` 的 `border-inline-start-color: var(--pd-color-accent)`）因此沒有顏色，只剩背景色與粗體字兩種線索，是側邊導覽看起來平板的直接原因。
+
+修正後的六個插槽沿用 `site/assets/css/styles.css` 既有的官網品牌色 `--brand: #D9814F`（landing page 已用作連結、按鈕、程式碼 tab 的強調色），讓文件站與官網共用同一個色相，而不是另外發明一個：
+
+| 插槽 | 值 | 用途 |
+|---|---|---|
+| `accent` | `#D9814F` | 主強調色，沿用官網 `--brand` |
+| `accent-hover` | `#E4A079` | hover 狀態，沿用官網 `--brand-hover` |
+| `accent-active` | `#C06A38` | active／按壓狀態 |
+| `accent-disabled` | `#9C8171` | disabled 狀態 |
+| `accent-subtle` | `#2E2118` | 低飽和背景（目前文件站未使用，僅補齊格式） |
+| `accent-text` | `#141414` | 疊在上述四個背景上的文字／圖示色 |
+
+已用 `palladio/dist/validate-accents.js` 的 `validateAccentPairs()` 驗證全部四組強制配對，皆通過 A-M1（4.5:1）：`accent-text` 對 `accent` 6.32:1、對 `accent-hover` 8.42:1、對 `accent-active` 4.70:1、對 `accent-disabled` 5.08:1。`accent-subtle` 僅格式驗證，文件站目前沒有使用它的實際前景／背景配對。
+
 #### 已知例外：文件站結構性版面
 
 文件站外殼的 breakpoint 寬度、`grid-template-columns`、grid 欄位比例與收合規則可暫時使用原生 CSS 值。這些值只定義 layout 結構，不可用於色彩、字級、間距、圓角、動效或元件狀態；後者仍只能使用 Semantic token。

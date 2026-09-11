@@ -18,3 +18,4 @@
 | 文件站採 Node 靜態產生腳本加 vanilla JavaScript，直接輸出 `site/docs/`；建置期從 token 產物與既有權威文件收集內容，不維護同步複本。 | 有效 | docs/documentation-site-plan.md |
 | 文件站以 Palladio token 與既有元件作為自身介面（dogfooding）；三欄骨架不帶入 Watt 的 CSS 或手寫內容模式。 | 有效 | docs/documentation-site-plan.md |
 | 文件站外殼暫時允許 breakpoint、grid 欄位與收合規則使用原生 CSS；#61 定義 layout token 後重新檢視並遷移。 | 有效 | docs/documentation-site-plan.md、Issue #61 |
+| 文件站的六個 accent 插槽沿用官網品牌色 `#D9814F`（`site/assets/css/styles.css` 的 `--brand`），已通過 `validateAccentPairs()` A-M1 驗證，不另外發明色相。 | 有效 | docs/documentation-site-plan.md、site/assets/css/styles.css |
