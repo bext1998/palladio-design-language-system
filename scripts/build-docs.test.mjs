@@ -51,13 +51,13 @@ test('buildDocumentation generates the documentation routes and deployment artif
     const overview = await readFile(join(outputDir, 'index.html'), 'utf8');
     assert.match(overview, /data-theme="dark"/);
     assert.match(overview, /class="pd-nav"/);
-    assert.match(overview, /data-token-inspector/);
-    assert.match(overview, /data-token-group/);
+    assert.match(overview, /class="pd-nav__link pd-nav__link--active" aria-current="page"/);
+    assert.match(overview, /data-nav-panel/);
     assert.match(overview, /Palladio 設計系統文件 — Overview/);
     assert.match(overview, /跳至主要內容/);
-    assert.match(overview, /Token 檢視器/);
+    assert.match(overview, /文件導覽選單/);
     assert.match(overview, /搜尋文件/);
-    assert.doesNotMatch(overview, /Generated reference|Skip to content|Search documentation|Token inspector/);
+    assert.doesNotMatch(overview, /Generated reference|Skip to content|Search documentation|Token inspector|data-token-query|data-token-group/);
     assert.match(overview, /Palladio/);
     assert.doesNotMatch(overview, /href="[^"]*\\\\/);
     assert.doesNotMatch(overview, /assets\/\//);
@@ -71,7 +71,8 @@ test('buildDocumentation generates the documentation routes and deployment artif
     assert.equal(deployedCss, sourceCss);
 
     const docsCss = await readFile(join(outputDir, 'assets/docs.css'), 'utf8');
-    assert.match(docsCss, /@media \(max-width: 48rem\)[\s\S]*?\.docs-inspector \{\s*background: var\(--pd-color-surface\);\s*inset: var\(--pd-space-3\);\s*overflow-y: auto;\s*position: fixed;/);
+    assert.match(docsCss, /@media \(max-width: 48rem\)[\s\S]*?\.docs-sidebar \{\s*background: var\(--pd-color-surface\);\s*inset: var\(--pd-space-3\);\s*overflow-y: auto;\s*position: fixed;/);
+    assert.match(docsCss, /--pd-color-accent: #D9814F;/);
     assert.match(docsCss, /\.docs-header \{[\s\S]*?border-block-end: 1px solid var\(--pd-color-border-subtle\);/);
     assert.match(docsCss, /\.docs-document h1 \{[\s\S]*?font-size: 32px;[\s\S]*?font-weight: 600;/);
     assert.match(docsCss, /\.docs-document h2 \{[\s\S]*?font-size: 18px;[\s\S]*?line-height: 1.35;/);
@@ -79,7 +80,8 @@ test('buildDocumentation generates the documentation routes and deployment artif
     assert.match(docsCss, /\.docs-document > \* \+ \* \{ margin-block-start: var\(--pd-space-3\); \}/);
 
     const docsJs = await readFile(join(outputDir, 'assets/docs.js'), 'utf8');
-    assert.match(docsJs, /panel\.querySelector\('\[data-token-query\]'\)\?\.focus\(\)/);
+    assert.match(docsJs, /panel\.querySelector\('a'\)\?\.focus\(\)/);
+    assert.doesNotMatch(docsJs, /renderTokens|data-token-query|data-token-group/);
     assert.match(docsJs, /if \(Array\.isArray\(value\)\) return \[\{ name: '--pd-' \+ prefix\.join\('-'\), value: value\.join\(', '\) \}\];/);
     assert.match(docsJs, /if \(typeof value === 'string' \|\| typeof value === 'number'\) return \[\{ name: '--pd-' \+ prefix\.join\('-'\), value: String\(value\) \}\];/);
     assert.match(docsJs, /Object\.entries\(tokens\.density\)\.flatMap\(\(\[context, tokenGroup\]\) => flattenTokens\(tokenGroup\.density, \['density'\]\)/);

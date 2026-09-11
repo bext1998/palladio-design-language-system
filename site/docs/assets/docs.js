@@ -25,12 +25,6 @@ function tokenLabel(entry) {
   return entry.context ? entry.context + ' · ' + entry.name : entry.name;
 }
 
-function renderTokens(container, entries, query = '', group = 'all') {
-  const normalized = query.trim().toLowerCase();
-  const matches = entries.filter((entry) => (group === 'all' || entry.group === group) && (!normalized || (tokenLabel(entry) + ' ' + entry.value).toLowerCase().includes(normalized)));
-  container.innerHTML = matches.slice(0, 24).map((entry) => '<li><code>' + escapeHtml(tokenLabel(entry)) + '</code><br><span>' + escapeHtml(entry.value) + '</span></li>').join('') || '<li class="docs-muted">沒有相符的 Token。</li>';
-}
-
 function renderPageReferences(container, entries) {
   if (!container) return;
   const names = JSON.parse(container.dataset.tokenNames || '[]');
@@ -38,19 +32,12 @@ function renderPageReferences(container, entries) {
   container.innerHTML = matches.map((entry) => '<li><code>' + escapeHtml(tokenLabel(entry)) + '</code><br><span>' + escapeHtml(entry.value) + '</span></li>').join('') || '<li class="docs-muted">本頁未直接引用 Token。</li>';
 }
 
-async function setupInspector() {
-  const container = document.querySelector('[data-token-results]');
-  const input = document.querySelector('[data-token-query]');
-  const group = document.querySelector('[data-token-group]');
-  if (!container || !input || !group) return;
+async function setupPageReferences() {
+  const container = document.querySelector('[data-page-token-references]');
+  if (!container) return;
   const response = await fetch(root.dataset.docsBase + 'tokens.json');
   const tokens = await response.json();
-  const entries = tokenEntries(tokens);
-  const render = () => renderTokens(container, entries, input.value, group.value);
-  render();
-  renderPageReferences(document.querySelector('[data-page-token-references]'), entries);
-  input.addEventListener('input', render);
-  group.addEventListener('change', render);
+  renderPageReferences(container, tokenEntries(tokens));
 }
 
 async function setupSearch() {
@@ -66,9 +53,9 @@ async function setupSearch() {
   });
 }
 
-function setupInspectorPanel() {
-  const button = document.querySelector('[data-panel-toggle]');
-  const panel = document.querySelector('[data-token-inspector]');
+function setupNavPanel() {
+  const button = document.querySelector('[data-nav-toggle]');
+  const panel = document.querySelector('[data-nav-panel]');
   if (!button || !panel) return;
   const narrowViewport = window.matchMedia('(max-width: 48rem)');
   const synchronizePanel = () => {
@@ -88,10 +75,10 @@ function setupInspectorPanel() {
     button.setAttribute('aria-expanded', String(!expanded));
     panel.hidden = expanded;
     if (expanded) button.focus();
-    else panel.querySelector('[data-token-query]')?.focus();
+    else panel.querySelector('a')?.focus();
   });
 }
 
-setupInspector().catch(() => {});
+setupPageReferences().catch(() => {});
 setupSearch().catch(() => {});
-setupInspectorPanel();
+setupNavPanel();

@@ -17,12 +17,12 @@
   <header class="docs-header">
     <a class="docs-brand" href="../../">Palladio</a>
     <span class="pd-badge">Token 套件 v0.1.1</span>
-    <button class="docs-panel-toggle" data-panel-toggle type="button" aria-controls="token-inspector" aria-expanded="false">Token 檢視器</button>
+    <button class="docs-panel-toggle" data-nav-toggle type="button" aria-controls="docs-nav" aria-expanded="false">文件導覽選單</button>
   </header>
   <div class="docs-layout">
-    <aside class="docs-sidebar">
+    <aside class="docs-sidebar" data-nav-panel id="docs-nav">
       <nav class="pd-nav" aria-label="文件導覽">
-        <ul class="pd-nav__list"><li><a class="pd-nav__link" href="../../">Overview</a></li><li><a class="pd-nav__link" href="../../principles/">Principles</a></li><li><a class="pd-nav__link" href="../../foundations/color/">Foundations</a></li><li><a class="pd-nav__link" href="../../components/">Components</a></li><li><a class="pd-nav__link" href="../../accessibility/">Accessibility</a></li><li><a class="pd-nav__link" href="../../tokens/">Tokens</a></li><li><a class="pd-nav__link docs-nav__link--current" aria-current="page" href="./">Guides</a></li></ul>
+        <ul class="pd-nav__list"><li><a class="pd-nav__link" href="../../">Overview</a></li><li><a class="pd-nav__link" href="../../principles/">Principles</a></li><li><a class="pd-nav__link" href="../../foundations/color/">Foundations</a></li><li><a class="pd-nav__link" href="../../components/">Components</a></li><li><a class="pd-nav__link" href="../../accessibility/">Accessibility</a></li><li><a class="pd-nav__link" href="../../tokens/">Tokens</a></li><li><a class="pd-nav__link pd-nav__link--active" aria-current="page" href="./">Guides</a></li></ul>
       </nav>
     </aside>
     <main class="docs-content" id="content">
@@ -122,16 +122,7 @@ release-tagged links back to the spec):
 The agent reads that one document; never feed it the whole Palladio repo.</p>
 </article>
     </main>
-    <aside class="docs-inspector" data-token-inspector id="token-inspector">
-      <section aria-labelledby="token-inspector-title">
-        <h2 id="token-inspector-title">Token 檢視器</h2>
-        <label for="token-query">搜尋 Token</label>
-        <input class="docs-inspector__search" data-token-query id="token-query" type="search" autocomplete="off">
-        <label for="token-group">Token 分組</label>
-        <select class="docs-token-group" data-token-group id="token-group"><option value="all">全部 Token</option><option value="semantic">Semantic</option><option value="density">Density</option><option value="theme">Theme</option></select>
-        <ul class="docs-token-list" data-token-results><li class="docs-muted">載入 Token 資料…</li></ul>
-      </section>
-      <hr class="pd-divider">
+    <aside class="docs-reference-panel">
       <section aria-labelledby="page-token-references-title"><h2 id="page-token-references-title">本頁引用 Token</h2><ul class="docs-token-list" data-page-token-references data-token-names="[&quot;--pd-color-accent&quot;,&quot;--pd-color-accent-text&quot;]"><li class="docs-muted">載入 Token 資料…</li></ul></section><hr class="pd-divider">
       <nav aria-label="本頁目錄">
         <h2>本頁目錄</h2>

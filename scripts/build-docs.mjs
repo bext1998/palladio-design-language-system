@@ -89,18 +89,12 @@ a { color: var(--pd-color-text-primary); }
 }
 
 .docs-sidebar,
-.docs-inspector {
+.docs-reference-panel {
   align-self: start;
   min-inline-size: 0;
 }
 
 .docs-sidebar { padding: var(--pd-space-2); }
-
-.docs-nav__link--current {
-  background: var(--pd-color-surface-raised);
-  color: var(--pd-color-text-primary);
-  text-decoration: underline;
-}
 
 .docs-content {
   min-inline-size: 0;
@@ -169,13 +163,11 @@ a { color: var(--pd-color-text-primary); }
 
 .docs-card-grid .pd-card--interactive { color: var(--pd-color-text-primary); }
 
-.docs-inspector {
+.docs-reference-panel {
   background: var(--pd-color-surface);
   padding: var(--pd-space-3);
 }
 
-.docs-inspector__search,
-.docs-token-group,
 .docs-search {
   background: var(--pd-color-surface-raised);
   border: none;
@@ -187,7 +179,6 @@ a { color: var(--pd-color-text-primary); }
   padding: var(--pd-density-component-padding-vertical) var(--pd-density-component-padding-horizontal);
 }
 
-.docs-inspector__search:focus-visible,
 .docs-search:focus-visible {
   outline-color: var(--pd-color-border-strong);
 }
@@ -232,21 +223,20 @@ a { color: var(--pd-color-text-primary); }
 
 @media (max-width: 72rem) {
   .docs-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); }
-  .docs-inspector { grid-column: 1 / -1; }
+  .docs-reference-panel { grid-column: 1 / -1; }
 }
 
 @media (max-width: 48rem) {
   .docs-layout { grid-template-columns: minmax(0, 1fr); }
-  .docs-sidebar { display: none; }
   .docs-panel-toggle { display: block; }
-  .docs-inspector {
+  .docs-sidebar {
     background: var(--pd-color-surface);
     inset: var(--pd-space-3);
     overflow-y: auto;
     position: fixed;
     z-index: 1;
   }
-  .docs-inspector[hidden] { display: none; }
+  .docs-sidebar[hidden] { display: none; }
 }
 `;
 
@@ -278,12 +268,6 @@ function tokenLabel(entry) {
   return entry.context ? entry.context + ' · ' + entry.name : entry.name;
 }
 
-function renderTokens(container, entries, query = '', group = 'all') {
-  const normalized = query.trim().toLowerCase();
-  const matches = entries.filter((entry) => (group === 'all' || entry.group === group) && (!normalized || (tokenLabel(entry) + ' ' + entry.value).toLowerCase().includes(normalized)));
-  container.innerHTML = matches.slice(0, 24).map((entry) => '<li><code>' + escapeHtml(tokenLabel(entry)) + '</code><br><span>' + escapeHtml(entry.value) + '</span></li>').join('') || '<li class="docs-muted">沒有相符的 Token。</li>';
-}
-
 function renderPageReferences(container, entries) {
   if (!container) return;
   const names = JSON.parse(container.dataset.tokenNames || '[]');
@@ -291,19 +275,12 @@ function renderPageReferences(container, entries) {
   container.innerHTML = matches.map((entry) => '<li><code>' + escapeHtml(tokenLabel(entry)) + '</code><br><span>' + escapeHtml(entry.value) + '</span></li>').join('') || '<li class="docs-muted">本頁未直接引用 Token。</li>';
 }
 
-async function setupInspector() {
-  const container = document.querySelector('[data-token-results]');
-  const input = document.querySelector('[data-token-query]');
-  const group = document.querySelector('[data-token-group]');
-  if (!container || !input || !group) return;
+async function setupPageReferences() {
+  const container = document.querySelector('[data-page-token-references]');
+  if (!container) return;
   const response = await fetch(root.dataset.docsBase + 'tokens.json');
   const tokens = await response.json();
-  const entries = tokenEntries(tokens);
-  const render = () => renderTokens(container, entries, input.value, group.value);
-  render();
-  renderPageReferences(document.querySelector('[data-page-token-references]'), entries);
-  input.addEventListener('input', render);
-  group.addEventListener('change', render);
+  renderPageReferences(container, tokenEntries(tokens));
 }
 
 async function setupSearch() {
@@ -319,9 +296,9 @@ async function setupSearch() {
   });
 }
 
-function setupInspectorPanel() {
-  const button = document.querySelector('[data-panel-toggle]');
-  const panel = document.querySelector('[data-token-inspector]');
+function setupNavPanel() {
+  const button = document.querySelector('[data-nav-toggle]');
+  const panel = document.querySelector('[data-nav-panel]');
   if (!button || !panel) return;
   const narrowViewport = window.matchMedia('(max-width: 48rem)');
   const synchronizePanel = () => {
@@ -341,13 +318,13 @@ function setupInspectorPanel() {
     button.setAttribute('aria-expanded', String(!expanded));
     panel.hidden = expanded;
     if (expanded) button.focus();
-    else panel.querySelector('[data-token-query]')?.focus();
+    else panel.querySelector('a')?.focus();
   });
 }
 
-setupInspector().catch(() => {});
+setupPageReferences().catch(() => {});
 setupSearch().catch(() => {});
-setupInspectorPanel();
+setupNavPanel();
 `;
 
 const requiredSources = [
@@ -555,7 +532,7 @@ function shell({ body, page, packageVersion }) {
   const cssBase = assetHref(route, 'assets').replace(/\/$/, '');
   const nav = navItems().map(([label, target]) => {
     const current = target === route;
-    return `<li><a class="pd-nav__link${current ? ' docs-nav__link--current' : ''}"${current ? ' aria-current="page"' : ''} href="${routeHref(route, target)}">${label}</a></li>`;
+    return `<li><a class="pd-nav__link${current ? ' pd-nav__link--active' : ''}"${current ? ' aria-current="page"' : ''} href="${routeHref(route, target)}">${label}</a></li>`;
   }).join('');
   const toc = headings(page.source ?? '').map((heading) => `<li class="docs-toc__item docs-toc__item--${heading.depth}"><a href="#${heading.id}">${escapeHtml(heading.text)}</a></li>`).join('') || '<li class="docs-muted">本頁無次級標題。</li>';
   const search = route === '' ? '<section class="docs-search-shell"><label for="site-search">搜尋文件</label><input class="docs-search" data-site-search id="site-search" type="search" autocomplete="off"><ul class="docs-search-results" data-site-search-results></ul></section>' : '';
@@ -583,10 +560,10 @@ function shell({ body, page, packageVersion }) {
   <header class="docs-header">
     <a class="docs-brand" href="${routeHref(route, '')}">Palladio</a>
     <span class="pd-badge">Token 套件 v${escapeHtml(packageVersion)}</span>
-    <button class="docs-panel-toggle" data-panel-toggle type="button" aria-controls="token-inspector" aria-expanded="false">Token 檢視器</button>
+    <button class="docs-panel-toggle" data-nav-toggle type="button" aria-controls="docs-nav" aria-expanded="false">文件導覽選單</button>
   </header>
   <div class="docs-layout">
-    <aside class="docs-sidebar">
+    <aside class="docs-sidebar" data-nav-panel id="docs-nav">
       <nav class="pd-nav" aria-label="文件導覽">
         <ul class="pd-nav__list">${nav}</ul>
       </nav>
@@ -595,16 +572,7 @@ function shell({ body, page, packageVersion }) {
       ${search}
       <article class="docs-document">${body}</article>
     </main>
-    <aside class="docs-inspector" data-token-inspector id="token-inspector">
-      <section aria-labelledby="token-inspector-title">
-        <h2 id="token-inspector-title">Token 檢視器</h2>
-        <label for="token-query">搜尋 Token</label>
-        <input class="docs-inspector__search" data-token-query id="token-query" type="search" autocomplete="off">
-        <label for="token-group">Token 分組</label>
-        <select class="docs-token-group" data-token-group id="token-group"><option value="all">全部 Token</option><option value="semantic">Semantic</option><option value="density">Density</option><option value="theme">Theme</option></select>
-        <ul class="docs-token-list" data-token-results><li class="docs-muted">載入 Token 資料…</li></ul>
-      </section>
-      <hr class="pd-divider">
+    <aside class="docs-reference-panel">
       ${pageReferences}
       <nav aria-label="本頁目錄">
         <h2>本頁目錄</h2>
