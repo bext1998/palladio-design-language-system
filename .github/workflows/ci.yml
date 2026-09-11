@@ -41,3 +41,21 @@ jobs:
       - name: Lint agent skill
         working-directory: ${{ github.workspace }}
         run: node skills/palladio-design-tokens/scripts/check-skill.mjs
+
+  documentation-drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - run: npm ci
+        working-directory: ${{ github.workspace }}
+
+      - name: Verify generated documentation is current
+        run: npm run check:docs
+        working-directory: ${{ github.workspace }}

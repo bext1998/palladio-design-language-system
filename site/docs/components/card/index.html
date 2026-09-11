@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="dark" data-docs-base="../../">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Palladio 設計系統文件 — Card">
+  <title>Card · Palladio</title>
+  <link rel="stylesheet" href="../../assets/palladio/palladio.css">
+  <link rel="stylesheet" href="../../assets/palladio/navigation.css">
+  <link rel="stylesheet" href="../../assets/palladio/card.css">
+  <link rel="stylesheet" href="../../assets/palladio/badge.css">
+  <link rel="stylesheet" href="../../assets/palladio/divider.css">
+  <link rel="stylesheet" href="../../assets/docs.css">
+</head>
+<body>
+  <a class="docs-skip-link" href="#content">跳至主要內容</a>
+  <header class="docs-header">
+    <a class="docs-brand" href="../../">Palladio</a>
+    <span class="pd-badge">Token 套件 v0.1.1</span>
+    <button class="docs-panel-toggle" data-panel-toggle type="button" aria-controls="token-inspector" aria-expanded="false">Token 檢視器</button>
+  </header>
+  <div class="docs-layout">
+    <aside class="docs-sidebar">
+      <nav class="pd-nav" aria-label="文件導覽">
+        <ul class="pd-nav__list"><li><a class="pd-nav__link" href="../../">Overview</a></li><li><a class="pd-nav__link" href="../../principles/">Principles</a></li><li><a class="pd-nav__link" href="../../foundations/color/">Foundations</a></li><li><a class="pd-nav__link" href="../">Components</a></li><li><a class="pd-nav__link" href="../../accessibility/">Accessibility</a></li><li><a class="pd-nav__link" href="../../tokens/">Tokens</a></li><li><a class="pd-nav__link" href="../../guides/consuming-tokens/">Guides</a></li></ul>
+      </nav>
+    </aside>
+    <main class="docs-content" id="content">
+      
+      <article class="docs-document"><h1>Card</h1><p><code>Card</code> 是規格第七章「分組手段優先順序」中排在<strong>最後</strong>的技巧——「Card / 明確邊框，最後手段，用於需要獨立互動邊界的場景」。在用 Card 之前，請先確認 spacing、typography hierarchy、Divider 或單純的 surface elevation（<code>surface</code> → <code>surface-raised</code>）不足以表達所需的分組層次；Card <strong>不是</strong>預設的視覺分組手段。根元素須先套用 Foundation 的 <code>data-theme=&quot;dark&quot;</code>，載入 <code>palladio/dist/css/palladio.css</code> 後再載入 <code>card.css</code>。</p>
+<pre><code class="language-html">&lt;!-- 非互動：純內容容器，元素依語意自行選擇（div / article / section） --&gt;
+&lt;article class=&quot;pd-card&quot;&gt;
+  &lt;h3&gt;標題&lt;/h3&gt;
+  &lt;p&gt;內文說明。&lt;/p&gt;
+&lt;/article&gt;
+
+&lt;!-- 互動：整張卡片可點擊，導向詳情頁 --&gt;
+&lt;a class=&quot;pd-card pd-card--interactive&quot; href=&quot;/items/42&quot;&gt;
+  &lt;h3&gt;標題&lt;/h3&gt;
+  &lt;p&gt;內文說明。&lt;/p&gt;
+&lt;/a&gt;
+
+&lt;!-- 互動：JS 觸發的動作 --&gt;
+&lt;button class=&quot;pd-card pd-card--interactive&quot; type=&quot;button&quot;&gt;
+  &lt;h3&gt;標題&lt;/h3&gt;
+  &lt;p&gt;內文說明。&lt;/p&gt;
+&lt;/button&gt;
+</code></pre>
+<h2 id="surface-border-與-radius-契約">Surface、border 與 radius 契約</h2>
+<ul>
+<li><strong>背景</strong>：<code>pd-color-surface-raised</code>（規格 2.1：「提升一層的表面（card、dropdown）」）。</li>
+<li><strong>邊框</strong>：<code>pd-color-border-default</code>。規格 2.2 的 token 表已將 <code>border-default</code> 的角色明確定義為「標準裝飾性 border（<strong>card edge</strong>）」——這是目前 spec.md（source of truth）對 Card 邊框的權威指定，取代 Issue 原始描述中較早期提到的 <code>border-subtle</code>（<code>border-subtle</code> 現在的角色是規格第七章第 3 順位的 Divider 線條，「幾乎與表面融合」，不是 Card 的邊界）。<code>border-default</code> 對四層表面的對比是 1.46／1.35／1.23／1.07:1，全部低於 3:1——這是<strong>刻意</strong>的：它是純裝飾性邊界，不受 A-M2 約束（見 <code>accessibility-contract.md</code> 第三節），因為 idle 狀態的 Card 本身不需要作為一個「可識別的互動邊界」；只有在 Card 本身可互動時，才需要額外的、已驗證的 focus indicator（見下方）。</li>
+<li><strong>Radius</strong>：<code>pd-radius-sm</code>。規格 4.1 的 token 表把 <code>sm</code>（4px）的適用場景直接寫成「輕微圓角（<strong>input、大型 card</strong>）」——這是「保守 radius」驗收條件最直接對應的 token，與 Input 共用同一個語意角色。</li>
+<li><strong>Padding</strong>：<code>pd-space-4</code>（16px），固定值，不隨 density 變動——Card 是內容容器而非緊湊控制項，規格 6.2 的 density 表只定義「元件 padding」（控制項的 padding／最小互動尺寸／body 字級），沒有另外定義「容器 padding」隨 density 縮放的規則；<code>pd-space-4</code> 仍是合法的 Semantic 4px 倍數 token，三種 density 下都適用、不會破版。</li>
+</ul>
+<h2 id="density">Density</h2>
+<ul>
+<li>三種 density 下 Card 的外觀結構不變（padding、border、radius 皆固定），內容文字仍會透過瀏覽器繼承反映當前 density 的 body 字級。</li>
+<li><code>.pd-card--interactive</code> 額外消費 <code>--pd-density-component-min-interactive-size</code>（32／36／48px），滿足 A-M6「互動元素最小尺寸依 density preset 對應值」——實務上任何有實際內容的 Card 高度都遠超過這個下限，此宣告主要是為了忠實對齊規則本身，而非實際的限制因素。</li>
+</ul>
+<h2 id="互動與-focus-行為">互動與 focus 行為</h2>
+<ul>
+<li><strong>非互動</strong>：<code>.pd-card</code> 單獨使用時（<code>&lt;div&gt;</code>／<code>&lt;article&gt;</code>／<code>&lt;section&gt;</code>）不具游標、hover、focus 語意，純粹是內容容器。</li>
+<li><strong>互動</strong>：加上 <code>.pd-card--interactive</code> 並改用原生 <code>&lt;a href=&quot;...&quot;&gt;</code>（導向）或 <code>&lt;button type=&quot;button&quot;&gt;</code>（JS 動作），保留原生鍵盤語意——不要用 <code>role=&quot;button&quot;</code>、<code>tabindex</code> 或 JavaScript 在 <code>&lt;div&gt;</code> 上重建互動卡片。<code>&lt;button&gt;</code> 支援原生 <code>disabled</code>；<code>&lt;a&gt;</code> 沒有原生 disabled 概念，若連結目前不可用，請不要渲染成看似可點擊的樣子（例如乾脆不輸出該連結），不要用假的 disabled 樣式偽裝。</li>
+<li><strong>Hover</strong>（僅互動卡片）：邊框從裝飾性的 <code>border-default</code> 換成已驗證通過 A-M2 的 <code>border-strong</code>，讓整張卡片在 hover 時明確表達「這裡可以點擊」，同時仍是已驗證安全的 token 組合（<code>border-strong</code> 對四層表面 4.29／3.97／3.62／3.16:1，見 <code>accessibility-contract.md</code> 第三節）。</li>
+<li><strong>Active</strong>（僅互動卡片）：背景額外換成 <code>pd-color-surface-overlay</code>（邊框維持 <code>border-strong</code>，不受 <code>hover: hover</code> media query 限制，觸控／鍵盤啟動也能拿到），提供必要的按壓回饋。原因：<code>.pd-card--interactive</code> 對 <code>&lt;button&gt;</code> 宣告 <code>appearance: none</code>，移除了原生按壓視覺；<code>&lt;a&gt;</code> 則從來沒有原生按壓回饋。這裡刻意不用 <code>pd-color-surface-hover</code>：規格 2.1 定義的第五層 <code>surface-hover</code> 未納入 <code>accessibility-contract.md</code> 第三節的 A-M2 稽核範圍，<code>border-strong</code> 對它僅 2.99:1、未達 3:1 門檻（Input README 已記錄同一個非阻塞審查遺留）。<code>surface-overlay</code> 則是既有「四層表面」之一，<code>border-strong</code> 對它 3.16:1（A-M2 ✔），<code>text-primary</code> 對它 11.92:1（A-M1 ✔），兩者都已在 <code>accessibility-contract.md</code> 驗證過，不需要新增或假設任何配對。</li>
+<li><strong>Focus</strong>（僅互動卡片）：<code>:focus-visible</code> 顯示 <code>pd-color-border-strong</code> 的偏移 outline，與 Button／Input／Badge 使用同一組已驗證的 A-M2 對比與幾何模式（<code>--pd-space-1</code> 的 outline width 與 offset）。</li>
+<li><strong>Disabled</strong>（僅 <code>&lt;button&gt;</code> 變體）：文字改為 <code>pd-color-text-disabled</code>（A-M1），<code>cursor: not-allowed</code>；邊框維持不變，不使用 opacity（避免連帶降低已驗證的對比）。</li>
+<li><strong>Reduced motion</strong>：互動卡片轉場 <code>background-color</code> 與 <code>border-color</code>，使用 <code>--pd-duration-fast</code> 與 <code>--pd-easing-default</code>；<code>prefers-reduced-motion: reduce</code> 時移除 transition。非互動卡片沒有任何轉場，A-M4 自動滿足。</li>
+</ul>
+</article>
+    </main>
+    <aside class="docs-inspector" data-token-inspector id="token-inspector">
+      <section aria-labelledby="token-inspector-title">
+        <h2 id="token-inspector-title">Token 檢視器</h2>
+        <label for="token-query">搜尋 Token</label>
+        <input class="docs-inspector__search" data-token-query id="token-query" type="search" autocomplete="off">
+        <label for="token-group">Token 分組</label>
+        <select class="docs-token-group" data-token-group id="token-group"><option value="all">全部 Token</option><option value="semantic">Semantic</option><option value="density">Density</option><option value="theme">Theme</option></select>
+        <ul class="docs-token-list" data-token-results><li class="docs-muted">載入 Token 資料…</li></ul>
+      </section>
+      <hr class="pd-divider">
+      <section aria-labelledby="page-token-references-title"><h2 id="page-token-references-title">本頁引用 Token</h2><ul class="docs-token-list" data-page-token-references data-token-names="[&quot;--pd-card&quot;,&quot;--pd-card--interactive&quot;,&quot;--pd-color-border-default&quot;,&quot;--pd-color-border-strong&quot;,&quot;--pd-color-surface-hover&quot;,&quot;--pd-color-surface-overlay&quot;,&quot;--pd-color-surface-raised&quot;,&quot;--pd-color-text-disabled&quot;,&quot;--pd-density-component-min-interactive-size&quot;,&quot;--pd-duration-fast&quot;,&quot;--pd-easing-default&quot;,&quot;--pd-radius-sm&quot;,&quot;--pd-space-1&quot;,&quot;--pd-space-4&quot;]"><li class="docs-muted">載入 Token 資料…</li></ul></section><hr class="pd-divider">
+      <nav aria-label="本頁目錄">
+        <h2>本頁目錄</h2>
+        <ul class="docs-toc"><li class="docs-toc__item docs-toc__item--2"><a href="#surface-border-與-radius-契約">Surface、border 與 radius 契約</a></li><li class="docs-toc__item docs-toc__item--2"><a href="#density">Density</a></li><li class="docs-toc__item docs-toc__item--2"><a href="#互動與-focus-行為">互動與 focus 行為</a></li></ul>
+      </nav>
+    </aside>
+  </div>
+  <script src="../../assets/docs.js" defer></script>
+</body>
+</html>

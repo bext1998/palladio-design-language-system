@@ -1,0 +1,70 @@
+/*
+ * Product code must load palladio.css first before this stylesheet.
+ * This component only consumes Semantic tokens; accent-subtle and
+ * accent-text are the product's own accent slots (spec 2.5) — no other
+ * accent value is derived, assumed, or provided as a fallback here
+ * (AGENTS.md, spec 2.5).
+ */
+.pd-badge {
+  align-items: center;
+  background-color: var(--pd-color-surface-raised);
+  border-radius: var(--pd-radius-full);
+  box-sizing: border-box;
+  color: var(--pd-color-text-primary);
+  display: inline-flex;
+  font: inherit;
+  gap: var(--pd-space-1);
+  line-height: 1;
+  padding-block: var(--pd-space-1);
+  padding-inline: var(--pd-space-2);
+}
+
+.pd-badge--success {
+  color: var(--pd-color-success);
+}
+
+.pd-badge--warning {
+  color: var(--pd-color-warning);
+}
+
+.pd-badge--danger {
+  color: var(--pd-color-danger);
+}
+
+.pd-badge--info {
+  color: var(--pd-color-info);
+}
+
+.pd-badge--accent {
+  background-color: var(--pd-color-accent-subtle);
+  color: var(--pd-color-accent-text);
+}
+
+.pd-badge--interactive {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  min-block-size: var(--pd-density-component-min-interactive-size);
+  padding-inline: var(--pd-density-component-padding-horizontal);
+}
+
+@media (hover: hover) {
+  .pd-badge--interactive:not(:disabled):hover {
+    text-decoration: underline;
+  }
+}
+
+.pd-badge--interactive:not(:disabled):active {
+  text-decoration: underline;
+}
+
+.pd-badge--interactive:focus-visible {
+  outline: var(--pd-space-1) solid var(--pd-color-border-strong);
+  outline-offset: var(--pd-space-1);
+}
+
+.pd-badge--interactive:disabled {
+  background-color: var(--pd-color-surface-raised);
+  color: var(--pd-color-text-disabled);
+  cursor: not-allowed;
+}

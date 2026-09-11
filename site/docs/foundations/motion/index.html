@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="dark" data-docs-base="../../">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Palladio 設計系統文件 — Motion">
+  <title>Motion · Palladio</title>
+  <link rel="stylesheet" href="../../assets/palladio/palladio.css">
+  <link rel="stylesheet" href="../../assets/palladio/navigation.css">
+  <link rel="stylesheet" href="../../assets/palladio/card.css">
+  <link rel="stylesheet" href="../../assets/palladio/badge.css">
+  <link rel="stylesheet" href="../../assets/palladio/divider.css">
+  <link rel="stylesheet" href="../../assets/docs.css">
+</head>
+<body>
+  <a class="docs-skip-link" href="#content">跳至主要內容</a>
+  <header class="docs-header">
+    <a class="docs-brand" href="../../">Palladio</a>
+    <span class="pd-badge">Token 套件 v0.1.1</span>
+    <button class="docs-panel-toggle" data-panel-toggle type="button" aria-controls="token-inspector" aria-expanded="false">Token 檢視器</button>
+  </header>
+  <div class="docs-layout">
+    <aside class="docs-sidebar">
+      <nav class="pd-nav" aria-label="文件導覽">
+        <ul class="pd-nav__list"><li><a class="pd-nav__link" href="../../">Overview</a></li><li><a class="pd-nav__link" href="../../principles/">Principles</a></li><li><a class="pd-nav__link" href="../color/">Foundations</a></li><li><a class="pd-nav__link" href="../../components/">Components</a></li><li><a class="pd-nav__link" href="../../accessibility/">Accessibility</a></li><li><a class="pd-nav__link" href="../../tokens/">Tokens</a></li><li><a class="pd-nav__link" href="../../guides/consuming-tokens/">Guides</a></li></ul>
+      </nav>
+    </aside>
+    <main class="docs-content" id="content">
+      
+      <article class="docs-document"><h1>Motion</h1><h2 id="五-動效">五、動效</h2>
+<h3 id="5-1-動效個性">5.1 動效個性</h3>
+<p>Palladio 的動效是流體有機的。技術上的體現是使用非對稱的 easing curve：進場比退場稍慢（有「落定」感），加速與減速都遵循物理直覺。避免彈跳（spring bounce），避免線性。</p>
+<h3 id="5-2-duration-scale">5.2 Duration Scale</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>值</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pd-duration-instant</code></td>
+<td><code>0ms</code></td>
+<td><code>prefers-reduced-motion</code> fallback</td>
+</tr>
+<tr>
+<td><code>pd-duration-fast</code></td>
+<td><code>120ms</code></td>
+<td>Micro-interaction（hover 顏色變化、checkbox toggle）</td>
+</tr>
+<tr>
+<td><code>pd-duration-normal</code></td>
+<td><code>220ms</code></td>
+<td>狀態轉場（panel expand、fade in/out）</td>
+</tr>
+<tr>
+<td><code>pd-duration-slow</code></td>
+<td><code>380ms</code></td>
+<td>頁面層級轉場、signature animation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-3-easing-curves">5.3 Easing Curves</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>值</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pd-easing-default</code></td>
+<td><code>cubic-bezier(0.25, 0.46, 0.45, 0.94)</code></td>
+<td>通用（自然感）</td>
+</tr>
+<tr>
+<td><code>pd-easing-enter</code></td>
+<td><code>cubic-bezier(0.0, 0.0, 0.2, 1.0)</code></td>
+<td>元素進場（慢進快出）</td>
+</tr>
+<tr>
+<td><code>pd-easing-exit</code></td>
+<td><code>cubic-bezier(0.4, 0.0, 1.0, 1.0)</code></td>
+<td>元素退場（快進慢出）</td>
+</tr>
+<tr>
+<td><code>pd-easing-expressive</code></td>
+<td><code>cubic-bezier(0.34, 1.10, 0.64, 1.0)</code></td>
+<td>Signature animation（輕微超出再回落，有機感）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><code>pd-easing-expressive</code> 是 Palladio 動效個性的核心。它產生輕微的過衝（overshoot），類似彈性但不是彈跳——是有機生命感的來源。僅用於 <code>pd-duration-normal</code> 以上的動畫，<code>fast</code> 等級不適用。</p>
+</blockquote>
+<h3 id="5-4-reduced-motion-must">5.4 Reduced Motion（<code>[MUST]</code>）</h3>
+<p>當使用者啟用 <code>prefers-reduced-motion: reduce</code>：</p>
+<ul>
+<li>所有 duration 替換為 <code>pd-duration-instant</code>（<code>0ms</code>）</li>
+<li>所有 transform 類動畫移除</li>
+<li>必要的 opacity 狀態可保留，但必須瞬時切換，不保留 transition</li>
+</ul>
+<hr>
+</article>
+    </main>
+    <aside class="docs-inspector" data-token-inspector id="token-inspector">
+      <section aria-labelledby="token-inspector-title">
+        <h2 id="token-inspector-title">Token 檢視器</h2>
+        <label for="token-query">搜尋 Token</label>
+        <input class="docs-inspector__search" data-token-query id="token-query" type="search" autocomplete="off">
+        <label for="token-group">Token 分組</label>
+        <select class="docs-token-group" data-token-group id="token-group"><option value="all">全部 Token</option><option value="semantic">Semantic</option><option value="density">Density</option><option value="theme">Theme</option></select>
+        <ul class="docs-token-list" data-token-results><li class="docs-muted">載入 Token 資料…</li></ul>
+      </section>
+      <hr class="pd-divider">
+      <section aria-labelledby="page-token-references-title"><h2 id="page-token-references-title">本頁引用 Token</h2><ul class="docs-token-list" data-page-token-references data-token-names="[&quot;--pd-duration-fast&quot;,&quot;--pd-duration-instant&quot;,&quot;--pd-duration-normal&quot;,&quot;--pd-duration-slow&quot;,&quot;--pd-easing-default&quot;,&quot;--pd-easing-enter&quot;,&quot;--pd-easing-exit&quot;,&quot;--pd-easing-expressive&quot;]"><li class="docs-muted">載入 Token 資料…</li></ul></section><hr class="pd-divider">
+      <nav aria-label="本頁目錄">
+        <h2>本頁目錄</h2>
+        <ul class="docs-toc"><li class="docs-toc__item docs-toc__item--2"><a href="#五-動效">五、動效</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#5-1-動效個性">5.1 動效個性</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#5-2-duration-scale">5.2 Duration Scale</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#5-3-easing-curves">5.3 Easing Curves</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#5-4-reduced-motion-must">5.4 Reduced Motion（[MUST]）</a></li></ul>
+      </nav>
+    </aside>
+  </div>
+  <script src="../../assets/docs.js" defer></script>
+</body>
+</html>

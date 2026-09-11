@@ -1,0 +1,275 @@
+:root {
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html { background: var(--pd-color-bg); }
+
+body {
+  background: var(--pd-color-bg);
+  color: var(--pd-color-text-primary);
+  font-size: var(--pd-density-typography-body-font-size);
+  margin: 0;
+}
+
+a { color: var(--pd-color-text-primary); }
+
+:focus-visible {
+  outline: var(--pd-space-1) solid var(--pd-color-border-strong);
+  outline-offset: var(--pd-space-1);
+}
+
+.docs-skip-link {
+  background: var(--pd-color-surface-overlay);
+  color: var(--pd-color-text-primary);
+  inset-inline-start: var(--pd-space-4);
+  padding: var(--pd-space-2);
+  position: absolute;
+  transform: translateY(-200%);
+}
+
+.docs-skip-link:focus { transform: translateY(var(--pd-space-2)); }
+
+.docs-header {
+  align-items: center;
+  background: var(--pd-color-surface);
+  border-block-end: 1px solid var(--pd-color-border-subtle);
+  display: flex;
+  gap: var(--pd-space-3);
+  justify-content: space-between;
+  padding: var(--pd-space-3) var(--pd-space-4);
+}
+
+.docs-brand {
+  font-size: var(--pd-density-typography-body-font-size);
+  text-decoration: none;
+}
+
+.docs-layout {
+  display: grid;
+  gap: var(--pd-space-4);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 3fr) minmax(0, 1fr);
+  margin-inline: auto;
+  max-inline-size: 96rem;
+  padding: var(--pd-space-4);
+}
+
+.docs-sidebar,
+.docs-inspector {
+  align-self: start;
+  min-inline-size: 0;
+}
+
+.docs-sidebar { padding: var(--pd-space-2); }
+
+.docs-nav__link--current {
+  background: var(--pd-color-surface-raised);
+  color: var(--pd-color-text-primary);
+  text-decoration: underline;
+}
+
+.docs-content {
+  min-inline-size: 0;
+}
+
+.docs-document > :first-child { margin-block-start: 0; }
+
+.docs-document :where(h1, h2, h3, h4, p, ul, ol, table, pre, blockquote) { margin-block: 0; }
+
+.docs-document > * + * { margin-block-start: var(--pd-space-3); }
+
+.docs-document h1 {
+  margin-block-end: var(--pd-space-6);
+}
+
+.docs-document h2 {
+  margin-block-start: var(--pd-space-8);
+  margin-block-end: var(--pd-space-3);
+}
+
+.docs-document h3,
+.docs-document h4 {
+  margin-block-start: var(--pd-space-6);
+  margin-block-end: var(--pd-space-2);
+}
+
+.docs-document ul,
+.docs-document ol {
+  padding-inline-start: var(--pd-space-5);
+}
+
+.docs-document li + li { margin-block-start: var(--pd-space-1); }
+
+.docs-document img,
+.docs-document pre { max-inline-size: 100%; }
+
+.docs-document pre {
+  background: var(--pd-color-surface);
+  overflow: auto;
+  padding: var(--pd-space-3);
+}
+
+.docs-document code { color: var(--pd-color-text-primary); }
+
+.docs-document table {
+  border-collapse: collapse;
+  inline-size: 100%;
+}
+
+.docs-document tr {
+  border-block-end: 1px solid var(--pd-color-border-subtle);
+}
+
+.docs-document th,
+.docs-document td {
+  padding: var(--pd-space-2);
+  text-align: start;
+  vertical-align: top;
+}
+
+.docs-card-grid {
+  display: grid;
+  gap: var(--pd-space-3);
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+.docs-card-grid .pd-card--interactive { color: var(--pd-color-text-primary); }
+
+.docs-inspector {
+  background: var(--pd-color-surface);
+  padding: var(--pd-space-3);
+}
+
+.docs-inspector__search,
+.docs-token-group,
+.docs-search {
+  background: var(--pd-color-surface-raised);
+  border: none;
+  color: var(--pd-color-text-primary);
+  font: inherit;
+  inline-size: 100%;
+  min-block-size: var(--pd-density-component-min-interactive-size);
+  outline: var(--pd-space-1) solid transparent;
+  padding: var(--pd-density-component-padding-vertical) var(--pd-density-component-padding-horizontal);
+}
+
+.docs-inspector__search:focus-visible,
+.docs-search:focus-visible {
+  outline-color: var(--pd-color-border-strong);
+}
+
+.docs-token-list,
+.docs-search-results,
+.docs-toc {
+  display: grid;
+  gap: var(--pd-space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.docs-token-list { margin-block-start: var(--pd-space-3); }
+
+.docs-token-list code { color: var(--pd-color-text-secondary); }
+
+.docs-token-list span { color: var(--pd-color-text-primary); }
+
+.docs-panel-toggle {
+  background: var(--pd-color-surface-raised);
+  border: none;
+  color: var(--pd-color-text-primary);
+  display: none;
+  font: inherit;
+  min-block-size: var(--pd-density-component-min-interactive-size);
+  padding: var(--pd-density-component-padding-vertical) var(--pd-density-component-padding-horizontal);
+}
+
+.docs-panel-toggle[aria-expanded="true"] { text-decoration: underline; }
+
+.docs-search-shell { margin-block-end: var(--pd-space-4); }
+
+.docs-search-results { margin-block-start: var(--pd-space-3); }
+
+.docs-muted { color: var(--pd-color-text-secondary); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none; }
+}
+
+@media (max-width: 72rem) {
+  .docs-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); }
+  .docs-inspector { grid-column: 1 / -1; }
+}
+
+@media (max-width: 48rem) {
+  .docs-layout { grid-template-columns: minmax(0, 1fr); }
+  .docs-sidebar { display: none; }
+  .docs-panel-toggle { display: block; }
+  .docs-inspector {
+    background: var(--pd-color-surface);
+    inset: var(--pd-space-3);
+    overflow-y: auto;
+    position: fixed;
+    z-index: 1;
+  }
+  .docs-inspector[hidden] { display: none; }
+}
+
+body {
+  font-family: "Noto Sans", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif";
+  font-size: var(--pd-density-typography-body-font-size);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0px;
+}
+
+.docs-document {
+  font-family: "Noto Sans", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif";
+  font-size: var(--pd-density-typography-body-font-size);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0px;
+}
+
+.docs-document h1 {
+  font-family: "Noto Sans", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif";
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.64px;
+}
+
+.docs-document h2 {
+  font-family: "Noto Sans", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif";
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.18px;
+}
+
+.docs-document h3,
+.docs-document h4 {
+  font-family: "Noto Sans", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif";
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.14px;
+}
+
+.docs-document th {
+  font-family: "Noto Sans", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif";
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0px;
+}
+
+.docs-document pre,
+.docs-document code {
+  font-family: "Noto Sans Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace";
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0px;
+}

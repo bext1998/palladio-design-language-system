@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="dark" data-docs-base="../../">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Palladio 設計系統文件 — Consuming tokens">
+  <title>Consuming tokens · Palladio</title>
+  <link rel="stylesheet" href="../../assets/palladio/palladio.css">
+  <link rel="stylesheet" href="../../assets/palladio/navigation.css">
+  <link rel="stylesheet" href="../../assets/palladio/card.css">
+  <link rel="stylesheet" href="../../assets/palladio/badge.css">
+  <link rel="stylesheet" href="../../assets/palladio/divider.css">
+  <link rel="stylesheet" href="../../assets/docs.css">
+</head>
+<body>
+  <a class="docs-skip-link" href="#content">跳至主要內容</a>
+  <header class="docs-header">
+    <a class="docs-brand" href="../../">Palladio</a>
+    <span class="pd-badge">Token 套件 v0.1.1</span>
+    <button class="docs-panel-toggle" data-panel-toggle type="button" aria-controls="token-inspector" aria-expanded="false">Token 檢視器</button>
+  </header>
+  <div class="docs-layout">
+    <aside class="docs-sidebar">
+      <nav class="pd-nav" aria-label="文件導覽">
+        <ul class="pd-nav__list"><li><a class="pd-nav__link" href="../../">Overview</a></li><li><a class="pd-nav__link" href="../../principles/">Principles</a></li><li><a class="pd-nav__link" href="../../foundations/color/">Foundations</a></li><li><a class="pd-nav__link" href="../../components/">Components</a></li><li><a class="pd-nav__link" href="../../accessibility/">Accessibility</a></li><li><a class="pd-nav__link" href="../../tokens/">Tokens</a></li><li><a class="pd-nav__link docs-nav__link--current" aria-current="page" href="./">Guides</a></li></ul>
+      </nav>
+    </aside>
+    <main class="docs-content" id="content">
+      
+      <article class="docs-document"><p><span class="pd-badge">套件 README（英文原文）</span></p><h1>Consuming tokens</h1><h2 id="install">Install</h2>
+<pre><code class="language-sh">npm install @pdiodsgn/tokens
+</code></pre>
+<p>Pin an exact version. Palladio's validation strategy is production-first
+(<code>docs/spec.md</code> §11): a consuming product finds a gap, Palladio is updated and
+republished, then the product bumps its pinned version and re-verifies. Track a
+range (<code>^</code>) only for non-first-party consumers.</p>
+<h2 id="what-s-in-the-package">What's in the package</h2>
+<table>
+<thead>
+<tr>
+<th>Entry</th>
+<th>File</th>
+<th>For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@pdiodsgn/tokens</code></td>
+<td><code>dist/ts/tokens.js</code> + <code>.d.ts</code></td>
+<td>React / TS — <code>palladioTokens</code>, <code>palladioDensity</code>, <code>palladioTheme</code></td>
+</tr>
+<tr>
+<td><code>@pdiodsgn/tokens/css</code></td>
+<td><code>dist/css/palladio.css</code></td>
+<td>The custom properties, theme + density variants</td>
+</tr>
+<tr>
+<td><code>@pdiodsgn/tokens/tokens.json</code></td>
+<td><code>dist/json/tokens.json</code></td>
+<td>Go / Wails / any language — <code>semantic</code> · <code>density</code> · <code>theme</code></td>
+</tr>
+<tr>
+<td><code>@pdiodsgn/tokens/tokens.ts</code></td>
+<td><code>dist/ts/tokens.ts</code></td>
+<td>Source form, if you prefer to compile it yourself</td>
+</tr>
+<tr>
+<td><code>@pdiodsgn/tokens/agent-reference.md</code></td>
+<td><code>dist/agent-reference.md</code></td>
+<td>AI coding agents — token overview + rules</td>
+</tr>
+<tr>
+<td><code>@pdiodsgn/tokens/validate-accents</code></td>
+<td><code>dist/validate-accents.js</code> + <code>.d.ts</code></td>
+<td><code>validateAccentPairs()</code> for your accent slots</td>
+</tr>
+</tbody>
+</table>
+<p>Every example below that names a version uses <code>&lt;version&gt;</code> — replace it with the
+exact version you installed (see <code>package.json</code>). Do not use <code>latest</code> or an
+unpinned range for first-party consumers; that breaks the production-first sync
+(pin → gap → Palladio release → bump pin → re-verify).</p>
+<h2 id="using-it">Using it</h2>
+<h3 id="react-bundled-web-app">React / bundled web app</h3>
+<pre><code class="language-ts">import &quot;@pdiodsgn/tokens/css&quot;;               // registers the custom properties
+import { palladioTokens } from &quot;@pdiodsgn/tokens&quot;; // only when you need a value in JS
+
+const surface = palladioTokens.color.surface.hex;
+</code></pre>
+<p>Theme and density are attribute-driven, set them on the root element. The
+colour custom properties are declared <strong>only</strong> under <code>:root[data-theme=&quot;dark&quot;]</code>
+(dark is the one theme today; <code>docs/spec.md</code> §9.3). Without the attribute every
+<code>--pd-color-*</code> is undefined — <code>data-theme=&quot;dark&quot;</code> is required, not optional:</p>
+<pre><code class="language-html">&lt;html data-theme=&quot;dark&quot; data-density=&quot;compact&quot;&gt;
+</code></pre>
+<h3 id="no-build-page-landing-page">No-build page / landing page</h3>
+<pre><code class="language-html">&lt;!-- replace &lt;version&gt; with the exact version you want to pin --&gt;
+&lt;link
+  rel=&quot;stylesheet&quot;
+  href=&quot;https://cdn.jsdelivr.net/npm/@pdiodsgn/tokens@&lt;version&gt;/dist/css/palladio.css&quot;
+/&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;/accent.css&quot; /&gt; &lt;!-- your product's own accent slots --&gt;
+</code></pre>
+<pre><code class="language-html">&lt;html data-theme=&quot;dark&quot;&gt;
+  ...
+&lt;/html&gt;
+</code></pre>
+<pre><code class="language-css">.button { background: var(--pd-color-accent); color: var(--pd-color-accent-text); }
+</code></pre>
+<h3 id="go-wails">Go / Wails</h3>
+<p>At build time, fetch <code>tokens.json</code> for the exact version you pin — from
+<code>https://cdn.jsdelivr.net/npm/@pdiodsgn/tokens@&lt;version&gt;/dist/json/tokens.json</code>
+or the matching GitHub Release asset — into a temporary file your build script
+writes, then <code>go:embed</code> it. Do <strong>not</strong> hand-copy the file into the repo where it
+will never be updated. The Wails WebView loads the same-version CSS. No runtime
+network fetch of tokens.</p>
+<h3 id="ai-coding-agent">AI coding agent</h3>
+<p>Point the consuming product's own <code>AGENTS.md</code> / context file at the
+<code>agent-reference.md</code> URL for the version you pin (the file itself carries
+release-tagged links back to the spec):
+<code>https://cdn.jsdelivr.net/npm/@pdiodsgn/tokens@&lt;version&gt;/dist/agent-reference.md</code>.
+The agent reads that one document; never feed it the whole Palladio repo.</p>
+</article>
+    </main>
+    <aside class="docs-inspector" data-token-inspector id="token-inspector">
+      <section aria-labelledby="token-inspector-title">
+        <h2 id="token-inspector-title">Token 檢視器</h2>
+        <label for="token-query">搜尋 Token</label>
+        <input class="docs-inspector__search" data-token-query id="token-query" type="search" autocomplete="off">
+        <label for="token-group">Token 分組</label>
+        <select class="docs-token-group" data-token-group id="token-group"><option value="all">全部 Token</option><option value="semantic">Semantic</option><option value="density">Density</option><option value="theme">Theme</option></select>
+        <ul class="docs-token-list" data-token-results><li class="docs-muted">載入 Token 資料…</li></ul>
+      </section>
+      <hr class="pd-divider">
+      <section aria-labelledby="page-token-references-title"><h2 id="page-token-references-title">本頁引用 Token</h2><ul class="docs-token-list" data-page-token-references data-token-names="[&quot;--pd-color-accent&quot;,&quot;--pd-color-accent-text&quot;]"><li class="docs-muted">載入 Token 資料…</li></ul></section><hr class="pd-divider">
+      <nav aria-label="本頁目錄">
+        <h2>本頁目錄</h2>
+        <ul class="docs-toc"><li class="docs-toc__item docs-toc__item--2"><a href="#install">Install</a></li><li class="docs-toc__item docs-toc__item--2"><a href="#what-s-in-the-package">What&#39;s in the package</a></li><li class="docs-toc__item docs-toc__item--2"><a href="#using-it">Using it</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#react-bundled-web-app">React / bundled web app</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#no-build-page-landing-page">No-build page / landing page</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#go-wails">Go / Wails</a></li><li class="docs-toc__item docs-toc__item--3"><a href="#ai-coding-agent">AI coding agent</a></li></ul>
+      </nav>
+    </aside>
+  </div>
+  <script src="../../assets/docs.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="dark" data-docs-base="../../">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Palladio 設計系統文件 — Divider">
+  <title>Divider · Palladio</title>
+  <link rel="stylesheet" href="../../assets/palladio/palladio.css">
+  <link rel="stylesheet" href="../../assets/palladio/navigation.css">
+  <link rel="stylesheet" href="../../assets/palladio/card.css">
+  <link rel="stylesheet" href="../../assets/palladio/badge.css">
+  <link rel="stylesheet" href="../../assets/palladio/divider.css">
+  <link rel="stylesheet" href="../../assets/docs.css">
+</head>
+<body>
+  <a class="docs-skip-link" href="#content">跳至主要內容</a>
+  <header class="docs-header">
+    <a class="docs-brand" href="../../">Palladio</a>
+    <span class="pd-badge">Token 套件 v0.1.1</span>
+    <button class="docs-panel-toggle" data-panel-toggle type="button" aria-controls="token-inspector" aria-expanded="false">Token 檢視器</button>
+  </header>
+  <div class="docs-layout">
+    <aside class="docs-sidebar">
+      <nav class="pd-nav" aria-label="文件導覽">
+        <ul class="pd-nav__list"><li><a class="pd-nav__link" href="../../">Overview</a></li><li><a class="pd-nav__link" href="../../principles/">Principles</a></li><li><a class="pd-nav__link" href="../../foundations/color/">Foundations</a></li><li><a class="pd-nav__link" href="../">Components</a></li><li><a class="pd-nav__link" href="../../accessibility/">Accessibility</a></li><li><a class="pd-nav__link" href="../../tokens/">Tokens</a></li><li><a class="pd-nav__link" href="../../guides/consuming-tokens/">Guides</a></li></ul>
+      </nav>
+    </aside>
+    <main class="docs-content" id="content">
+      
+      <article class="docs-document"><h1>Divider</h1><p><code>Divider</code> 是原生 <code>&lt;hr&gt;</code> 的框架無關樣式，提供規格第七章「分組手段優先順序」中排序第三的線條分隔（第一是留白 spacing，第二是文字層級）。根元素須先套用 Foundation 的 <code>data-theme=&quot;dark&quot;</code>，載入 <code>palladio/dist/css/palladio.css</code> 後再載入 <code>divider.css</code>。Divider 是<strong>非互動</strong>的視覺元素，不定義 hover、active、focus 或 disabled state。</p>
+<pre><code class="language-html">&lt;p&gt;第一段內容。&lt;/p&gt;
+&lt;hr class=&quot;pd-divider&quot;&gt;
+&lt;p&gt;第二段內容。&lt;/p&gt;
+
+&lt;div style=&quot;display: flex; align-items: stretch;&quot;&gt;
+  &lt;span&gt;左側&lt;/span&gt;
+  &lt;hr class=&quot;pd-divider pd-divider--vertical&quot; aria-orientation=&quot;vertical&quot;&gt;
+  &lt;span&gt;右側&lt;/span&gt;
+&lt;/div&gt;
+</code></pre>
+<h2 id="用途邊界">用途邊界</h2>
+<ul>
+<li>Divider 只負責「線條分隔」；<strong>不要</strong>用它取代 card 或 elevation 來滿足需要獨立互動邊界的場景——那屬於分組手段第四、五順位（<code>surface elevation</code> 與 <code>card</code>），不在 Divider 的職責內。</li>
+<li>需要視覺分組時，優先考慮 spacing 與 typography hierarchy；線條分隔只在前兩者不足以建立層次時使用（規格第七章）。</li>
+<li><strong>支援的相鄰表面</strong>：Divider 保證在 <code>pd-color-bg</code> 與 <code>pd-color-surface</code> 上可辨識。放在 <code>pd-color-surface-raised</code>（<code>#242424</code>）容器內時，<strong>水平與垂直兩種變體的線條都會完全消失</strong>——<code>border-subtle</code> 的色值本身就是 <code>#242424</code>，與 <code>surface-raised</code> 完全相同，兩個方向都只剩下各自的留白間距（<code>margin-block</code> 或 <code>margin-inline</code>），沒有任何可見的線。留白本身不代表線條可見，不要誤以為只有垂直變體受影響。這是規格 2.2 <code>border-subtle</code>「幾乎與表面融合」定義的預期結果，不是 CSS 缺陷，也不受 A-M2 3:1 門檻約束（見下方「可及性」）。若需要在 <code>surface-raised</code> 容器（例如 Card 內文）中做視覺分隔，請優先改用留白或 typography hierarchy；仍需要一條可見邊界時，改用容器本身的 <code>pd-color-border-default</code>（Card 邊框契約），不要在 <code>surface-raised</code> 內插入 <code>.pd-divider</code>（任一方向）並期待線條可見。</li>
+</ul>
+<h2 id="變體與-density">變體與 density</h2>
+<ul>
+<li>預設是水平分隔（<code>.pd-divider</code>）：<code>inline-size: 100%</code>、<code>border-block-start</code> 1px 線、<code>margin-block: var(--pd-space-4)</code>。</li>
+<li>加上 <code>pd-divider--vertical</code> 變成垂直分隔：<code>block-size: auto</code>（依父層 <code>align-self: stretch</code> 撐開）、<code>border-inline-start</code> 1px 線、<code>margin-inline: var(--pd-space-4)</code>。使用垂直變體時請在 <code>&lt;hr&gt;</code> 上加 <code>aria-orientation=&quot;vertical&quot;</code>——<code>&lt;hr&gt;</code> 的隱含 role 是 <code>separator</code>，預設方向是水平，需要明確標示方向才對輔助科技正確。</li>
+<li>Divider 只引用 <code>pd-color-border-subtle</code>（規格 2.2：「最輕量的分隔（幾乎與表面融合）」）與 <code>pd-space-4</code>（規格 6.1：4px 基礎單位的倍數），兩者在三種 density 下皆為固定值（density preset 只影響元件 padding、最小互動尺寸與 body 字級，不影響 base spacing unit），因此 Divider 在 Compact / Default / Spacious 下呈現完全一致，不需要任何 <code>data-density</code> 條件樣式。</li>
+<li><code>margin-block</code> / <code>margin-inline</code> 是預設值，消費端可依版面覆寫（例如放進已有 <code>gap</code> 的容器時，可將其重設為 <code>0</code> 避免雙重留白）。</li>
+</ul>
+<h2 id="可及性">可及性</h2>
+<ul>
+<li>若 Divider 純粹是裝飾性的視覺分隔（不代表內容有語意上的區段變化），可在 <code>&lt;hr&gt;</code> 加上 <code>role=&quot;none&quot;</code>，避免螢幕閱讀器逐項瀏覽時多一次不必要的「分隔線」宣告；預設不加時沿用 <code>&lt;hr&gt;</code> 隱含的 <code>separator</code> role，對代表真實內容分段的情境是合適的。</li>
+<li>Divider 本身不是互動元件，不受 A-M3（focus indicator）與 A-M6（互動元素最小尺寸）約束；<code>pd-color-border-subtle</code> 依規格 2.2／<code>accessibility-contract.md</code> 第三節定義為非互動裝飾性分隔線，不受 A-M2 3:1 門檻約束。</li>
+</ul>
+</article>
+    </main>
+    <aside class="docs-inspector" data-token-inspector id="token-inspector">
+      <section aria-labelledby="token-inspector-title">
+        <h2 id="token-inspector-title">Token 檢視器</h2>
+        <label for="token-query">搜尋 Token</label>
+        <input class="docs-inspector__search" data-token-query id="token-query" type="search" autocomplete="off">
+        <label for="token-group">Token 分組</label>
+        <select class="docs-token-group" data-token-group id="token-group"><option value="all">全部 Token</option><option value="semantic">Semantic</option><option value="density">Density</option><option value="theme">Theme</option></select>
+        <ul class="docs-token-list" data-token-results><li class="docs-muted">載入 Token 資料…</li></ul>
+      </section>
+      <hr class="pd-divider">
+      <section aria-labelledby="page-token-references-title"><h2 id="page-token-references-title">本頁引用 Token</h2><ul class="docs-token-list" data-page-token-references data-token-names="[&quot;--pd-color-bg&quot;,&quot;--pd-color-border-default&quot;,&quot;--pd-color-border-subtle&quot;,&quot;--pd-color-surface&quot;,&quot;--pd-color-surface-raised&quot;,&quot;--pd-divider&quot;,&quot;--pd-divider--vertical&quot;,&quot;--pd-space-4&quot;]"><li class="docs-muted">載入 Token 資料…</li></ul></section><hr class="pd-divider">
+      <nav aria-label="本頁目錄">
+        <h2>本頁目錄</h2>
+        <ul class="docs-toc"><li class="docs-toc__item docs-toc__item--2"><a href="#用途邊界">用途邊界</a></li><li class="docs-toc__item docs-toc__item--2"><a href="#變體與-density">變體與 density</a></li><li class="docs-toc__item docs-toc__item--2"><a href="#可及性">可及性</a></li></ul>
+      </nav>
+    </aside>
+  </div>
+  <script src="../../assets/docs.js" defer></script>
+</body>
+</html>
