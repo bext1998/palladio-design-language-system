@@ -33,6 +33,8 @@ assert.doesNotMatch(css, /var\(--pd-color-[a-z-]+[^)]*,/,
   'Divider must not provide a color token fallback.');
 assert.doesNotMatch(css, /#[0-9a-f]{3,8}\b/i,
   'Divider must not hardcode color values.');
+assert.doesNotMatch(css, /font:\s*inherit/,
+  'Divider renders no text and must not use font: inherit.');
 assert.doesNotMatch(css, /:hover|:active|:focus|:disabled/,
   'Divider is non-interactive and must not define interaction states.');
 

@@ -15,8 +15,8 @@
 ## 一、使用規則
 
 1. **三層架構**：元件只能引用 Semantic（下表）或可選的 Component 層 token；**不得**直接引用 Primitive 值（例如某個 hex 色碼或裸的 px 數字），即使它剛好等於某個 Semantic token 的值。
-2. **命名空間**：CSS 自訂屬性一律 `--pd-{role}`（`import "@pdiodsgn/tokens/css"`）；TypeScript 透過 `palladioTokens` / `palladioDensity` / `palladioTheme`（`import ... from "@pdiodsgn/tokens"`）取用；Go／其他消費端讀 `@pdiodsgn/tokens/tokens.json`（`semantic` / `density` / `theme` 三個頂層 key）。
-3. **Density 切換**：透過 `data-density="compact"` / `data-density="spacious"`（省略時為 Default）套用在容器上；元件結構本身不因 density 改變，只有 padding、最小互動尺寸與 body 字級跟著換。
+2. **命名空間**：CSS 自訂屬性一律 `--pd-{role}`；Typography role 另以 `--pd-text-{role}-{font-family|font-size|font-weight|line-height|letter-spacing}` 五個屬性輸出（`import "@pdiodsgn/tokens/css"`）。TypeScript 透過 `palladioTokens` / `palladioDensity` / `palladioTheme`（`import ... from "@pdiodsgn/tokens"`）取用；Go／其他消費端讀 `@pdiodsgn/tokens/tokens.json`（`semantic` / `density` / `theme` 三個頂層 key）。
+3. **Density 切換**：透過 `data-density="compact"` / `data-density="spacious"`（省略時為 Default）套用在根元素；它會切換 padding、最小互動尺寸與根元素 body 字級。各 `pd-text-*` role 的字級固定，元件結構不因 density 改變。
 4. **Theme**：目前只有暗色主題，選擇器為 `:root[data-theme="dark"]`；Light theme 補齊前不要假設有其他主題存在。
 5. **Accent 插槽是產品責任**：見第三節，Palladio 本身不提供 accent 色值。
 6. **Motion**：一般狀態使用 `pd-duration-*` 搭配 `pd-easing-*`；`prefers-reduced-motion: reduce` 觸發時的行為是唯一、已定案的契約（見第五節），不是自由發揮空間。
@@ -97,20 +97,20 @@
 
 ## 四、字體
 
-| Token | Font | Size | Weight | Line-height | Letter-spacing | 用途 |
+| Role | Font | Size | Weight | Line-height | Letter-spacing | 用途 |
 | --- | --- | --- | --- | --- | --- | --- |
-| `--pd-text-display` | Noto Sans | 32px | 600 | 1.2 | -0.64px | 頁面大標題 |
-| `--pd-text-heading-lg` | Noto Sans | 24px | 600 | 1.3 | -0.48px | 段落主標題 |
-| `--pd-text-heading-md` | Noto Sans | 18px | 600 | 1.35 | -0.18px | 段落次標題 |
-| `--pd-text-heading-sm` | Noto Sans | 14px | 600 | 1.4 | -0.14px | 小標題、sidebar 分組標題 |
-| `--pd-text-body-lg` | Noto Sans | 16px | 400 | 1.6 | 0px | 主要內文 |
-| `--pd-text-body-md` | Noto Sans | 14px | 400 | 1.6 | 0px | 標準 UI 文字 |
-| `--pd-text-body-sm` | Noto Sans | 12px | 400 | 1.5 | 0px | 次要資訊、meta |
-| `--pd-text-label-md` | Noto Sans | 14px | 500 | 1 | 0px | 按鈕、tab 標籤 |
-| `--pd-text-label-sm` | Noto Sans | 12px | 500 | 1 | 0px | 小型標籤、badge |
-| `--pd-text-mono` | Noto Sans Mono | 13px | 400 | 1.6 | 0px | 程式碼、資料欄位 |
+| `pd-text-display` | Noto Sans | 32px | 600 | 1.2 | -0.64px | 頁面大標題 |
+| `pd-text-heading-lg` | Noto Sans | 24px | 600 | 1.3 | -0.48px | 段落主標題 |
+| `pd-text-heading-md` | Noto Sans | 18px | 600 | 1.35 | -0.18px | 段落次標題 |
+| `pd-text-heading-sm` | Noto Sans | 14px | 600 | 1.4 | -0.14px | 小標題、sidebar 分組標題 |
+| `pd-text-body-lg` | Noto Sans | 16px | 400 | 1.6 | 0px | 主要內文 |
+| `pd-text-body-md` | Noto Sans | 14px | 400 | 1.6 | 0px | 標準 UI 文字 |
+| `pd-text-body-sm` | Noto Sans | 12px | 400 | 1.5 | 0px | 次要資訊、meta |
+| `pd-text-label-md` | Noto Sans | 14px | 500 | 1 | 0px | 按鈕、tab 標籤 |
+| `pd-text-label-sm` | Noto Sans | 12px | 500 | 1 | 0px | 小型標籤、badge |
+| `pd-text-mono` | Noto Sans Mono | 13px | 400 | 1.6 | 0px | 程式碼、資料欄位 |
 
-> `--pd-text-*` 的 CSS 值是描述性組合字串（非標準 `font` shorthand），元件實作請個別讀取上表的 Size／Weight／Line-height／Letter-spacing 欄位，或改用 TS／JSON 產物中對應的結構化欄位（`fontSize`、`fontWeight`、`lineHeight`、`letterSpacing`）。
+> 每個 `pd-text-{role}` 均輸出五個可直接引用的 CSS 屬性：`--pd-text-{role}-font-family`、`-font-size`、`-font-weight`、`-line-height`、`-letter-spacing`。元件必須完整引用對應 role 的五個屬性；不輸出不可用的裸 `--pd-text-{role}` 組合字串。TS／JSON 仍提供同一組結構化欄位（`fontFamily`、`fontSize`、`fontWeight`、`lineHeight`、`letterSpacing`）。
 
 ## 五、形狀、間距與動效
 

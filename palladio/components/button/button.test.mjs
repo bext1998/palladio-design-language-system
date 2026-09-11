@@ -50,6 +50,8 @@ assert.doesNotMatch(css, /var\(--pd-color-accent[^)]*,/,
   'Button must not provide an accent fallback.');
 assert.doesNotMatch(css, /#[0-9a-f]{3,8}\b/i,
   'Button must not hardcode color values.');
+assert.doesNotMatch(css, /font:\s*inherit/,
+  'Button must not use font: inherit to bypass the typography contract.');
 assert.doesNotMatch(css, /\b\d+(?:\.\d+)?(?:px|rem|ms)\b/,
   'Button must not hardcode token dimensions or durations.');
 
@@ -61,6 +63,10 @@ assert.match(rule('.pd-button'), /border-radius:\s*var\(--pd-radius-md\);/,
   'Default Button must use the semantic medium radius.');
 assert.match(rule('.pd-button'), /min-block-size:\s*var\(--pd-density-component-min-interactive-size\);/,
   'Button must use the semantic density interactive size.');
+for (const property of ['font-family', 'font-size', 'font-weight', 'letter-spacing', 'line-height']) {
+  assert.match(rule('.pd-button'), new RegExp(`${property}:\\s*var\\(--pd-text-label-md-${property}\\);`),
+    `Button must use the label-md ${property} token.`);
+}
 assert.match(rule('.pd-button--pill'), /border-radius:\s*var\(--pd-radius-full\);/,
   'Pill Button must use the semantic full radius.');
 assert.match(rule('.pd-button:not(:disabled):hover'), /background-color:\s*var\(--pd-color-accent-hover\);/,

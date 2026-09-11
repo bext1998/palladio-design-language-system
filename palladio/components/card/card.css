@@ -16,7 +16,7 @@
   appearance: none;
   cursor: pointer;
   display: block;
-  font: inherit;
+  font: unset;
   min-block-size: var(--pd-density-component-min-interactive-size);
   text-align: inherit;
   text-decoration: none;

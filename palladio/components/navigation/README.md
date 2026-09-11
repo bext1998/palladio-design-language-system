@@ -52,7 +52,7 @@ Button／Input／Card／Badge 的 focus ring 都是「向外偏移」的 outline
 
 ## Density
 
-`.pd-nav__link` 消費 `--pd-density-component-min-interactive-size` 與 `--pd-density-component-padding-*`，與 Button 相同的密度行為（32／36／48px 最小互動尺寸），滿足 A-M6；三種 density 下清單結構不變，只有尺寸跟著换。
+`.pd-nav__link` 消費 `--pd-density-component-min-interactive-size` 與 `--pd-density-component-padding-*`，與 Button 相同的密度行為（32／36／48px 最小互動尺寸），滿足 A-M6；Typography 固定使用 `pd-text-label-md` 的五個 CSS 屬性，不隨 density 改變。三種 density 下清單結構不變，只有互動尺寸跟著换。
 
 ## Reduced motion
 

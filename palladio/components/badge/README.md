@@ -34,12 +34,12 @@
 
 ## Density
 
-- `.pd-badge` 本身不隨 density 改變 padding／尺寸——`pd-space-1`／`pd-space-2` 是固定的 4px 倍數，文字仍會透過繼承的 `font: inherit` 反映當前 density 的 body 字級（13／14／15px），因此三種 density 下 Badge 仍會呈現對應字級，但外觀比例（pill 高度、padding）刻意保持一致，不像 Button／Input 隨 density 明顯放大縮小——一個小型資訊標籤沒有理由隨 density 變成更大的可點擊目標。
+- `.pd-badge` 本身不隨 density 改變 padding／尺寸——`pd-space-1`／`pd-space-2` 是固定的 4px 倍數，Typography 固定使用 `pd-text-label-sm`（12px / 500 / line-height 1）的五個 CSS 屬性，因此三種 density 下 Badge 字級與外觀比例都保持一致；一個小型資訊標籤沒有理由因 density 改變文字比例。
 - `.pd-badge--interactive` 是例外：因為它是真正的互動元件，受規格 A-M6「互動元素最小尺寸依 density preset 對應值」約束，因此消費 `--pd-density-component-min-interactive-size`（32／36／48px）與 `--pd-density-component-padding-horizontal`，與 Button 的密度行為一致。這代表互動版 Badge 在視覺上會比純資訊版更高——這是刻意的取捨，用來滿足 A-M6，而非疏漏。
 
 ## Typography
 
-規格 3.2 把 `pd-text-label-sm`（12px / 500 / line-height 1）明確標註為「小型標籤、badge」用途。但 `--pd-text-label-sm` 目前產出的 CSS 自訂屬性是描述性組合字串（例如 `Noto Sans, ... 12px font-weight 500 line-height 1 letter-spacing 0px`），**不是**合法的 `font` shorthand，無法直接寫成 `font: var(--pd-text-label-sm);`（見 `agent-reference.md` 第三節註記；pipeline 目前只對外提供 TS／JSON 產物中的結構化欄位，尚未產出可在純 CSS 消費的獨立 `font-size`／`font-weight` 自訂屬性）。因此 `badge.css` 與 Button／Input／Divider 一致，使用 `font: inherit`，由消費端的排版 context 決定實際字級；`line-height: 1` 則直接對齊 `pd-text-label-sm` 本身定義的行高，避免瀏覽器預設行高把 pill 撐高。這是刻意的、有記錄的選擇，不是遺漏。
+規格 3.2 把 `pd-text-label-sm`（12px / 500 / line-height 1）明確標註為「小型標籤、badge」用途。Pipeline 對每個 text role 輸出 `font-family`、`font-size`、`font-weight`、`line-height`、`letter-spacing` 五個可直接使用的 CSS custom properties；`.pd-badge` 必須完整引用 `label-sm`，不以 `font: inherit` 迴避字級契約。`line-height` 來自 `pd-text-label-sm`，避免瀏覽器預設行高把 pill 撐高。
 
 ## 可及性與動效
 
