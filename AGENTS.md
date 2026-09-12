@@ -20,6 +20,7 @@ Palladio Design Language & System 是可跨消費端使用的開源設計語言�
 4. 修改前確認對應 token、輸出產物、可及性規則與消費端契約。
 5. Git Worktrees 請集中放置於 `D:\AgentCoding\.codex\worktrees\PalladioDesignLanguageSystem`；建立 Git Worktree 時的分支名稱一律採用 `maze/YYYY-MM-DD-short-hash`，其中 `short-hash` 為隨機值，字尾不得再加任何字樣。
 6. 美學／視覺審查（含外部 agent，例如 `maze-design-review`）在提出改動建議前，須先確認對應元件 `README.md` 是否已記錄該設計決策的理由（Palladio 的元件 README 慣例會寫明「為什麼」，不只是「是什麼」）。若已有記錄仍建議推翻，需明確引用該記錄並說明為何值得重新考慮，不得把已記錄的刻意取捨當成未知的新發現提出。
+7. 任何改動 token 值、或新增機制（例如 fallback、驗證函式）的 PR，必須在同一個 PR 內同步更新 `docs/spec.md` 對應章節，不得只改程式碼與元件 README 後留給「之後再補」——事後補寫已證明不會發生（見 Issue #74 的 focus-ring 分離未回寫 spec 的先例）。
 
 ---
 
