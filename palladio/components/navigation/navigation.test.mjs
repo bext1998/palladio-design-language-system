@@ -28,6 +28,7 @@ for (const token of [
   '--pd-color-text-primary',
   '--pd-color-text-disabled',
   '--pd-color-accent',
+  '--pd-color-focus-ring',
   '--pd-color-border-strong',
   '--pd-density-component-min-interactive-size',
   '--pd-density-component-padding-vertical',
@@ -48,7 +49,7 @@ assert.match(css, /\[aria-disabled='true'\]|\[aria-disabled="true"\]/,
 assert.match(css, /:focus-visible/, 'Navigation must preserve keyboard-visible focus.');
 assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/, 'Navigation must define reduced-motion behavior.');
 assert.match(css, /transition:\s*none/, 'Reduced-motion behavior must remove transitions.');
-assert.doesNotMatch(css, /var\(--pd-color-[a-z-]+[^)]*,/,
+assert.doesNotMatch(css.replaceAll('var(--pd-color-focus-ring, var(--pd-color-border-strong))', 'var(--pd-color-focus-ring)'), /var\(--pd-color-[a-z-]+[^)]*,/,
   'Navigation must not provide a color token fallback.');
 assert.doesNotMatch(css, /#[0-9a-f]{3,8}\b/i,
   'Navigation must not hardcode color values.');
@@ -82,8 +83,8 @@ assert.match(disabledRule, /background-color:\s*var\(--pd-color-surface\);/,
 const focusRule = rule('.pd-nav__link:focus-visible');
 assert.match(focusRule, /background-color:\s*var\(--pd-color-surface-raised\);/,
   'Focus-visible must force a validated backdrop (surface-raised), not leave an unvalidated surface-hover fill under the ring.');
-assert.match(focusRule, /outline:\s*var\(--pd-space-1\) solid var\(--pd-color-border-strong\);/,
-  'Focus Navigation link must use the same validated border-strong ring as the other components.');
+assert.match(focusRule, /outline:\s*var\(--pd-space-1\) solid var\(--pd-color-focus-ring, var\(--pd-color-border-strong\)\);/,
+  'Focus Navigation link must use the validated accent ring with the semantic fallback.');
 assert.match(focusRule, /outline-offset:\s*calc\(-1 \* var\(--pd-space-1\)\);/,
   'Focus ring must be inset (negative offset derived from the space-1 token), not clipped by an edge-to-edge list layout.');
 
@@ -106,6 +107,6 @@ assert.match(readme, /extraPairs/,
   'Documentation must record that the accent indicator bar is a product-verified pair, not a Palladio-guaranteed one.');
 assert.match(readme, /A-M5/, 'Documentation must record the color-is-not-the-only-cue contract.');
 assert.match(readme, /A-M6/, 'Documentation must record the interactive minimum size contract.');
-assert.match(readme, /2\.99/, 'Documentation must explain why the focus ring avoids the surface-hover contrast gap.');
+assert.match(readme, /2\.86/, 'Documentation must explain why the focus ring avoids the surface-hover contrast gap.');
 
 console.log('Navigation component contract verified.');

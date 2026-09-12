@@ -44,14 +44,14 @@ export declare const palladioTokens: {
         };
         readonly "input-border": {
             readonly colorSpace: "srgb";
-            readonly components: readonly [0.478431, 0.478431, 0.478431];
-            readonly hex: "#7A7A7A";
+            readonly components: readonly [0.466667, 0.466667, 0.466667];
+            readonly hex: "#777777";
             readonly alpha: 1;
         };
         readonly "border-strong": {
             readonly colorSpace: "srgb";
-            readonly components: readonly [0.478431, 0.478431, 0.478431];
-            readonly hex: "#7A7A7A";
+            readonly components: readonly [0.466667, 0.466667, 0.466667];
+            readonly hex: "#777777";
             readonly alpha: 1;
         };
         readonly "text-primary": {
@@ -74,8 +74,8 @@ export declare const palladioTokens: {
         };
         readonly "text-disabled": {
             readonly colorSpace: "srgb";
-            readonly components: readonly [0.588235, 0.588235, 0.588235];
-            readonly hex: "#969696";
+            readonly components: readonly [0.478431, 0.478431, 0.478431];
+            readonly hex: "#7A7A7A";
             readonly alpha: 1;
         };
         readonly "text-inverse": {
@@ -479,14 +479,14 @@ export declare const palladioTheme: {
             };
             readonly "input-border": {
                 readonly colorSpace: "srgb";
-                readonly components: readonly [0.478431, 0.478431, 0.478431];
-                readonly hex: "#7A7A7A";
+                readonly components: readonly [0.466667, 0.466667, 0.466667];
+                readonly hex: "#777777";
                 readonly alpha: 1;
             };
             readonly "border-strong": {
                 readonly colorSpace: "srgb";
-                readonly components: readonly [0.478431, 0.478431, 0.478431];
-                readonly hex: "#7A7A7A";
+                readonly components: readonly [0.466667, 0.466667, 0.466667];
+                readonly hex: "#777777";
                 readonly alpha: 1;
             };
             readonly "text-primary": {
@@ -509,8 +509,8 @@ export declare const palladioTheme: {
             };
             readonly "text-disabled": {
                 readonly colorSpace: "srgb";
-                readonly components: readonly [0.588235, 0.588235, 0.588235];
-                readonly hex: "#969696";
+                readonly components: readonly [0.478431, 0.478431, 0.478431];
+                readonly hex: "#7A7A7A";
                 readonly alpha: 1;
             };
             readonly "text-inverse": {

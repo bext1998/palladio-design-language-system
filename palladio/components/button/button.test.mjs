@@ -26,6 +26,7 @@ for (const token of [
   '--pd-color-accent-active',
   '--pd-color-accent-disabled',
   '--pd-color-accent-text',
+  '--pd-color-focus-ring',
   '--pd-color-border-strong',
   '--pd-radius-md',
   '--pd-radius-full',
@@ -75,8 +76,10 @@ assert.match(rule('.pd-button:not(:disabled):active'), /background-color:\s*var\
   'Active Button must use the active accent slot.');
 assert.match(rule('.pd-button:disabled'), /background-color:\s*var\(--pd-color-accent-disabled\);/,
   'Disabled Button must use the disabled accent slot.');
-assert.match(rule('.pd-button:focus-visible'), /var\(--pd-color-border-strong\)/,
-  'Focus Button must use the semantic focus-ring token.');
+assert.match(rule('.pd-button:disabled'), /cursor:\s*not-allowed;/,
+  'Disabled Button must retain a non-color unavailable cue (A-M5).');
+assert.match(rule('.pd-button:focus-visible'), /var\(--pd-color-focus-ring, var\(--pd-color-border-strong\)\)/,
+  'Focus Button must use the validated accent ring with the semantic fallback.');
 
 assert.match(readme, /<button\s+class="pd-button"/,
   'Documentation must use a native button element.');

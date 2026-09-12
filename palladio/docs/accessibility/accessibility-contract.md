@@ -20,13 +20,13 @@
 
 ---
 
-## 二、A-M1 — 一般文字對比（含 placeholder、disabled）≥ 4.5:1
+## 二、A-M1 — 一般文字對比（含 placeholder）≥ 4.5:1
 
-**規則**：一般文字（含 placeholder、disabled 文字）對其背景的 contrast ratio 必須 ≥ 4.5:1。
+**規則**：一般文字（含 placeholder）對其背景的 contrast ratio 必須 ≥ 4.5:1。`text-disabled` 僅用於 inactive UI component，依 [WCAG 2.2 Understanding SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) 的明確豁免，不納入 A-M1 gate。
 
-**適用 token**：`pd-color-text-primary`、`pd-color-text-secondary`、`pd-color-text-placeholder`、`pd-color-text-disabled`，以及語意色 `pd-color-success` / `warning` / `danger` / `info`（規格 2.4：「暗色系上的語意色需確保 contrast ratio ≥ 4.5:1」，門檻與 A-M1 相同）。
+**適用 token**：`pd-color-text-primary`、`pd-color-text-secondary`、`pd-color-text-placeholder`，以及語意色 `pd-color-success` / `warning` / `danger` / `info`（規格 2.4：「暗色系上的語意色需確保 contrast ratio ≥ 4.5:1」，門檻與 A-M1 相同）。
 
-**驗證方式**：`npm --prefix palladio run validate:tokens`（第 10 節「Dynamic WCAG Contrast Ratio Check」），對 `bg`、`surface`、`surface-raised`、`surface-overlay` 四層表面逐一計算，任何低於 4.5:1 會使腳本擲出例外並中止。
+**驗證方式**：`npm --prefix palladio run validate:tokens`（第 10 節「Dynamic WCAG Contrast Ratio Check」），對 `bg`、`surface`、`surface-raised`、`surface-overlay` 四層表面逐一計算；A-M1 適用 token 任何低於 4.5:1 會使腳本擲出例外並中止。`text-disabled` 仍輸出實際對比，作為豁免使用範圍的稽核紀錄。
 
 **目前結果**（2026-09-01 執行，全數通過）：
 
@@ -35,13 +35,15 @@
 | `text-primary` | `#F0F0F0` | 16.17:1 | 14.95:1 | 13.62:1 | 11.92:1 |
 | `text-secondary` | `#9A9A9A` | 6.55:1 | 6.06:1 | 5.52:1 | 4.83:1 |
 | `text-placeholder` | `#9A9A9A` | 6.55:1 | 6.06:1 | 5.52:1 | 4.83:1 |
-| `text-disabled` | `#969696` | 6.23:1 | 5.76:1 | 5.25:1 | 4.59:1 |
+| `text-disabled`（inactive UI exemption） | `#7A7A7A` | 4.29:1 | 3.97:1 | 3.62:1 | 3.16:1 |
 | `success` | `#5CB87A` | 7.54:1 | 6.97:1 | 6.35:1 | 5.56:1 |
 | `warning` | `#E5A93C` | 8.84:1 | 8.17:1 | 7.45:1 | 6.51:1 |
 | `danger` | `#EB7878` | 6.57:1 | 6.08:1 | 5.54:1 | 4.84:1 |
 | `info` | `#64B5F6` | 8.32:1 | 7.70:1 | 7.01:1 | 6.13:1 |
 
-✅ **結論**：所有既定文字／語意色在四層表面上皆符合 A-M1。
+✅ **結論**：所有 A-M1 適用文字／語意色在四層表面上皆符合 A-M1；`text-disabled` 的較低對比只限 inactive UI component。
+
+`text-placeholder` 維持 `#9A9A9A`，最低對比為對 `surface-overlay` 的 4.83:1。placeholder 不屬於 inactive UI component，沒有相同豁免，因此不得為了 disabled 視覺再調暗。
 
 ---
 
@@ -59,14 +61,14 @@
 |---|---|---|---|---|---|---|
 | `border-subtle` | `#242424` | 1.19:1 ❌ | 1.10:1 ❌ | — | — | 純分隔線（「幾乎與表面融合」），非互動邊界，不受 A-M2 約束 |
 | `border-default` | `#333333` | 1.46:1 ❌ | 1.35:1 ❌ | 1.23:1 ❌ | 1.07:1 ❌ | 純裝飾性 card edge，非 Input 可識別邊界，不受 A-M2 約束 |
-| `input-border` | `#7A7A7A` | **4.29:1 ✅** | **3.97:1 ✅** | **3.62:1 ✅** | **3.16:1 ✅** | **規格 2.2 指定為 Input 可識別邊界 → 符合 A-M2** |
-| `border-strong` | `#7A7A7A` | **4.29:1 ✅** | **3.97:1 ✅** | **3.62:1 ✅** | **3.16:1 ✅** | **規格 2.2 指定為 focus ring 底色 → 符合 A-M2** |
+| `input-border` | `#777777` | **4.11:1 ✅** | **3.81:1 ✅** | **3.47:1 ✅** | **3.03:1 ✅** | **規格 2.2 指定為 Input 可識別邊界 → 符合 A-M2** |
+| `border-strong` | `#777777` | **4.11:1 ✅** | **3.81:1 ✅** | **3.47:1 ✅** | **3.03:1 ✅** | **Card hover／active 邊框與未驗證 accent 的 focus fallback → 符合 A-M2** |
 
 `border-subtle` 依規格 2.2 定義為「最輕量的分隔（幾乎與表面融合）」，屬純裝飾性分隔線；WCAG 1.4.11 與 A-M2 僅約束「傳達資訊或狀態」的 UI 元件，故 `border-subtle` 不受 3:1 門檻約束，維持現狀。
 
-`border-default` 依規格 2.2 的修訂定義為純裝飾性 card edge；它不得作為 Input 可識別邊界。Input 必須使用 `input-border`，其最小對比是對 `surface-overlay` 的 3.16:1，已符合 A-M2。
+`border-default` 依規格 2.2 的修訂定義為純裝飾性 card edge；它不得作為 Input 可識別邊界。Input 必須使用 `input-border`，其最小對比是對 `surface-overlay` 的 3.03:1，已符合 A-M2。
 
-`border-strong` 是所有元件可直接消費的 focus ring 底色。它已對四層既有表面通過 A-M2；最小對比是對 `surface-overlay` 的 3.16:1。元件仍須依第四節契約保留可見 focus indicator 與 `:focus-visible` 語意。
+`border-strong` 的現存用途已逐一稽核：五個元件的 focus CSS 都只把它作為 accent ring 的 fallback；Card 的 interactive hover 在 `surface-raised` 上是 3.47:1，active 在 `surface-overlay` 上是 3.03:1。它不再是主要 focus 色，但所有剩餘用途都通過 A-M2；`validate:accessibility` 對四層表面保留 gate，防止日後回歸。
 
 ---
 
@@ -77,7 +79,7 @@
 **契約內容**（供 #6、#7、#11、#12、#13 元件實作遵循）：
 
 1. Focus indicator 的呈現色彩（無論是 border、outline 或 box-shadow）必須對其相鄰的表面達到 A-M2 的 3:1 門檻。
-2. 元件應以 `pd-color-border-strong`（`#7A7A7A`）作為 focus ring 呈現色；它已對四層既有表面通過 A-M2。若元件改用產品 accent、`pd-color-text-primary` 或雙層 ring，該元件仍須依 A-M2 對實際相鄰表面逐一驗證。
+2. 元件使用 `var(--pd-color-focus-ring, var(--pd-color-border-strong))`。`--pd-color-focus-ring` 只能由 `enableValidatedAccentFocusRing()` 在 `pd-color-accent` 對全部實際相鄰表面通過 A-M2 後設為 `var(--pd-color-accent)`；未呼叫、驗證失敗或重驗失敗時屬性不存在，CSS 自動使用 `border-strong`（`#777777`）fallback。這個 fallback 對四層既有表面最低 3.03:1，避免未驗證 accent 讓 focus indicator 消失。
 3. Keyboard focus 與 mouse focus 的呈現不得矛盾；`:focus-visible` 語意應被保留（鍵盤操作可見、單純滑鼠點擊不必要時可省略），除非規格另有指定。
 4. 每個元件 Issue 的驗收條件都必須包含「focus indicator 可見且符合 A-M2」——這是既有 Issue #6/#7/#11/#12/#13 驗收條件已明列的項目，本文件把它的判定標準（3:1、相鄰表面計算方式）落地為可重複執行的規則。
 
@@ -121,6 +123,10 @@
 - [ ] Navigation 的 active state（Issue #6 驗收條件已明列）除顏色外，需有第二種視覺線索（例如左側指示條、字重變化、背景色塊），不得只靠文字或圖示變色。
 - [ ] Input 的 error state（Issue #13）不得只用 `pd-color-danger` 改變邊框色，需搭配文字說明或圖示。
 - [ ] Badge/Tag（Issue #12）若用於狀態語意，需搭配文字 label，不得只用色點／色塊。
+- [x] Disabled Button：原生 `disabled`、`cursor: not-allowed`、無 hover／active selector；背景也切換到 `accent-disabled`。不只靠文字顏色表達不可操作。
+- [x] Disabled Input：原生 `disabled`、`cursor: not-allowed`，不會取得 focus 或接受輸入，並保留 `input-border` 邊界。
+- [x] Disabled Badge：原生 `disabled`、`cursor: not-allowed`，hover／active selector 排除 disabled；背景重設為中性 `surface-raised`。
+- [x] Disabled Card／Navigation：Card 的原生 `disabled` 與 `cursor: not-allowed`；Navigation 移除 `href` 並設 `aria-disabled="true"` 與 `cursor: not-allowed`。兩者均不只靠 `text-disabled` 表達狀態。
 
 第二節已驗證所有語意色本身對比達標；本節管的是「除了顏色之外還有沒有別的線索」，屬於元件實作與壓力測試階段的人工覆核項目，本文件在此立下契約，不代替元件逐一驗收。
 
@@ -153,6 +159,8 @@ Palladio 不定義 accent 色值，本文件**不推導**任何產品的 accent 
 5. **不允許的操作**：不得為未提供的插槽套用 fallback；不得用同一色相的深淺變化「推算」`hover`／`active`；不得跨產品共用同一組 accent 驗證結果。
 
 `palladio/pipeline/validate-accessibility.mjs` 的 `validateAccentPairs()`（見腳本內註解）是兩個產品實際色值到位後可直接呼叫的驗證函式，避免 Issue #15 需要重新設計驗證邏輯。它強制檢查全部**六個** slot 是否齊備（含 `accent-subtle`；缺任一即擲例外，不推導、不 fallback），對規格指定的四組 `accent-text` 配對套 A-M1（4.5:1），並要求 `extraPairs` 逐一標明 `kind`：`text`（A-M1 4.5:1）、`largeText`（A-M2 3:1）、`ui`（A-M2 3:1）；未知 `kind` 一律擲例外，不靜默降級。`accent-subtle` 僅做齊備性檢查、無固定對比配對，其實際渲染配對由產品透過 `extraPairs` 提供。
+
+**Accent focus ring 啟用（Issue #74）**：產品要以 accent 呈現 focus 時，必須呼叫套件匯出的 `enableValidatedAccentFocusRing(document.documentElement.style, accent, focusBackdrops)`。`focusBackdrops` 必須列出該產品每個實際 focus 相鄰表面，函式把它們當 `ui` 配對與 `accent.accent` 逐一驗證 A-M2；成功才設定 `--pd-color-focus-ring: var(--pd-color-accent)`。函式在驗證前會移除該屬性，因此未呼叫、缺少 backdrop、驗證失敗或已啟用後重驗失敗，都會落回元件 CSS 的 `var(--pd-color-border-strong)` fallback。不得自行設定 `--pd-color-focus-ring` 繞過此流程。
 
 ---
 

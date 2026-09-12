@@ -25,6 +25,7 @@ for (const token of [
   '--pd-color-surface-overlay',
   '--pd-color-border-default',
   '--pd-color-border-strong',
+  '--pd-color-focus-ring',
   '--pd-color-text-primary',
   '--pd-color-text-disabled',
   '--pd-radius-sm',
@@ -45,7 +46,7 @@ assert.match(css, /:focus-visible/, 'Card must preserve keyboard-visible focus o
 assert.match(css, /:disabled\b/, 'Card must define a disabled state on the interactive variant.');
 assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/, 'Card must define reduced-motion behavior.');
 assert.match(css, /transition:\s*none/, 'Reduced-motion behavior must remove transitions.');
-assert.doesNotMatch(css, /var\(--pd-color-[a-z-]+[^)]*,/,
+assert.doesNotMatch(css.replaceAll('var(--pd-color-focus-ring, var(--pd-color-border-strong))', 'var(--pd-color-focus-ring)'), /var\(--pd-color-[a-z-]+[^)]*,/,
   'Card must not provide a color token fallback.');
 assert.doesNotMatch(css, /#[0-9a-f]{3,8}\b/i,
   'Card must not hardcode color values.');
@@ -86,12 +87,12 @@ assert.match(rule('.pd-card--interactive:not(:disabled):active'), /background-co
   'Active Card must add a background shift as press feedback, since appearance: none removes the native ' +
   'pressed look on <button> and an <a> has no native press affordance at all (spec 10.2). surface-overlay is ' +
   'used rather than surface-hover because surface-hover is an undocumented A-M2 gap against border-strong ' +
-  '(2.99:1, below 3:1) — surface-overlay is already validated at 3.16:1 (accessibility-contract.md §3).');
+  '(2.86:1, below 3:1) — surface-overlay is already validated at 3.03:1 (accessibility-contract.md §3).');
 assert.match(rule('.pd-card--interactive:not(:disabled):active'), /border-color:\s*var\(--pd-color-border-strong\);/,
   'Active Card must keep the A-M2-validated border-strong token even when activated without a hover match ' +
   '(e.g. touch or keyboard activation).');
-assert.match(rule('.pd-card--interactive:focus-visible'), /outline:\s*var\(--pd-space-1\) solid var\(--pd-color-border-strong\);/,
-  'Focus Card must use the same validated offset outline ring as Button/Input/Badge.');
+assert.match(rule('.pd-card--interactive:focus-visible'), /outline:\s*var\(--pd-space-1\) solid var\(--pd-color-focus-ring, var\(--pd-color-border-strong\)\);/,
+  'Focus Card must use the validated accent ring with the semantic fallback.');
 assert.match(rule('.pd-card--interactive:disabled'), /color:\s*var\(--pd-color-text-disabled\);/,
   'Disabled Card text must use the disabled text token (A-M1).');
 

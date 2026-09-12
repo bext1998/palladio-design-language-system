@@ -53,7 +53,7 @@
 }
 
 .pd-input:focus-visible {
-  outline: var(--pd-space-1) solid var(--pd-color-border-strong);
+  outline: var(--pd-space-1) solid var(--pd-color-focus-ring, var(--pd-color-border-strong));
   outline-offset: var(--pd-space-1);
 }
 

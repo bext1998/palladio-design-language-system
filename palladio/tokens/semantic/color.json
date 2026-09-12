@@ -31,12 +31,12 @@
         "$description": "標準裝飾性 border（card edge）"
       },
       "input-border": {
-        "$value": "{color.charcoal.600}",
+        "$value": "{color.charcoal.625}",
         "$description": "Input 可識別邊界"
       },
       "border-strong": {
-        "$value": "{color.charcoal.600}",
-        "$description": "強調邊框（focus ring 底色）"
+        "$value": "{color.charcoal.625}",
+        "$description": "互動元件的強調邊框"
       },
       "text-primary": {
         "$value": "{color.charcoal.100}",
@@ -51,8 +51,8 @@
         "$description": "placeholder 文字"
       },
       "text-disabled": {
-        "$value": "{color.charcoal.450}",
-        "$description": "disabled 元件的文字"
+        "$value": "{color.charcoal.600}",
+        "$description": "disabled 元件的文字（WCAG inactive UI exemption）"
       },
       "text-inverse": {
         "$value": "{color.charcoal.950}",

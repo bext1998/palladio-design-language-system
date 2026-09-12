@@ -43,6 +43,43 @@ export function validateAccentPairs(accent: {
     passes: boolean;
 }>;
 /**
+ * Enable an accent-coloured focus ring only after the product has validated
+ * that its accent is distinguishable from every focus backdrop it renders on.
+ *
+ * Components consume `--pd-color-focus-ring` with
+ * `--pd-color-border-strong` as the CSS fallback. Clearing this property
+ * before validation makes a missing call, an invalid accent, or a failed
+ * re-validation fall back to that neutral A-M2-safe ring rather than leaving
+ * a focus indicator invisible.
+ *
+ * @param {{ setProperty(name: string, value: string): void, removeProperty(name: string): void }} style
+ *   The product root's `style` object, normally `document.documentElement.style`.
+ * @param {{ accent: string, accentHover: string, accentActive: string, accentDisabled: string, accentSubtle: string, accentText: string }} accent
+ *   The exact six accent slot values installed by the product.
+ * @param {Array<{ name: string, background: string }>} focusBackdrops
+ *   Every actual surface colour adjacent to the product's focus ring.
+ * @returns {Array<{ pair: string, ratio: number, threshold: number, passes: boolean }>}
+ */
+export function enableValidatedAccentFocusRing(style: {
+    setProperty(name: string, value: string): void;
+    removeProperty(name: string): void;
+}, accent: {
+    accent: string;
+    accentHover: string;
+    accentActive: string;
+    accentDisabled: string;
+    accentSubtle: string;
+    accentText: string;
+}, focusBackdrops: Array<{
+    name: string;
+    background: string;
+}>): Array<{
+    pair: string;
+    ratio: number;
+    threshold: number;
+    passes: boolean;
+}>;
+/**
  * Accent slot contrast contract — the pure, dependency-free half of the
  * accessibility contract that products consume directly.
  *

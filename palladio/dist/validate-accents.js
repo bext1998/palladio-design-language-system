@@ -114,3 +114,48 @@ export function validateAccentPairs(accent, extraPairs = []) {
 
   return results;
 }
+
+/**
+ * Enable an accent-coloured focus ring only after the product has validated
+ * that its accent is distinguishable from every focus backdrop it renders on.
+ *
+ * Components consume `--pd-color-focus-ring` with
+ * `--pd-color-border-strong` as the CSS fallback. Clearing this property
+ * before validation makes a missing call, an invalid accent, or a failed
+ * re-validation fall back to that neutral A-M2-safe ring rather than leaving
+ * a focus indicator invisible.
+ *
+ * @param {{ setProperty(name: string, value: string): void, removeProperty(name: string): void }} style
+ *   The product root's `style` object, normally `document.documentElement.style`.
+ * @param {{ accent: string, accentHover: string, accentActive: string, accentDisabled: string, accentSubtle: string, accentText: string }} accent
+ *   The exact six accent slot values installed by the product.
+ * @param {Array<{ name: string, background: string }>} focusBackdrops
+ *   Every actual surface colour adjacent to the product's focus ring.
+ * @returns {Array<{ pair: string, ratio: number, threshold: number, passes: boolean }>}
+ */
+export function enableValidatedAccentFocusRing(style, accent, focusBackdrops) {
+  if (!style || typeof style.setProperty !== 'function' || typeof style.removeProperty !== 'function') {
+    throw new Error('A CSSStyleDeclaration-like style object is required to enable the accent focus ring.');
+  }
+
+  // The fallback must be restored before every validation attempt, including
+  // an attempt made after a previously valid accent configuration changed.
+  style.removeProperty('--pd-color-focus-ring');
+
+  if (!Array.isArray(focusBackdrops) || focusBackdrops.length === 0) {
+    throw new Error('List every actual focus backdrop before enabling the accent focus ring.');
+  }
+
+  const results = validateAccentPairs(
+    accent,
+    focusBackdrops.map(({ name, background }) => ({
+      name: `focus ring on ${name}`,
+      foreground: accent?.accent,
+      background,
+      kind: 'ui'
+    }))
+  );
+
+  style.setProperty('--pd-color-focus-ring', 'var(--pd-color-accent)');
+  return results;
+}

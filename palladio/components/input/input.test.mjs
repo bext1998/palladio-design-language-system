@@ -22,6 +22,7 @@ function rule(selector) {
 
 for (const token of [
   '--pd-color-input-border',
+  '--pd-color-focus-ring',
   '--pd-color-border-strong',
   '--pd-color-danger',
   '--pd-color-surface-raised',
@@ -55,7 +56,7 @@ assert.match(css, /:focus-visible/, 'Input must preserve keyboard-visible focus.
 assert.match(css, /:disabled\b/, 'Input must define a disabled state.');
 assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/, 'Input must define reduced-motion behavior.');
 assert.match(css, /transition:\s*none/, 'Reduced-motion behavior must remove transitions.');
-assert.doesNotMatch(css, /var\(--pd-color-[a-z-]+[^)]*,/,
+assert.doesNotMatch(css.replaceAll('var(--pd-color-focus-ring, var(--pd-color-border-strong))', 'var(--pd-color-focus-ring)'), /var\(--pd-color-[a-z-]+[^)]*,/,
   'Input must not provide a color token fallback.');
 assert.doesNotMatch(css, /#[0-9a-f]{3,8}\b/i,
   'Input must not hardcode color values.');
@@ -101,13 +102,15 @@ assert.match(rule('.pd-input:not(:disabled):hover'), /background-color:\s*var\(-
   'Hover Input must use surface-raised, not surface-hover (undocumented A-M2 gap — see README).');
 assert.match(rule('.pd-input:not(:disabled):active'), /background-color:\s*var\(--pd-color-surface-overlay\);/,
   'Active Input must use surface-overlay, not surface-hover (same undocumented A-M2 gap as hover — see README), ' +
-  'so the pressed state stays on an already-validated background (border-strong 3.16:1, text-primary 11.92:1).');
-assert.match(rule('.pd-input:focus-visible'), /outline:\s*var\(--pd-space-1\) solid var\(--pd-color-border-strong\);/,
-  'Focus Input must use an offset outline ring, not a same-color border swap.');
+  'so the pressed state stays on an already-validated background (border-strong 3.03:1, text-primary 11.92:1).');
+assert.match(rule('.pd-input:focus-visible'), /outline:\s*var\(--pd-space-1\) solid var\(--pd-color-focus-ring, var\(--pd-color-border-strong\)\);/,
+  'Focus Input must use a validated accent outline with the neutral fallback.');
 assert.match(rule('.pd-input:focus-visible'), /outline-offset:\s*var\(--pd-space-1\);/,
   'Focus Input outline must be offset to create a visible geometric difference from the idle border.');
 assert.match(rule('.pd-input:disabled'), /color:\s*var\(--pd-color-text-disabled\);/,
-  'Disabled Input text must use the disabled text token (A-M1).');
+  'Disabled Input text must use the disabled text token.');
+assert.match(rule('.pd-input:disabled'), /cursor:\s*not-allowed;/,
+  'Disabled Input must retain a non-color unavailable cue (A-M5).');
 
 const errorRule = rule('.pd-input--error,\n.pd-field--error .pd-input');
 assert.match(errorRule, /border-color:\s*var\(--pd-color-danger\);/,
