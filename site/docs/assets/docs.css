@@ -229,7 +229,7 @@ a { color: var(--pd-color-text-primary); }
 }
 
 body {
-  font-family: "Noto Sans", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif";
+  font-family: Noto Sans, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
   font-size: var(--pd-density-typography-body-font-size);
   font-weight: 400;
   line-height: 1.6;
@@ -237,7 +237,7 @@ body {
 }
 
 .docs-document {
-  font-family: "Noto Sans", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif";
+  font-family: Noto Sans, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
   font-size: var(--pd-density-typography-body-font-size);
   font-weight: 400;
   line-height: 1.6;
@@ -245,7 +245,7 @@ body {
 }
 
 .docs-document h1 {
-  font-family: "Noto Sans", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif";
+  font-family: Noto Sans, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
   font-size: 32px;
   font-weight: 600;
   line-height: 1.2;
@@ -253,7 +253,7 @@ body {
 }
 
 .docs-document h2 {
-  font-family: "Noto Sans", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif";
+  font-family: Noto Sans, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
   font-size: 18px;
   font-weight: 600;
   line-height: 1.35;
@@ -262,7 +262,7 @@ body {
 
 .docs-document h3,
 .docs-document h4 {
-  font-family: "Noto Sans", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif";
+  font-family: Noto Sans, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
   font-size: 14px;
   font-weight: 600;
   line-height: 1.4;
@@ -270,7 +270,7 @@ body {
 }
 
 .docs-document th {
-  font-family: "Noto Sans", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif";
+  font-family: Noto Sans, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
   font-size: 14px;
   font-weight: 500;
   line-height: 1;
@@ -279,7 +279,7 @@ body {
 
 .docs-document pre,
 .docs-document code {
-  font-family: "Noto Sans Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace";
+  font-family: Noto Sans Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 13px;
   font-weight: 400;
   line-height: 1.6;

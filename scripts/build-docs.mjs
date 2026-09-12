@@ -365,7 +365,7 @@ function typographyToken(tokens, name) {
 function typographyDeclarations(token, { densityFontSize = false } = {}) {
   const fontSize = densityFontSize ? 'var(--pd-density-typography-body-font-size)' : typographyDimension(token.fontSize, 'fontSize');
   return [
-    `  font-family: ${token.fontFamily.map((family) => JSON.stringify(family)).join(', ')};`,
+    `  font-family: ${token.fontFamily.join(', ')};`,
     `  font-size: ${fontSize};`,
     `  font-weight: ${token.fontWeight};`,
     `  line-height: ${token.lineHeight};`,
