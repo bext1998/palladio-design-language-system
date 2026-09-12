@@ -69,6 +69,7 @@ Palladio 的表面系統由五層構成，從最深的背景往上疊加。每�
 | `pd-color-border-default` | 標準裝飾性 border（card edge） | `#333333` |
 | `pd-color-input-border` | Input 可識別邊界 | `#777777` |
 | `pd-color-border-strong` | 互動元件的強調邊框與 focus ring fallback | `#777777` |
+| `pd-color-focus-ring`（機制，非固定色值） | Focus indicator 的實際顏色。消費端呼叫 `enableValidatedAccentFocusRing()` 對實際 focus backdrop 驗證 accent 通過 A-M2 後才設定；未呼叫、未驗證或驗證失敗時，CSS 原生 fallback（`var(--pd-color-focus-ring, var(--pd-color-border-strong))`）自動退回 `border-strong`，確保 A-M3 不會因缺少此設定而失效 | 見 `palladio/pipeline/accent-contract.mjs`；不提供固定 hex 值，因為值本身就是「驗證通過的 accent 或 fallback」這個決策過程的結果 |
 
 ### 2.3 文字層級
 
@@ -359,6 +360,10 @@ palladio/
 - [ ] `prefers-reduced-motion` 下動畫正確降級
 - [ ] Token 引用只使用 Semantic 層（不直接使用 Primitive 值）
 - [ ] 不得以 `font: inherit` 迴避 text role；有文字的元件必須完整引用對應 role 的字體屬性，純容器與非文字元素須記錄不套用 role 的理由
+- [ ] 圓角、動效曲線、分組手段的選擇，逐條對照 §1.2（P1–P5）、§4.2、§7 的原則說明理由；不得只因為「省事」或「其他元件也這樣」而套用，無對應原則可引用時視為未完成
+- [ ] 在標準 demo 頁渲染三種 density 的實際截圖，與 §1.2 逐條對照，由使用者裁決是否符合設計語言——本節其餘項目皆為機器可驗的下限，不能取代這一步
+
+**流程規則**：任何改動 token 值、或新增像 `pd-color-focus-ring` fallback 這類機制的 PR，必須在同一個 PR 內同步更新 `docs/spec.md` 對應章節（新 token 要進對應表格、新機制要進對應章節的規則說明），不得只改程式碼與元件 README。事後補寫已證明不會發生（見 Issue #74 的 focus-ring 分離未回寫 spec 的先例），此規則不接受「之後再補」。
 
 ---
 
