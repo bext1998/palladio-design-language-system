@@ -55,6 +55,8 @@ assert.doesNotMatch(css, /var\(--pd-color-[a-z-]+[^)]*,/,
   'Badge must not provide a color token fallback.');
 assert.doesNotMatch(css, /#[0-9a-f]{3,8}\b/i,
   'Badge must not hardcode color values.');
+assert.doesNotMatch(css, /font:\s*inherit/,
+  'Badge must not use font: inherit to bypass the typography contract.');
 assert.doesNotMatch(css, /\b\d+(?:\.\d+)?(?:px|rem|ms)\b/,
   'Badge must not hardcode token dimensions or durations (no border-width literal is needed — badge has no border).');
 
@@ -68,6 +70,10 @@ assert.match(rule('.pd-badge'), /border-radius:\s*var\(--pd-radius-full\);/,
   'Badge must use the semantic full radius for its pill shape.');
 assert.match(rule('.pd-badge'), /background-color:\s*var\(--pd-color-surface-raised\);/,
   'Idle Badge must use a neutral, already A-M1-validated background.');
+for (const property of ['font-family', 'font-size', 'font-weight', 'letter-spacing', 'line-height']) {
+  assert.match(rule('.pd-badge'), new RegExp(`${property}:\\s*var\\(--pd-text-label-sm-${property}\\);`),
+    `Badge must use the label-sm ${property} token.`);
+}
 assert.match(rule('.pd-badge--success'), /color:\s*var\(--pd-color-success\);/,
   'Success Badge must use the success semantic color as text, not an unvalidated fill.');
 assert.match(rule('.pd-badge--accent'), /background-color:\s*var\(--pd-color-accent-subtle\);/,

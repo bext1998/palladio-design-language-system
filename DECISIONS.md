@@ -16,3 +16,4 @@
 | 驗證策略以生產環境接入為主（非合成壓力測試）；發現不足直接更新 Palladio 並同步消費端。 | 有效 | docs/spec.md 第 11 章、commit 420c579 |
 | Token 產物以單一 npm 套件 `@pdiodsgn/tokens` 發佈（`dist/` only，CDN 走 jsDelivr/unpkg，GitHub Release 掛同 tag 為鏡像）；消費端 pin 精確版本，不 clone repo。SemVer 全格式同步，token 值變更視為 minor。 | 有效 | palladio/package.json、palladio/README.md、.github/workflows/release.yml |
 | 元件契約採建置期 HTML 驗證器：合法 `pd-*` class 從元件 CSS 擷取，原生元素與必要 ARIA 關係以小型機器規則定義；消費端在 focused HTML fragment／CI 指定元件驗證。未另發佈手工維護的 class JSON 清單，也不只靠 README。 | 有效 | palladio/pipeline/component-contract.mjs、palladio/README.md、Issue #72 |
+| Typography CSS 對每個 `pd-text-{role}` 產出五個獨立屬性（family、size、weight、line-height、letter-spacing），元件完整引用 role；density 只切換根元素 body 字級，text role 不縮放。Card 內容維持消費端排版，Divider 不套用文字 role。 | 有效 | palladio/pipeline/config.js、palladio/components/*、Issue #73 |

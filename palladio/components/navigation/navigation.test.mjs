@@ -52,6 +52,8 @@ assert.doesNotMatch(css, /var\(--pd-color-[a-z-]+[^)]*,/,
   'Navigation must not provide a color token fallback.');
 assert.doesNotMatch(css, /#[0-9a-f]{3,8}\b/i,
   'Navigation must not hardcode color values.');
+assert.doesNotMatch(css, /font:\s*inherit/,
+  'Navigation must not use font: inherit to bypass the typography contract.');
 assert.doesNotMatch(css, /\b\d+(?:\.\d+)?(?:px|rem|ms)\b/,
   'Navigation must not hardcode token dimensions or durations (border width and outline offset are both token-derived, not literal).');
 
@@ -67,6 +69,10 @@ assert.match(rule('.pd-nav__link.pd-nav__link--active'), /border-inline-start-co
 
 assert.match(rule('.pd-nav__link'), /min-block-size:\s*var\(--pd-density-component-min-interactive-size\);/,
   'Navigation link must meet A-M6 with the semantic density interactive size.');
+for (const property of ['font-family', 'font-size', 'font-weight', 'letter-spacing', 'line-height']) {
+  assert.match(rule('.pd-nav__link'), new RegExp(`${property}:\\s*var\\(--pd-text-label-md-${property}\\);`),
+    `Navigation link must use the label-md ${property} token.`);
+}
 
 const disabledRule = rule(".pd-nav__link[aria-disabled='true']");
 assert.match(disabledRule, /background-color:\s*var\(--pd-color-surface\);/,

@@ -38,6 +38,12 @@ function cssVariable(block, name) {
   return match[1].trim();
 }
 
+function cssProperty(block, name) {
+  const match = block.match(new RegExp(`^\\s*${name}:\\s*([^;]+);$`, 'm'));
+  assert(match, `CSS property not found: ${name}`);
+  return match[1].trim();
+}
+
 assertFileExists(cssPath);
 assertFileExists(tsPath);
 assertFileExists(jsonPath);
@@ -60,6 +66,10 @@ assertEqual(cssVariable(themeBlock, 'pd-color-input-border'), '#7A7A7A', 'Dark t
 assertEqual(cssVariable(rootBlock, 'pd-density-component-min-interactive-size'), '36px', 'Default density minimum interactive size');
 assertEqual(cssVariable(compactBlock, 'pd-density-component-min-interactive-size'), '32px', 'Compact density minimum interactive size');
 assertEqual(cssVariable(spaciousBlock, 'pd-density-component-min-interactive-size'), '48px', 'Spacious density minimum interactive size');
+for (const block of [rootBlock, compactBlock, spaciousBlock]) {
+  assertEqual(cssProperty(block, 'font-size'), 'var(--pd-density-typography-body-font-size)',
+    'Density block must apply its body font size to the root element');
+}
 
 assert(ts.includes('export const palladioTokens =') && ts.includes(' as const;'), 'palladioTokens is not a const object');
 assert(ts.includes('export const palladioDensity =') && ts.includes(' as const;'), 'palladioDensity is not a const object');
@@ -73,6 +83,16 @@ assertEqual(json.semantic.color['border-strong'].hex, '#7A7A7A', 'JSON semantic 
 assertEqual(json.semantic.color['input-border'].hex, '#7A7A7A', 'JSON semantic input border');
 assertEqual(json.density.default.density.component['min-interactive-size'].value, 36, 'JSON default density minimum interactive size');
 assertEqual(json.theme.dark.color.bg.hex, '#141414', 'JSON dark theme background');
+
+for (const [role, typography] of Object.entries(json.semantic.text)) {
+  const prefix = `pd-text-${role}`;
+  assertEqual(cssVariable(rootBlock, `${prefix}-font-family`), typography.fontFamily.join(', '), `${role} font family`);
+  assertEqual(cssVariable(rootBlock, `${prefix}-font-size`), `${typography.fontSize.value}${typography.fontSize.unit}`, `${role} font size`);
+  assertEqual(cssVariable(rootBlock, `${prefix}-font-weight`), String(typography.fontWeight), `${role} font weight`);
+  assertEqual(cssVariable(rootBlock, `${prefix}-line-height`), String(typography.lineHeight), `${role} line height`);
+  assertEqual(cssVariable(rootBlock, `${prefix}-letter-spacing`), `${typography.letterSpacing.value}${typography.letterSpacing.unit}`, `${role} letter spacing`);
+  assert(!new RegExp(`^\\s*--${prefix}:`, 'm').test(rootBlock), `${role} must not emit an unusable composite CSS value`);
+}
 
 const sources = loadTokenSources(packageDir);
 const primitivePaths = new Set(collectTokenRecords(sources.primitive, sources.primitive).map((record) => record.path));
@@ -107,6 +127,8 @@ assert(
   /不得將\s*`?pd-color-border-default`?\s*當作\s*Input\s*可識別邊界/.test(agentReference),
   'agent-reference.md must prohibit pd-color-border-default as an identifiable Input boundary.'
 );
+assert(agentReference.includes('--pd-text-{role}-font-family') && agentReference.includes('不輸出不可用的裸'),
+  'agent-reference.md must document the usable typography CSS property contract.');
 
 const before = {
   css: fs.readFileSync(cssPath, 'utf8'),
