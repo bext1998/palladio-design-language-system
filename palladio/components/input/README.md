@@ -35,6 +35,7 @@
 - padding 和 `min-block-size` 分別使用 `--pd-density-component-padding-*` 與 `--pd-density-component-min-interactive-size`，與 Button 相同。
 - 將 `data-density="compact"` 或 `data-density="spacious"` 設在 Foundation CSS 套用的根元素；省略時為 Default。三種 density 的最小互動尺寸為 32、36、48px；元件結構不因 density 改變。
 - `.pd-input` 不預設寬度，由消費端依版面決定（例如 `width: 100%` 或 grid 欄位寬度）。
+- Typography：`.pd-field__label` 使用 `pd-text-label-md`，`.pd-input` 使用 `pd-text-body-md`，`.pd-field__message` 使用 `pd-text-body-sm`；各 role 的五個字體 CSS 屬性固定，不隨 density 改變。
 
 ## 狀態與鍵盤
 

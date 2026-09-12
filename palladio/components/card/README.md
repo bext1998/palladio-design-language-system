@@ -31,8 +31,9 @@
 
 ## Density
 
-- 三種 density 下 Card 的外觀結構不變（padding、border、radius 皆固定），內容文字仍會透過瀏覽器繼承反映當前 density 的 body 字級。
+- 三種 density 下 Card 的外觀結構不變（padding、border、radius 皆固定）；Palladio 把 density 的 body font size 套在根元素，Card 內容仍由消費端的語意元素與排版規則決定，並自然繼承該 body 字級。
 - `.pd-card--interactive` 額外消費 `--pd-density-component-min-interactive-size`（32／36／48px），滿足 A-M6「互動元素最小尺寸依 density preset 對應值」——實務上任何有實際內容的 Card 高度都遠超過這個下限，此宣告主要是為了忠實對齊規則本身，而非實際的限制因素。
+- Card 沒有固定 text role，這是刻意的例外，不是漏套：Card 內容排版完全交給消費端決定。互動變體是原生 `<button>`，瀏覽器對 `<button>` 有自己的預設字體，需要重設才能讓它跟非互動的 `<article>`/`<div>` 一樣單純繼承周圍內容的字體。`font` 屬於可繼承屬性，`unset` 在可繼承屬性上的效果等同 `inherit`——這裡選 `font: unset` 純粹是要跟規格 §10.2「不得以 `font: inherit` 迴避 text role」這條檢查的字面比對區分開，實際渲染行為跟寫 `font: inherit`完全一樣，不是換了一種不同的重設方式。
 
 ## 互動與 focus 行為
 

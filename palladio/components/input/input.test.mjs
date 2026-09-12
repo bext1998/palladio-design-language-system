@@ -60,6 +60,8 @@ assert.doesNotMatch(css.replaceAll('var(--pd-color-focus-ring, var(--pd-color-bo
   'Input must not provide a color token fallback.');
 assert.doesNotMatch(css, /#[0-9a-f]{3,8}\b/i,
   'Input must not hardcode color values.');
+assert.doesNotMatch(css, /font:\s*inherit/,
+  'Input must not use font: inherit to bypass the typography contract.');
 
 // No dimension/duration is hardcoded except the border width — this design
 // system defines no border-width token (see docs/agent-reference.md's own
@@ -84,6 +86,16 @@ assert.match(rule('.pd-input'), /border-radius:\s*var\(--pd-radius-sm\);/,
   'Input must use the semantic small radius (spec 4.1).');
 assert.match(rule('.pd-input'), /min-block-size:\s*var\(--pd-density-component-min-interactive-size\);/,
   'Input must use the semantic density interactive size.');
+for (const [selector, role] of [
+  ['.pd-field__label', 'label-md'],
+  ['.pd-input', 'body-md'],
+  ['.pd-field__message', 'body-sm']
+]) {
+  for (const property of ['font-family', 'font-size', 'font-weight', 'letter-spacing', 'line-height']) {
+    assert.match(rule(selector), new RegExp(`${property}:\\s*var\\(--pd-text-${role}-${property}\\);`),
+      `${selector} must use the ${role} ${property} token.`);
+  }
+}
 assert.match(rule('.pd-input::placeholder'), /color:\s*var\(--pd-color-text-placeholder\);/,
   'Placeholder text must use the placeholder text token (A-M1).');
 assert.match(rule('.pd-input:not(:disabled):hover'), /background-color:\s*var\(--pd-color-surface-raised\);/,

@@ -50,6 +50,8 @@ assert.doesNotMatch(css.replaceAll('var(--pd-color-focus-ring, var(--pd-color-bo
   'Card must not provide a color token fallback.');
 assert.doesNotMatch(css, /#[0-9a-f]{3,8}\b/i,
   'Card must not hardcode color values.');
+assert.doesNotMatch(css, /font:\s*inherit/,
+  'Card must not use font: inherit to bypass the typography contract.');
 
 // No dimension/duration is hardcoded except the border width — this design
 // system defines no border-width token (same precedent as Button/Input/
@@ -68,6 +70,8 @@ assert.equal(onePxCount, onePxDeclarations.length,
 // interactive variant's contract, not the display-only base.
 assert.doesNotMatch(rule('.pd-card'), /cursor|outline|:hover|:focus/,
   'The non-interactive base .pd-card must not define any interaction styling.');
+assert.match(rule('.pd-card--interactive'), /font:\s*unset;/,
+  'Interactive Card must reset native button typography without overriding consumer-controlled card content.');
 
 assert.match(rule('.pd-card'), /background-color:\s*var\(--pd-color-surface-raised\);/,
   'Card must use the surface-raised elevation token (spec 2.1).');

@@ -37,8 +37,12 @@
   box-sizing: border-box;
   color: var(--pd-color-text-secondary);
   display: flex;
-  font: inherit;
+  font-family: var(--pd-text-label-md-font-family);
+  font-size: var(--pd-text-label-md-font-size);
+  font-weight: var(--pd-text-label-md-font-weight);
   min-block-size: var(--pd-density-component-min-interactive-size);
+  letter-spacing: var(--pd-text-label-md-letter-spacing);
+  line-height: var(--pd-text-label-md-line-height);
   padding-block: var(--pd-density-component-padding-vertical);
   padding-inline: var(--pd-density-component-padding-horizontal);
   text-decoration: none;

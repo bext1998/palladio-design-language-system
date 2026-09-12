@@ -358,6 +358,7 @@ palladio/
 - [ ] Focus indicator 可見且符合 A-M2 對比標準
 - [ ] `prefers-reduced-motion` 下動畫正確降級
 - [ ] Token 引用只使用 Semantic 層（不直接使用 Primitive 值）
+- [ ] 不得以 `font: inherit` 迴避 text role；有文字的元件必須完整引用對應 role 的字體屬性，純容器與非文字元素須記錄不套用 role 的理由
 
 ---
 

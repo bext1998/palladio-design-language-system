@@ -26,6 +26,7 @@
 - 加上 `pd-divider--vertical` 變成垂直分隔：`block-size: auto`（依父層 `align-self: stretch` 撐開）、`border-inline-start` 1px 線、`margin-inline: var(--pd-space-4)`。使用垂直變體時請在 `<hr>` 上加 `aria-orientation="vertical"`——`<hr>` 的隱含 role 是 `separator`，預設方向是水平，需要明確標示方向才對輔助科技正確。
 - Divider 只引用 `pd-color-border-subtle`（規格 2.2：「最輕量的分隔（幾乎與表面融合）」）與 `pd-space-4`（規格 6.1：4px 基礎單位的倍數），兩者在三種 density 下皆為固定值（density preset 只影響元件 padding、最小互動尺寸與 body 字級，不影響 base spacing unit），因此 Divider 在 Compact / Default / Spacious 下呈現完全一致，不需要任何 `data-density` 條件樣式。
 - `margin-block` / `margin-inline` 是預設值，消費端可依版面覆寫（例如放進已有 `gap` 的容器時，可將其重設為 `0` 避免雙重留白）。
+- Divider 不呈現文字，因此不套用 text role，也不使用 `font: inherit`。
 
 ## 可及性
 

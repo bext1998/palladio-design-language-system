@@ -11,7 +11,11 @@
 
 .pd-field__label {
   color: var(--pd-color-text-primary);
-  font: inherit;
+  font-family: var(--pd-text-label-md-font-family);
+  font-size: var(--pd-text-label-md-font-size);
+  font-weight: var(--pd-text-label-md-font-weight);
+  letter-spacing: var(--pd-text-label-md-letter-spacing);
+  line-height: var(--pd-text-label-md-line-height);
 }
 
 .pd-input {
@@ -21,7 +25,11 @@
   border-radius: var(--pd-radius-sm);
   box-sizing: border-box;
   color: var(--pd-color-text-primary);
-  font: inherit;
+  font-family: var(--pd-text-body-md-font-family);
+  font-size: var(--pd-text-body-md-font-size);
+  font-weight: var(--pd-text-body-md-font-weight);
+  letter-spacing: var(--pd-text-body-md-letter-spacing);
+  line-height: var(--pd-text-body-md-line-height);
   min-block-size: var(--pd-density-component-min-interactive-size);
   padding-block: var(--pd-density-component-padding-vertical);
   padding-inline: var(--pd-density-component-padding-horizontal);
@@ -63,8 +71,12 @@
   align-items: center;
   color: var(--pd-color-text-secondary);
   display: flex;
-  font: inherit;
+  font-family: var(--pd-text-body-sm-font-family);
+  font-size: var(--pd-text-body-sm-font-size);
+  font-weight: var(--pd-text-body-sm-font-weight);
   gap: var(--pd-space-1);
+  letter-spacing: var(--pd-text-body-sm-letter-spacing);
+  line-height: var(--pd-text-body-sm-line-height);
 }
 
 .pd-field--error .pd-field__message {

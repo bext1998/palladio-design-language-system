@@ -13,6 +13,7 @@
 - 預設變體使用 `--pd-radius-md`；加入 `pd-button--pill` 後使用 `--pd-radius-full`。
 - 元件結構固定為原生 `<button>`。padding 和 `min-block-size` 分別使用 `--pd-density-component-padding-*` 與 `--pd-density-component-min-interactive-size`。
 - 將 `data-density="compact"` 或 `data-density="spacious"` 設在 Foundation CSS 套用的根元素；省略時為 Default。三種 density 的最小互動尺寸為 32、36、48px。
+- Typography 固定使用 `pd-text-label-md` 的 `font-family`、`font-size`、`font-weight`、`line-height`、`letter-spacing` 五個 CSS 屬性；這個 role 不隨 density 改變。
 
 ## 狀態與鍵盤
 

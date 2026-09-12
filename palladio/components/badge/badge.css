@@ -12,9 +12,12 @@
   box-sizing: border-box;
   color: var(--pd-color-text-primary);
   display: inline-flex;
-  font: inherit;
+  font-family: var(--pd-text-label-sm-font-family);
+  font-size: var(--pd-text-label-sm-font-size);
+  font-weight: var(--pd-text-label-sm-font-weight);
   gap: var(--pd-space-1);
-  line-height: 1;
+  letter-spacing: var(--pd-text-label-sm-letter-spacing);
+  line-height: var(--pd-text-label-sm-line-height);
   padding-block: var(--pd-space-1);
   padding-inline: var(--pd-space-2);
 }

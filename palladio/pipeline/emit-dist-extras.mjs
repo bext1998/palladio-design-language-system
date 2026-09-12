@@ -6,7 +6,9 @@
  *    it can be published as `@pdiodsgn/tokens/validate-accents` without the
  *    pipeline. Its `.d.ts` is emitted separately by `tsc -p tsconfig.accents.json`
  *    in the build script.
- * 2. Copy the repo-root LICENSE into the package directory so the npm tarball
+ * 2. Emit the component-contract validator with class names extracted from the
+ *    component CSS, so the consumer tool never maintains a second class list.
+ * 3. Copy the repo-root LICENSE into the package directory so the npm tarball
  *    (and the Release asset built from it) carry the MIT text.
  *
  * Run after `node pipeline/config.js`.
@@ -32,7 +34,27 @@ const banner =
 await writeFile(accentTarget, banner + (await readFile(accentSource, 'utf8')), 'utf8');
 console.log(`Emitted ${rel(accentTarget)} from ${rel(accentSource)}.`);
 
-// 2. LICENSE -> palladio/LICENSE (verbatim; npm wants it inside the package dir)
+// 2. component contract validator -> dist/validate-components.js
+const componentNames = ['button', 'input', 'divider', 'badge', 'card', 'navigation'];
+const componentClasses = new Set();
+for (const componentName of componentNames) {
+  const css = await readFile(path.join(packageDir, 'components', componentName, `${componentName}.css`), 'utf8');
+  for (const match of css.matchAll(/\.([a-zA-Z][\w-]*)/g)) {
+    if (match[1].startsWith('pd-')) componentClasses.add(match[1]);
+  }
+}
+const componentContractSource = await readFile(path.join(pipelineDir, 'component-contract.mjs'), 'utf8');
+const componentContractTarget = path.join(distDir, 'validate-components.js');
+await writeFile(
+  componentContractTarget,
+  banner + componentContractSource +
+    `\nconst knownComponentClasses = new Set(${JSON.stringify([...componentClasses].sort())});\n` +
+    'export const validateComponentHtml = createComponentContractValidator(knownComponentClasses);\n',
+  'utf8'
+);
+console.log(`Emitted ${rel(componentContractTarget)} from component CSS and ${rel(path.join(pipelineDir, 'component-contract.mjs'))}.`);
+
+// 3. LICENSE -> palladio/LICENSE (verbatim; npm wants it inside the package dir)
 const licenseTarget = path.join(packageDir, 'LICENSE');
 await copyFile(path.join(repoRoot, 'LICENSE'), licenseTarget);
 console.log(`Copied ${rel(licenseTarget)} from repo-root LICENSE.`);
