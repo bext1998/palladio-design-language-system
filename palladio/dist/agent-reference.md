@@ -1,14 +1,15 @@
 # Palladio Agent Reference
 
 > 隨 `@pdiodsgn/tokens` v0.1.1 發佈，每次發版一起更新，請勿手動編輯。
-> 設計語言全文：https://github.com/bext1998/palladio-design-language-system/blob/v0.1.1/docs/spec.md（章節 9.3–9.4, 13）
+> 已升格契約全文：https://github.com/bext1998/palladio-design-language-system/blob/v0.1.1/docs/spec.md（章節 7.3–7.4）
+> 護欄（含 A-M1–A-M6）：https://github.com/bext1998/palladio-design-language-system/blob/v0.1.1/docs/guardrails.md
 > 可及性契約：https://github.com/bext1998/palladio-design-language-system/blob/v0.1.1/palladio/docs/accessibility/accessibility-contract.md
 
 ## 這份文件是給誰的
 
 當 AI 代理（Claude Code、Codex 等）收到「用 Palladio，某 density」的指令時，這份文件把設計決策的搜索空間從「無限色值／間距／動效」縮小到下面表格列出的**有限選項**。所有值與套件的 `@pdiodsgn/tokens/css`、`@pdiodsgn/tokens`、`@pdiodsgn/tokens/tokens.json` 由同一次 build 產出，保證一致。
 
-單次 AI 生成的表現只是設計語言的質性訊號，不是完成 gate（規格 9.4）；本文件的職責是提供正確的約束，不是保證生成結果。
+單次 AI 生成的表現只是設計語言的質性訊號，不是完成 gate（規格 7.4）；本文件的職責是提供正確的約束，不是保證生成結果。
 
 ---
 
@@ -28,7 +29,7 @@
 - **不得為 accent 插槽加入 fallback、推導色值，或跨消費端的混色公式**——缺哪個插槽就是缺，不得用其他插槽湊。
 - **不得放寬任何 A-M1–A-M6 的 MUST 門檻**（例如把 4.5:1 降成 4:1，或幫某個元件開特例）。
 - **不得只用色彩傳達資訊或狀態**（A-M5）——語意色需搭配文字、圖示或其他非色彩線索。
-- **不得使用 font-weight 100–300**（規格 3.3，深色背景上過細難以閱讀）。
+- **不建議使用 font-weight 100–300**（深色背景上過細難以閱讀；此建議尚未正式驗證，見 `docs/experiments/typography-font-family.md`）。
 - **不得用 `outline: none` 移除 focus 樣式卻不提供替代的可見 focus indicator**（A-M3）。
 - **focus indicator 預設使用 `pd-color-focus-ring`**——只能透過 `enableValidatedAccentFocusRing()` 在驗證 `pd-color-accent` 對所有實際 focus backdrop 都通過 A-M2 後啟用；未呼叫、驗證失敗或重驗失敗時，元件 CSS 自動回退到 `pd-color-border-strong`（`#777777`，最低 3.03:1）。保留 `:focus-visible` 語意，完整契約見 `accessibility-contract.md` 第四、九節。
 - **不得將 `pd-color-border-default` 當作 Input 可識別邊界**——它只用於裝飾性 card edge。**Input 可識別邊界應使用 `pd-color-input-border`**——它對四層既有表面均通過 A-M2（最低 3.03:1），完整契約見 `accessibility-contract.md` 第三節。

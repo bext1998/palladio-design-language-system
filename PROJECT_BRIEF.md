@@ -35,15 +35,18 @@ Palladio 是以深碳灰、精準線條與流體有機動效為核心，並保�
 
 ## 相關文件
 
-- 規格書：[docs/spec.md](docs/spec.md)
+- 已升格契約：[docs/spec.md](docs/spec.md)
+- 護欄（安全／可及性底線）：[docs/guardrails.md](docs/guardrails.md)
+- 待驗證候選規則：[docs/experiments/](docs/experiments/)
 - 下一步：[NEXT_ACTION.md](NEXT_ACTION.md)
 - 決策紀錄：[DECISIONS.md](DECISIONS.md)
+- 規格遷移依據：[SPEC_MIGRATION_PLAN.md](SPEC_MIGRATION_PLAN.md)
 
 ---
 
 ## 重要限制
 
-- 第一至八章設計語言是 source of truth；第九章是承載它的技術基礎。
+- `docs/spec.md` 只收已升格、有實作與驗證證據的契約；尚待視覺／產品裁決的規則在 `docs/experiments/`，兩者都不能違反 `docs/guardrails.md` 的底線。
 - 所有產品必須明確提供完整 accent 插槽，不得使用 fallback 或跨消費端混色公式。
-- 可及性 `[MUST]` 規則、三種 density 與 reduced-motion 行為均為可驗收需求。
+- 可及性 `[MUST]` 規則、三種 density 與 reduced-motion 行為均為可驗收需求，定義於 `docs/guardrails.md`。
 - 本專案採 MIT License；不得在文件、設定或提交中寫入憑證。

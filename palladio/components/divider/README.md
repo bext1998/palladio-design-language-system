@@ -1,6 +1,6 @@
 # Divider
 
-`Divider` 是原生 `<hr>` 的框架無關樣式，提供規格第七章「分組手段優先順序」中排序第三的線條分隔（第一是留白 spacing，第二是文字層級）。根元素須先套用 Foundation 的 `data-theme="dark"`，載入 `palladio/dist/css/palladio.css` 後再載入 `divider.css`。Divider 是**非互動**的視覺元素，不定義 hover、active、focus 或 disabled state。
+`Divider` 是原生 `<hr>` 的框架無關樣式，提供 `docs/experiments/grouping-priority.md` 記錄的候選「分組手段優先順序」中排序第三的線條分隔（第一是留白 spacing，第二是文字層級；該優先順序目前狀態為 Hypothesis，尚待使用者裁決，但 Divider 本身的實作與驗收不受此影響）。根元素須先套用 Foundation 的 `data-theme="dark"`，載入 `palladio/dist/css/palladio.css` 後再載入 `divider.css`。Divider 是**非互動**的視覺元素，不定義 hover、active、focus 或 disabled state。
 
 ```html
 <p>第一段內容。</p>
@@ -17,7 +17,7 @@
 ## 用途邊界
 
 - Divider 只負責「線條分隔」；**不要**用它取代 card 或 elevation 來滿足需要獨立互動邊界的場景——那屬於分組手段第四、五順位（`surface elevation` 與 `card`），不在 Divider 的職責內。
-- 需要視覺分組時，優先考慮 spacing 與 typography hierarchy；線條分隔只在前兩者不足以建立層次時使用（規格第七章）。
+- 需要視覺分組時，優先考慮 spacing 與 typography hierarchy；線條分隔只在前兩者不足以建立層次時使用（見 `docs/experiments/grouping-priority.md`）。
 - **支援的相鄰表面**：Divider 保證在 `pd-color-bg` 與 `pd-color-surface` 上可辨識。放在 `pd-color-surface-raised`（`#242424`）容器內時，**水平與垂直兩種變體的線條都會完全消失**——`border-subtle` 的色值本身就是 `#242424`，與 `surface-raised` 完全相同，兩個方向都只剩下各自的留白間距（`margin-block` 或 `margin-inline`），沒有任何可見的線。留白本身不代表線條可見，不要誤以為只有垂直變體受影響。這是規格 2.2 `border-subtle`「幾乎與表面融合」定義的預期結果，不是 CSS 缺陷，也不受 A-M2 3:1 門檻約束（見下方「可及性」）。若需要在 `surface-raised` 容器（例如 Card 內文）中做視覺分隔，請優先改用留白或 typography hierarchy；仍需要一條可見邊界時，改用容器本身的 `pd-color-border-default`（Card 邊框契約），不要在 `surface-raised` 內插入 `.pd-divider`（任一方向）並期待線條可見。
 
 ## 變體與 density

@@ -1,7 +1,7 @@
 # Palladio 可及性契約（Accessibility Contract）
 
-> Spec 路徑：`docs/spec.md`
-> 對應章節：5.4, 8, 9.4, 13
+> Spec 路徑：`docs/spec.md`（§7.4 pipeline 交付物）、`docs/guardrails.md`（A-M1–A-M6、Reduced Motion、元件升格底線）
+> 舊規格對應章節（已遷移，見 `SPEC_MIGRATION_PLAN.md`）：5.4, 8, 9.4, 13
 > Task ID：accessibility-contract-validation（Issue #3）
 > 建立日期：2026-09-01
 
@@ -9,7 +9,7 @@
 
 ## 一、範圍與方法
 
-規格第八章將 A-M1 至 A-M6 定義為 `[MUST]` 硬規則。本文件是這六條規則**唯一可查閱的驗收說明**：每條規則列出（1）適用的 Token／行為、（2）驗證方式、（3）目前 Foundation token 的實際驗證結果。
+`docs/guardrails.md` 將 A-M1 至 A-M6 定義為 `[MUST]` 硬規則。本文件是這六條規則**唯一可查閱的驗收說明**：每條規則列出（1）適用的 Token／行為、（2）驗證方式、（3）目前 Foundation token 的實際驗證結果。
 
 驗證方式分兩種：
 
@@ -183,7 +183,7 @@ npm --prefix palladio run validate:artifacts
 
 ## 十一、已確認缺漏（Confirmed Gaps）
 
-依規格第十一章的分類原則（每項 UI 決策須歸類為既有 Semantic token、允許的產品插槽，或已確認缺漏），本文件正式登記以下缺漏：
+每項 UI 決策須歸類為既有 Semantic token、允許的產品插槽，或已確認缺漏；本文件正式登記以下缺漏（原始分類原則出處已隨規格遷移調整，見 `SPEC_MIGRATION_PLAN.md`，此登記機制本身不受影響）：
 
 | 缺漏 | 影響規則 | 現況 | 後續處置 |
 |---|---|---|---|
@@ -193,6 +193,6 @@ npm --prefix palladio run validate:artifacts
 
 ## 十二、與規格及既有審查文件的關係
 
-- 本文件是規格第八章 A-M1–A-M6 的**唯一可查閱驗收說明來源**（Issue #3 驗收條件第一項）。
+- 本文件是 `docs/guardrails.md` A-M1–A-M6 的**唯一可查閱驗收說明來源**（Issue #3 驗收條件第一項）。
 - 本文件第六節是 `SPEC_REVIEW.md` `SR-005` 的正式決議：reduced-motion 下必要的 opacity 狀態切換為瞬時（`0ms`），不保留 transition。
-- 本文件不修改 `docs/spec.md` 的功能範圍、不放寬任何 MUST 門檻、不為 accent 插槽推導色值，皆與 `AGENTS.md` 的工作原則一致。
+- 本文件不修改 `docs/spec.md`／`docs/guardrails.md` 的功能範圍、不放寬任何 MUST 門檻、不為 accent 插槽推導色值，皆與 `AGENTS.md` 的工作原則一致。

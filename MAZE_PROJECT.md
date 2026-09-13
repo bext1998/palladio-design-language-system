@@ -11,10 +11,13 @@
 
 ## 文件
 
-- Spec：docs/spec.md
+- Spec（已升格契約）：docs/spec.md
+- Guardrails（護欄）：docs/guardrails.md
+- Experiments（待驗證候選規則）：docs/experiments/
 - Project Brief：PROJECT_BRIEF.md
 - Next Action：NEXT_ACTION.md
 - Decisions：DECISIONS.md
+- 規格遷移依據：SPEC_MIGRATION_PLAN.md
 
 ## 自適應 Guidance
 
@@ -36,4 +39,4 @@
 ## 備注
 
 - 本專案為公開開源專案，採用 MIT License。
-- `palladio/` 是規格第 9.5 節定義的套件根目錄；其產物在 Foundation 實作時建立。
+- `palladio/` 是套件根目錄（原規格 9.5 節的示意檔案樹已因與現況不符移入 `docs/archive/spec-v0.1.md`）；其產物在 Foundation 實作時建立。
