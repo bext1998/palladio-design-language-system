@@ -4,3 +4,11 @@ coverage/
 .DS_Store
 
 skills/palladio-design-tokens/dist/
+
+# Paseo (https://github.com/getpaseo/paseo) local agent-workspace config — not project source.
+paseo.json
+
+# Vite build output for exploratory prototypes; Sites packages from source at deploy time,
+# it does not need dist/ tracked in git (confirmed with the agent that set up the Sites handoff).
+Redesign/prototypes/*/prototype/dist/
+review-artifacts/*/prototype/dist/

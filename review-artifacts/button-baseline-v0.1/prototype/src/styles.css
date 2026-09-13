@@ -109,9 +109,9 @@ button { color: inherit; }
 .pd-prototype-button--primary:hover, .pd-prototype-button--primary[data-force-state="hover"] { background: var(--pd-color-accent-hover); }
 .pd-prototype-button--secondary:hover, .pd-prototype-button--secondary[data-force-state="hover"] { background: var(--pd-color-surface-hover); }
 .pd-prototype-button--tertiary:hover::after, .pd-prototype-button--tertiary[data-force-state="hover"]::after { content: ""; position: absolute; inset-inline: var(--pd-space-4); inset-block-end: var(--pd-space-1); border-bottom: thin solid currentColor; }
-.pd-prototype-button:focus-visible, .pd-prototype-button[data-force-state="focus-visible"] { outline: var(--pd-space-1) solid var(--pd-color-border-strong); outline-offset: var(--pd-space-1); }
+.pd-prototype-button:focus-visible, .pd-prototype-button[data-force-state="focus-visible"] { outline: var(--pd-space-1) solid var(--pd-color-focus-ring, var(--pd-color-border-strong)); outline-offset: var(--pd-space-1); }
 .pd-prototype-button--tertiary:focus-visible, .pd-prototype-button--tertiary[data-force-state="focus-visible"] { outline: none; }
-.pd-prototype-button--tertiary:focus-visible::after, .pd-prototype-button--tertiary[data-force-state="focus-visible"]::after { content: ""; position: absolute; inset-inline: var(--pd-space-2); inset-block-end: 0; border-bottom: var(--pd-space-1) solid var(--pd-color-border-strong); }
+.pd-prototype-button--tertiary:focus-visible::after, .pd-prototype-button--tertiary[data-force-state="focus-visible"]::after { content: ""; position: absolute; inset-inline: var(--pd-space-2); inset-block-end: 0; border-bottom: var(--pd-space-1) solid var(--pd-color-focus-ring, var(--pd-color-border-strong)); }
 .pd-prototype-button--primary:active, .pd-prototype-button--primary[data-force-state="pressed"] { background: var(--pd-color-accent-active); }
 .pd-prototype-button--secondary:active, .pd-prototype-button--secondary[data-force-state="pressed"] { background: var(--pd-color-surface-overlay); }
 .pd-prototype-button--tertiary:active, .pd-prototype-button--tertiary[data-force-state="pressed"] { font-weight: var(--pd-text-heading-sm-font-weight); }

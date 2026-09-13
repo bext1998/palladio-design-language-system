@@ -272,4 +272,3 @@
 5. TDD／schema／browser geometry／可及性／consumer validation 結果，含 red/green/pending 證據。
 6. source、render、persisted combined comparison 與可重現命令。
 7. Design QA findings、Composition Risks、promotion gate 結論、rollback pointer 和待評審決策。
-

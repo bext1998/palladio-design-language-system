@@ -22,4 +22,3 @@ const css = fs.readFileSync(path.join(root,'palladio/dist/css/palladio.css'),'ut
  await browser.close();
  console.log("Browser: " + browser.version() + "; verified " + results.length + " render cases; metrics saved.");
 })();
-

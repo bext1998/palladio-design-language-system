@@ -28,7 +28,7 @@ scope: 本輪只修復既有 Chapter Spine React 原型的可觀察狀態、窄�
 | Apply | 只有 `setApplied(true)`，稿件段落不變 | `applySuggestion()` 以目前章節與指定段落更新本機 mock draft；quote、套用後文案與章節一致 | `tests/editor-model.test.mjs` 2 tests passed |
 | 窄螢幕 panel | `sidebar`、`ai-panel` 在 820px 以下 `display: none`，開關無法使用 | 以可開關側滑 panel、scrim、topbar controls、focus return 提供操作；關閉狀態加 `aria-hidden`／`inert` | source contract checks、build passed；未做瀏覽器視覺重驗 |
 | Tab 邊界 | grid track 收合後 panel 仍可能進入 Tab | panel 關閉時 `inert`，開啟時 focus 到 panel control／prompt input | App source review；未做瀏覽器鍵盤重驗 |
-| 密度 | scene row 為 28px；small button 共用 sidebar 尺寸 | sidebar `data-density="compact"` 使用 32px；manuscript／AI panel `data-density="default"` 使用 36px semantic density | CSS source review、build passed |
+| 密度 | scene row 為 28px；small button 共用 sidebar 尺寸 | `App.jsx` 在 sidebar／manuscript／AI panel 上標了 `data-density="compact"`／`"default"`，但這只是標記，尚未接上任何 density 樣式規則——`styles.css` 沒有任何 `[data-density=...]` 選擇器，Foundation CSS 的 density 切換只認 `:root[data-density=...]`。目前各處尺寸（如 36px）仍是各自硬編，跟這個屬性無關；density 尚未真正實作，是已知未完成項目。 | CSS source review：無 `[data-density]` 規則命中 |
 | Accent | 只有三槽；disabled 使用 success 白字 | 六個明確產品 mock 插槽；disabled 使用 `accent-disabled` 與 `accent-text`；無 fallback、推導或混色 | `tests/accent-contract.test.mjs` 1 test passed |
 | 字體 | h1／長文以 CSS 硬編尺寸 | 由生成的 `palladioTokens.text.display` 與 `palladioTokens.text["body-lg"]` 結構化 token 注入；長文維持 body-lg 16px / 1.6 | build passed；未做瀏覽器 computed-style 重驗 |
 
