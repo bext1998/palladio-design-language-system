@@ -1,0 +1,124 @@
+[
+  {
+    "name": "button",
+    "fontFamily": "\"Noto Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+    "fontSize": "14px",
+    "fontWeight": "500",
+    "lineHeight": "14px",
+    "letterSpacing": "normal",
+    "color": "rgb(20, 20, 20)",
+    "backgroundColor": "rgb(217, 129, 79)",
+    "height": 36
+  },
+  {
+    "name": "badge-default",
+    "fontFamily": "\"Noto Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+    "fontSize": "12px",
+    "fontWeight": "500",
+    "lineHeight": "12px",
+    "letterSpacing": "normal",
+    "color": "rgb(240, 240, 240)",
+    "backgroundColor": "rgb(36, 36, 36)",
+    "height": 20
+  },
+  {
+    "name": "badge-success",
+    "fontFamily": "\"Noto Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+    "fontSize": "12px",
+    "fontWeight": "500",
+    "lineHeight": "12px",
+    "letterSpacing": "normal",
+    "color": "rgb(92, 184, 122)",
+    "backgroundColor": "rgb(36, 36, 36)",
+    "height": 20
+  },
+  {
+    "name": "badge-accent",
+    "notFound": true
+  },
+  {
+    "name": "badge-interactive",
+    "fontFamily": "\"Noto Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+    "fontSize": "12px",
+    "fontWeight": "500",
+    "lineHeight": "12px",
+    "letterSpacing": "normal",
+    "color": "rgb(240, 240, 240)",
+    "backgroundColor": "rgb(36, 36, 36)",
+    "height": 36
+  },
+  {
+    "name": "input-label",
+    "fontFamily": "\"Times New Roman\"",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "lineHeight": "normal",
+    "letterSpacing": "normal",
+    "color": "rgb(240, 240, 240)",
+    "backgroundColor": "rgba(0, 0, 0, 0)",
+    "height": 19
+  },
+  {
+    "name": "input-element",
+    "fontFamily": "\"Noto Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "lineHeight": "22.4px",
+    "letterSpacing": "normal",
+    "color": "rgb(240, 240, 240)",
+    "backgroundColor": "rgba(0, 0, 0, 0)",
+    "height": 40.390625
+  },
+  {
+    "name": "input-error-msg",
+    "notFound": true
+  },
+  {
+    "name": "nav-active",
+    "fontFamily": "\"Noto Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+    "fontSize": "14px",
+    "fontWeight": "600",
+    "lineHeight": "14px",
+    "letterSpacing": "normal",
+    "color": "rgb(240, 240, 240)",
+    "backgroundColor": "rgb(36, 36, 36)",
+    "height": 36
+  },
+  {
+    "name": "nav-inactive",
+    "fontFamily": "\"Noto Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+    "fontSize": "14px",
+    "fontWeight": "500",
+    "lineHeight": "14px",
+    "letterSpacing": "normal",
+    "color": "rgb(154, 154, 154)",
+    "backgroundColor": "rgba(0, 0, 0, 0)",
+    "height": 36
+  },
+  {
+    "name": "nav-disabled",
+    "notFound": true
+  },
+  {
+    "name": "card-title",
+    "fontFamily": "\"Times New Roman\"",
+    "fontSize": "16.38px",
+    "fontWeight": "700",
+    "lineHeight": "normal",
+    "letterSpacing": "normal",
+    "color": "rgb(240, 240, 240)",
+    "backgroundColor": "rgba(0, 0, 0, 0)",
+    "height": 22
+  },
+  {
+    "name": "card-body",
+    "fontFamily": "\"Times New Roman\"",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "lineHeight": "normal",
+    "letterSpacing": "normal",
+    "color": "rgb(240, 240, 240)",
+    "backgroundColor": "rgba(0, 0, 0, 0)",
+    "height": 57
+  }
+]

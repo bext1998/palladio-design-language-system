@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="zh-Hant" data-theme="dark" data-density="default"><head>
+  <meta charset="utf-8">
+  <title>Palladio focus-ring / disabled render check</title>
+  <link rel="stylesheet" href="../dist/css/palladio.css">
+  <link rel="stylesheet" href="../components/button/button.css">
+  <link rel="stylesheet" href="../components/input/input.css">
+  <link rel="stylesheet" href="../components/badge/badge.css">
+  <link rel="stylesheet" href="../components/card/card.css">
+  <link rel="stylesheet" href="../components/navigation/navigation.css">
+  <style>
+    :root { --pd-color-accent: #D9814F; --pd-color-accent-hover: #E4A079; --pd-color-accent-active: #C06A38; --pd-color-accent-disabled: #9C8171; --pd-color-accent-subtle: #2E2118; --pd-color-accent-text: #141414; }
+    body { background: var(--pd-color-bg); color: var(--pd-color-text-primary); margin: 0; padding: 24px; font-family: var(--pd-text-body-md-font-family); }
+    main { display: grid; gap: 28px; max-width: 56rem; }
+    .row { align-items: center; display: flex; flex-wrap: wrap; gap: 16px; }
+    h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--pd-color-text-secondary); margin: 0 0 8px; }
+    .col { display: grid; gap: 8px; }
+    .swatch { display: flex; align-items: center; gap: 8px; }
+    .swatch span { display: inline-block; width: 16px; height: 16px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <main>
+    <section>
+      <h2>Focus ring — fallback state (default, no accent validated)</h2>
+      <p style="color:var(--pd-color-text-secondary);font-size:13px;margin:0 0 8px;">這組按 Tab 鍵移入看 focus ring：現在 --pd-color-focus-ring 沒設，應該落回 border-strong (#777777)。</p>
+      <div class="row"><button class="pd-button" type="button">Save changes</button><button class="pd-button pd-button--pill" type="button">Publish</button><input class="pd-input" type="email" placeholder="name@example.com" style="width: 14rem;"></div>
+    </section>
+
+    <section>
+      <h2>Focus ring — accent validated (simulated)</h2>
+      <p style="color:var(--pd-color-text-secondary);font-size:13px;margin:0 0 8px;">這組模擬 enableValidatedAccentFocusRing() 驗證成功後的狀態（直接設 CSS 變數示範，不代表繞過驗證邏輯本身）。</p>
+      <div class="row" style="--pd-color-focus-ring: var(--pd-color-accent);"><button class="pd-button" type="button">Save changes</button><button class="pd-button pd-button--pill" type="button">Publish</button><input class="pd-input" type="email" placeholder="name@example.com" style="width: 14rem;"></div>
+    </section>
+
+    <section>
+      <h2>Disabled states — text-disabled #7A7A7A</h2>
+      <div class="row">
+        <button class="pd-button" type="button" disabled="">Can't save</button>
+        <input class="pd-input" type="text" value="Locked value" disabled="" style="width: 12rem;">
+        <button class="pd-badge pd-badge--interactive" type="button" disabled="">Archived</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Card hover / active — border-strong #777777</h2>
+      <div class="row">
+        <article class="pd-card"><h3 style="margin:0 0 4px;">Static</h3><p style="margin:0;color:var(--pd-color-text-secondary);">Idle border-default.</p></article>
+        <button class="pd-card pd-card--interactive" type="button" style="text-align:left;"><h3 style="margin:0 0 4px;">Hover me</h3><p style="margin:0;color:var(--pd-color-text-secondary);">border-strong on hover.</p></button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Navigation — active + disabled</h2>
+      <nav class="pd-nav" aria-label="Main" style="width:16rem;"><ul class="pd-nav__list"><li><a class="pd-nav__link pd-nav__link--active" href="#current" aria-current="page">Current page</a></li><li><a class="pd-nav__link" href="#reports">Reports</a></li><li><a class="pd-nav__link" aria-disabled="true">Billing (coming soon)</a></li></ul></nav>
+    </section>
+
+    <section>
+      <h2>色票對照（供肉眼比對淡化幅度）</h2>
+      <div class="col">
+        <div class="swatch"><span style="background:#7A7A7A;"></span>text-disabled 新值 #7A7A7A</div>
+        <div class="swatch"><span style="background:#969696;"></span>text-disabled 舊值 #969696（僅供對照，非實際套用）</div>
+        <div class="swatch"><span style="background:#9A9A9A;"></span>text-placeholder 維持 #9A9A9A（未變動）</div>
+        <div class="swatch"><span style="background:#777777;"></span>border-strong / input-border 新值 #777777</div>
+      </div>
+    </section>
+  </main>
+
+
+</body></html>

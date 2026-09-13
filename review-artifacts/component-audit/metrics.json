@@ -1,0 +1,570 @@
+[
+  {
+    "width": 1280,
+    "density": "compact",
+    "initial": {
+      "overflow": false,
+      "minInteractive": [
+        {
+          "cls": "pd-button",
+          "height": 32
+        },
+        {
+          "cls": "pd-button pd-button--pill",
+          "height": 32
+        },
+        {
+          "cls": "pd-button",
+          "height": 32
+        },
+        {
+          "cls": "pd-badge pd-badge--interactive",
+          "height": 32
+        },
+        {
+          "cls": "pd-input",
+          "height": 32
+        },
+        {
+          "cls": "pd-input",
+          "height": 32
+        },
+        {
+          "cls": "pd-nav__link pd-nav__link--active",
+          "height": 32
+        },
+        {
+          "cls": "pd-nav__link",
+          "height": 32
+        },
+        {
+          "cls": "pd-nav__link",
+          "height": 32
+        }
+      ],
+      "transitions": [
+        {
+          "cls": "pd-button",
+          "transition": "0.12s"
+        },
+        {
+          "cls": "pd-button pd-button--pill",
+          "transition": "0.12s"
+        },
+        {
+          "cls": "pd-button",
+          "transition": "0.12s"
+        },
+        {
+          "cls": "pd-input",
+          "transition": "0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-input",
+          "transition": "0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-nav__link pd-nav__link--active",
+          "transition": "0.12s, 0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-nav__link",
+          "transition": "0.12s, 0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-nav__link",
+          "transition": "0.12s, 0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-card pd-card--interactive",
+          "transition": "0.12s, 0.12s"
+        }
+      ]
+    },
+    "hoverButton": "rgb(228, 160, 121)",
+    "focusInput": {
+      "outline": "rgb(122, 122, 122) solid 4px",
+      "outlineOffset": "4px"
+    }
+  },
+  {
+    "width": 1280,
+    "density": "default",
+    "initial": {
+      "overflow": false,
+      "minInteractive": [
+        {
+          "cls": "pd-button",
+          "height": 37
+        },
+        {
+          "cls": "pd-button pd-button--pill",
+          "height": 37
+        },
+        {
+          "cls": "pd-button",
+          "height": 37
+        },
+        {
+          "cls": "pd-badge pd-badge--interactive",
+          "height": 36
+        },
+        {
+          "cls": "pd-input",
+          "height": 39
+        },
+        {
+          "cls": "pd-input",
+          "height": 39
+        },
+        {
+          "cls": "pd-nav__link pd-nav__link--active",
+          "height": 37
+        },
+        {
+          "cls": "pd-nav__link",
+          "height": 37
+        },
+        {
+          "cls": "pd-nav__link",
+          "height": 37
+        }
+      ],
+      "transitions": [
+        {
+          "cls": "pd-button",
+          "transition": "0.12s"
+        },
+        {
+          "cls": "pd-button pd-button--pill",
+          "transition": "0.12s"
+        },
+        {
+          "cls": "pd-button",
+          "transition": "0.12s"
+        },
+        {
+          "cls": "pd-input",
+          "transition": "0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-input",
+          "transition": "0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-nav__link pd-nav__link--active",
+          "transition": "0.12s, 0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-nav__link",
+          "transition": "0.12s, 0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-nav__link",
+          "transition": "0.12s, 0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-card pd-card--interactive",
+          "transition": "0.12s, 0.12s"
+        }
+      ]
+    },
+    "hoverButton": "rgb(228, 160, 121)",
+    "focusInput": {
+      "outline": "rgb(122, 122, 122) solid 4px",
+      "outlineOffset": "4px"
+    }
+  },
+  {
+    "width": 1280,
+    "density": "spacious",
+    "initial": {
+      "overflow": false,
+      "minInteractive": [
+        {
+          "cls": "pd-button",
+          "height": 48
+        },
+        {
+          "cls": "pd-button pd-button--pill",
+          "height": 48
+        },
+        {
+          "cls": "pd-button",
+          "height": 48
+        },
+        {
+          "cls": "pd-badge pd-badge--interactive",
+          "height": 48
+        },
+        {
+          "cls": "pd-input",
+          "height": 48
+        },
+        {
+          "cls": "pd-input",
+          "height": 48
+        },
+        {
+          "cls": "pd-nav__link pd-nav__link--active",
+          "height": 48
+        },
+        {
+          "cls": "pd-nav__link",
+          "height": 48
+        },
+        {
+          "cls": "pd-nav__link",
+          "height": 48
+        }
+      ],
+      "transitions": [
+        {
+          "cls": "pd-button",
+          "transition": "0.12s"
+        },
+        {
+          "cls": "pd-button pd-button--pill",
+          "transition": "0.12s"
+        },
+        {
+          "cls": "pd-button",
+          "transition": "0.12s"
+        },
+        {
+          "cls": "pd-input",
+          "transition": "0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-input",
+          "transition": "0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-nav__link pd-nav__link--active",
+          "transition": "0.12s, 0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-nav__link",
+          "transition": "0.12s, 0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-nav__link",
+          "transition": "0.12s, 0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-card pd-card--interactive",
+          "transition": "0.12s, 0.12s"
+        }
+      ]
+    },
+    "hoverButton": "rgb(228, 160, 121)",
+    "focusInput": {
+      "outline": "rgb(122, 122, 122) solid 4px",
+      "outlineOffset": "4px"
+    }
+  },
+  {
+    "width": 375,
+    "density": "compact",
+    "initial": {
+      "overflow": false,
+      "minInteractive": [
+        {
+          "cls": "pd-button",
+          "height": 32
+        },
+        {
+          "cls": "pd-button pd-button--pill",
+          "height": 32
+        },
+        {
+          "cls": "pd-button",
+          "height": 32
+        },
+        {
+          "cls": "pd-badge pd-badge--interactive",
+          "height": 32
+        },
+        {
+          "cls": "pd-input",
+          "height": 32
+        },
+        {
+          "cls": "pd-input",
+          "height": 32
+        },
+        {
+          "cls": "pd-nav__link pd-nav__link--active",
+          "height": 32
+        },
+        {
+          "cls": "pd-nav__link",
+          "height": 32
+        },
+        {
+          "cls": "pd-nav__link",
+          "height": 32
+        }
+      ],
+      "transitions": [
+        {
+          "cls": "pd-button",
+          "transition": "0.12s"
+        },
+        {
+          "cls": "pd-button pd-button--pill",
+          "transition": "0.12s"
+        },
+        {
+          "cls": "pd-button",
+          "transition": "0.12s"
+        },
+        {
+          "cls": "pd-input",
+          "transition": "0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-input",
+          "transition": "0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-nav__link pd-nav__link--active",
+          "transition": "0.12s, 0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-nav__link",
+          "transition": "0.12s, 0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-nav__link",
+          "transition": "0.12s, 0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-card pd-card--interactive",
+          "transition": "0.12s, 0.12s"
+        }
+      ]
+    },
+    "hoverButton": "rgb(228, 160, 121)",
+    "focusInput": {
+      "outline": "rgb(122, 122, 122) solid 4px",
+      "outlineOffset": "4px"
+    }
+  },
+  {
+    "width": 375,
+    "density": "default",
+    "initial": {
+      "overflow": false,
+      "minInteractive": [
+        {
+          "cls": "pd-button",
+          "height": 37
+        },
+        {
+          "cls": "pd-button pd-button--pill",
+          "height": 37
+        },
+        {
+          "cls": "pd-button",
+          "height": 37
+        },
+        {
+          "cls": "pd-badge pd-badge--interactive",
+          "height": 36
+        },
+        {
+          "cls": "pd-input",
+          "height": 39
+        },
+        {
+          "cls": "pd-input",
+          "height": 39
+        },
+        {
+          "cls": "pd-nav__link pd-nav__link--active",
+          "height": 37
+        },
+        {
+          "cls": "pd-nav__link",
+          "height": 37
+        },
+        {
+          "cls": "pd-nav__link",
+          "height": 37
+        }
+      ],
+      "transitions": [
+        {
+          "cls": "pd-button",
+          "transition": "0.12s"
+        },
+        {
+          "cls": "pd-button pd-button--pill",
+          "transition": "0.12s"
+        },
+        {
+          "cls": "pd-button",
+          "transition": "0.12s"
+        },
+        {
+          "cls": "pd-input",
+          "transition": "0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-input",
+          "transition": "0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-nav__link pd-nav__link--active",
+          "transition": "0.12s, 0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-nav__link",
+          "transition": "0.12s, 0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-nav__link",
+          "transition": "0.12s, 0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-card pd-card--interactive",
+          "transition": "0.12s, 0.12s"
+        }
+      ]
+    },
+    "hoverButton": "rgb(228, 160, 121)",
+    "focusInput": {
+      "outline": "rgb(122, 122, 122) solid 4px",
+      "outlineOffset": "4px"
+    }
+  },
+  {
+    "width": 375,
+    "density": "spacious",
+    "initial": {
+      "overflow": false,
+      "minInteractive": [
+        {
+          "cls": "pd-button",
+          "height": 48
+        },
+        {
+          "cls": "pd-button pd-button--pill",
+          "height": 48
+        },
+        {
+          "cls": "pd-button",
+          "height": 48
+        },
+        {
+          "cls": "pd-badge pd-badge--interactive",
+          "height": 48
+        },
+        {
+          "cls": "pd-input",
+          "height": 48
+        },
+        {
+          "cls": "pd-input",
+          "height": 48
+        },
+        {
+          "cls": "pd-nav__link pd-nav__link--active",
+          "height": 48
+        },
+        {
+          "cls": "pd-nav__link",
+          "height": 48
+        },
+        {
+          "cls": "pd-nav__link",
+          "height": 48
+        }
+      ],
+      "transitions": [
+        {
+          "cls": "pd-button",
+          "transition": "0.12s"
+        },
+        {
+          "cls": "pd-button pd-button--pill",
+          "transition": "0.12s"
+        },
+        {
+          "cls": "pd-button",
+          "transition": "0.12s"
+        },
+        {
+          "cls": "pd-input",
+          "transition": "0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-input",
+          "transition": "0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-nav__link pd-nav__link--active",
+          "transition": "0.12s, 0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-nav__link",
+          "transition": "0.12s, 0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-nav__link",
+          "transition": "0.12s, 0.12s, 0.12s"
+        },
+        {
+          "cls": "pd-card pd-card--interactive",
+          "transition": "0.12s, 0.12s"
+        }
+      ]
+    },
+    "hoverButton": "rgb(228, 160, 121)",
+    "focusInput": {
+      "outline": "rgb(122, 122, 122) solid 4px",
+      "outlineOffset": "4px"
+    }
+  },
+  {
+    "reducedMotion": [
+      {
+        "cls": "pd-button",
+        "transition": "0s"
+      },
+      {
+        "cls": "pd-button pd-button--pill",
+        "transition": "0s"
+      },
+      {
+        "cls": "pd-button",
+        "transition": "0s"
+      },
+      {
+        "cls": "pd-input",
+        "transition": "0s"
+      },
+      {
+        "cls": "pd-input",
+        "transition": "0s"
+      },
+      {
+        "cls": "pd-nav__link pd-nav__link--active",
+        "transition": "0s"
+      },
+      {
+        "cls": "pd-nav__link",
+        "transition": "0s"
+      },
+      {
+        "cls": "pd-nav__link",
+        "transition": "0s"
+      },
+      {
+        "cls": "pd-card pd-card--interactive",
+        "transition": "0s"
+      }
+    ]
+  }
+]
