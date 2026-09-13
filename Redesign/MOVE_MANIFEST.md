@@ -4,6 +4,8 @@
 
 判準：納入未規格化／未測試元件、直接相關研究或可重現原型資料。正式 spec、token source、已規格化元件、已通過 Button Baseline 證據、生成輸出與文件站資料排除。
 
+版控狀態註記：下表與「明確排除」列出的所有路徑，在本 PR（617b6db）之前**都不在 `main` 的 git 歷史裡**——它們原本只是工作目錄中的未追蹤檔案，本 PR 是它們第一次被 `git add`。「Moved」「Excluded」「Kept in place」描述的是本次檔案系統重組決策（要不要搬進 `Redesign/`），不代表這些檔案本身有既有版控紀錄；任何「已通過」「既有證據」等字樣僅反映本地工作區的先前狀態，不能當作已被 git 追蹤或既有 PR 審查過的證明。
+
 ## 搬移明細
 
 | Status | Source | Destination | Evidence | Confidence | Reference handling |
@@ -21,7 +23,7 @@
 
 ## 明確排除
 
-- `review-artifacts/button-baseline-v0.1/**`：Button Baseline 與可執行驗證已通過；不得納入本次 Redesign 工作集。
+- `review-artifacts/button-baseline-v0.1/**`：Button Baseline 與可執行驗證已通過（本地工作區狀態，本 PR 前未進版控）；不得納入本次 Redesign 工作集。
 - `palladio/components/{badge,button,card,divider,input,navigation}/**`：正式元件，已有 README、CSS 與測試。
 - `palladio/tokens/**`、`palladio/dist/**`、`palladio/pipeline/**`、`palladio/themes/**`：正式 token source、已發布輸出與 pipeline。
 - `Redesign/prototypes/content-creation/prototype/dist/**`、`node_modules/**`：生成輸出與安裝依賴；本次核准的整體搬移保留它們，但後續研究整理不得將其視為 source。
