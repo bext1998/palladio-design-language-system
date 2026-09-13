@@ -19,3 +19,4 @@
 | Typography CSS 對每個 `pd-text-{role}` 產出五個獨立屬性（family、size、weight、line-height、letter-spacing），元件完整引用 role；density 只切換根元素 body 字級，text role 不縮放。Card 內容維持消費端排版，Divider 不套用文字 role。 | 有效 | palladio/pipeline/config.js、palladio/components/*、Issue #73 |
 | Focus ring 優先使用通過實際 backdrop A-M2 驗證的產品 accent；只有 `enableValidatedAccentFocusRing()` 可啟用，未驗證或驗證失敗時 CSS 回退 `border-strong`。`border-strong`／`input-border` 固定為 `#777777`，Card hover／active 等剩餘用途最低仍達 3.03:1。 | 有效 | Issue #74、palladio/docs/accessibility/accessibility-contract.md 第三、四、九節 |
 | `text-disabled` 改為 `#7A7A7A`，只限 inactive UI component，依 WCAG SC 1.4.3 豁免不納入 A-M1 gate；`text-placeholder` 維持 `#9A9A9A`，繼續受 A-M1 gate 約束。 | 有效 | Issue #74、palladio/docs/accessibility/accessibility-contract.md 第二節 |
+| 「設計不確定」（UI／視覺風格無法只靠自動測試判定）不再要求先取得 `docs/spec.md` 範圍變更核准才能動手；改為先用原型／候選方案供使用者裁決，裁決後才寫回 spec。 | 有效 | AGENTS.md 規則 8、Redesign/IMAGE_TO_DESIGN_TOKEN_WORKFLOW.md、Issue #85 |
