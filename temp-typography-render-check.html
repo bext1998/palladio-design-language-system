@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="dark" data-density="default">
+<head>
+  <meta charset="utf-8">
+  <title>Palladio typography render check</title>
+  <link rel="stylesheet" href="../dist/css/palladio.css">
+  <link rel="stylesheet" href="../components/button/button.css">
+  <link rel="stylesheet" href="../components/input/input.css">
+  <link rel="stylesheet" href="../components/divider/divider.css">
+  <link rel="stylesheet" href="../components/badge/badge.css">
+  <link rel="stylesheet" href="../components/card/card.css">
+  <link rel="stylesheet" href="../components/navigation/navigation.css">
+  <style>
+    :root { --pd-color-accent: #D9814F; --pd-color-accent-hover: #E4A079; --pd-color-accent-active: #C06A38; --pd-color-accent-disabled: #9C8171; --pd-color-accent-subtle: #2E2118; --pd-color-accent-text: #141414; }
+    body { background: var(--pd-color-bg); color: var(--pd-color-text-primary); margin: 0; padding: 24px; }
+    main { display: grid; gap: 24px; max-width: 48rem; }
+    .row { align-items: center; display: flex; flex-wrap: wrap; gap: 12px; }
+    .pd-field { width: 18rem; }
+    .pd-nav { width: 16rem; }
+    h2 { font: inherit; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--pd-color-text-secondary); margin: 0 0 4px; }
+  </style>
+</head>
+<body>
+  <main>
+    <section><h2>Button (label-md)</h2><div class="row"><button class="pd-button" type="button">Save changes</button><button class="pd-button pd-button--pill" type="button">Publish</button><button class="pd-button" type="button" disabled>Can't save</button></div></section>
+    <section><h2>Badge (label-sm)</h2><div class="row"><span class="pd-badge">Draft</span><span class="pd-badge pd-badge--success">Published</span><span class="pd-badge pd-badge--danger">Failed</span><button class="pd-badge pd-badge--interactive" type="button">All tags ×</button></div></section>
+    <section><h2>Input (label-md / body-md / body-sm)</h2><label for="email" style="display:block;margin-bottom:4px;">Email address</label><input class="pd-input" id="email" type="email" placeholder="name@example.com" style="display:block;width:18rem;"><p style="color:var(--pd-color-text-secondary);font-size:12px;margin:4px 0 0;">We only use this for account notices.</p></section>
+    <section><h2>Navigation (label-md)</h2><nav class="pd-nav" aria-label="Main"><ul class="pd-nav__list"><li><a class="pd-nav__link pd-nav__link--active" href="#current" aria-current="page">Current page</a></li><li><a class="pd-nav__link" href="#reports">Reports</a></li></ul></nav></section>
+    <section><h2>Divider</h2><hr class="pd-divider"></section>
+    <section><h2>Card (consumer-controlled content)</h2><article class="pd-card"><h3 style="margin:0 0 4px;">Static card title</h3><p style="margin:0;">This text inherits whatever typography the consumer applies around it — Card has no fixed text role.</p></article></section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,86 @@
+{
+  "fallbackMetrics": {
+    "outline": "rgb(119, 119, 119) solid 4px",
+    "outlineColor": "rgb(119, 119, 119)",
+    "outlineOffset": "4px"
+  },
+  "accentMetrics": {
+    "outline": "rgb(217, 129, 79) solid 4px",
+    "outlineColor": "rgb(217, 129, 79)",
+    "outlineOffset": "4px"
+  },
+  "disabledMetrics": [
+    {
+      "cls": "pd-button",
+      "tagName": "BUTTON",
+      "color": "rgb(20, 20, 20)",
+      "backgroundColor": "rgb(156, 129, 113)",
+      "cursor": "not-allowed",
+      "borderColor": "rgb(20, 20, 20)"
+    },
+    {
+      "cls": "pd-input",
+      "tagName": "INPUT",
+      "color": "rgb(122, 122, 122)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "cursor": "not-allowed",
+      "borderColor": "rgb(119, 119, 119)"
+    },
+    {
+      "cls": "pd-badge pd-badge--interactive",
+      "tagName": "BUTTON",
+      "color": "rgb(122, 122, 122)",
+      "backgroundColor": "rgb(36, 36, 36)",
+      "cursor": "not-allowed",
+      "borderColor": "rgb(122, 122, 122)"
+    }
+  ],
+  "cardIdle": {
+    "borderColor": "rgb(51, 51, 51)",
+    "backgroundColor": "rgb(36, 36, 36)"
+  },
+  "cardHover": {
+    "borderColor": "rgb(118, 118, 118)",
+    "backgroundColor": "rgb(36, 36, 36)"
+  },
+  "navMetrics": [
+    {
+      "text": "Current page",
+      "cls": "pd-nav__link pd-nav__link--active",
+      "color": "rgb(240, 240, 240)",
+      "fontWeight": "600",
+      "backgroundColor": "rgb(36, 36, 36)",
+      "borderInlineStart": "4px solid rgb(217, 129, 79)"
+    },
+    {
+      "text": "Reports",
+      "cls": "pd-nav__link",
+      "color": "rgb(154, 154, 154)",
+      "fontWeight": "400",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "borderInlineStart": "4px solid rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "Billing (coming soon)",
+      "cls": "pd-nav__link",
+      "color": "rgb(122, 122, 122)",
+      "fontWeight": "400",
+      "backgroundColor": "rgb(28, 28, 28)",
+      "borderInlineStart": "4px solid rgba(0, 0, 0, 0)"
+    }
+  ],
+  "swatches": [
+    {
+      "label": "text-disabled 新值 #7A7A7A"
+    },
+    {
+      "label": "text-disabled 舊值 #969696（僅供對照，非實際套用）"
+    },
+    {
+      "label": "text-placeholder 維持 #9A9A9A（未變動）"
+    },
+    {
+      "label": "border-strong / input-border 新值 #777777"
+    }
+  ]
+}
