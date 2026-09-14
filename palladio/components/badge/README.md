@@ -39,7 +39,7 @@
 
 ## Typography
 
-規格 3.2 把 `pd-text-label-sm`（12px / 500 / line-height 1）明確標註為「小型標籤、badge」用途。Pipeline 對每個 text role 輸出 `font-family`、`font-size`、`font-weight`、`line-height`、`letter-spacing` 五個可直接使用的 CSS custom properties；`.pd-badge` 必須完整引用 `label-sm`，不以 `font: inherit` 迴避字級契約。`line-height` 來自 `pd-text-label-sm`，避免瀏覽器預設行高把 pill 撐高。
+規格 3.1 把 `pd-text-label-sm`（12px / 500 / line-height 1）明確標註為「小型標籤、badge」用途。Pipeline 對每個 text role 輸出 `font-family`、`font-size`、`font-weight`、`line-height`、`letter-spacing` 五個可直接使用的 CSS custom properties；`.pd-badge` 必須完整引用 `label-sm`，不以 `font: inherit` 迴避字級契約。`line-height` 來自 `pd-text-label-sm`，避免瀏覽器預設行高把 pill 撐高。
 
 ## 可及性與動效
 

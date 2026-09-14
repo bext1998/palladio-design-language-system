@@ -9,7 +9,7 @@ it does not ship component CSS. Components remain source-repo spec-validation
 material, while the component validator gives consumers a build/CI guard for
 their copied component markup.
 
-- Design language: `docs/spec.md` chapters 1–8 in the [source repo](https://github.com/bext1998/palladio-design-language-system).
+- Design language: `docs/spec.md` (promoted contracts), `docs/guardrails.md` (accessibility/reduced-motion MUST rules), and `docs/experiments/` (candidate rules pending user decision) in the [source repo](https://github.com/bext1998/palladio-design-language-system).
 - The source repo (pipeline, spec, stress-test prototypes) is for Palladio
   maintainers. **Consuming products install this package — they do not clone the repo.**
 
@@ -19,10 +19,12 @@ their copied component markup.
 npm install @pdiodsgn/tokens
 ```
 
-Pin an exact version. Palladio's validation strategy is production-first
-(`docs/spec.md` §11): a consuming product finds a gap, Palladio is updated and
-republished, then the product bumps its pinned version and re-verifies. Track a
-range (`^`) only for non-first-party consumers.
+Pin an exact version. When a consuming product finds a gap, Palladio is updated
+and republished, then the product bumps its pinned version and re-verifies —
+this loop is one of several promotion-evidence types described in
+`docs/experiments/README.md`, not the sole validation strategy (see
+`docs/archive/spec-v0.1.md` for the retired "production-first" framing). Track
+a range (`^`) only for non-first-party consumers.
 
 ## What's in the package
 
@@ -54,7 +56,7 @@ const surface = palladioTokens.color.surface.hex;
 
 Theme and density are attribute-driven, set them on the root element. The
 colour custom properties are declared **only** under `:root[data-theme="dark"]`
-(dark is the one theme today; `docs/spec.md` §9.3). Without the attribute every
+(dark is the one theme today; `docs/spec.md` §7.3). Without the attribute every
 `--pd-color-*` is undefined — `data-theme="dark"` is required, not optional:
 
 ```html

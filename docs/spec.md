@@ -4,46 +4,17 @@
 
 ---
 
-## 一、設計語言
+> **本文件的角色（2026-09-14 起）：** `docs/spec.md` 只收錄**已升格、可實作、有實作與驗證證據**的跨消費端契約——主要是 token 值、API 命名與 pipeline 技術契約。尚待視覺／產品裁決的候選規則在 `docs/experiments/`；安全與可及性等不可突破的底線在 `docs/guardrails.md`；已被取代或純背景脈絡的舊內容在 `docs/archive/spec-v0.1.md`。三者的分類依據與升格條件見 `SPEC_MIGRATION_PLAN.md`。
+>
+> 這代表本文件**不是**一份预先寫死、宣稱完整定案的設計語言全文——過去的版本混淆了「已驗證的契約」與「尚待驗證的方向」，造成 Issue #84／#85／#88 這類「規則存在但視覺結果沒人真的看過、驗證策略從未被實踐」的落差。
 
-### 1.1 核心個性
+---
 
-Palladio 的視覺世界是**外硬內軟**的。
+## 一、可及性、動效與視覺原則的位置
 
-靜止時，它是一個工具——深碳灰的表面、精準的線條、幾何感的留白。沒有多餘的裝飾，每個元素的存在都有理由。它讓人感覺可靠、收斂、有紀律。
-
-動起來，它有生命感。轉場是流體的，不是機械的。元素的進出像在呼吸，不是在執行命令。這個張力——靜態的俐落與動態的有機感——是 Palladio 最重要的視覺識別。
-
-### 1.2 視覺原則
-
-**P1 — 克制的圓潤**
-
-圓形、圓角、膠囊形狀是 Palladio 語彙的一部分，但不是預設。它們用來標記「這是可互動的」「這是柔化焦點的地方」。大面積的容器傾向直角或小圓角；按鈕、標籤、頭像等小型互動元件才是圓潤語彙的主場。
-
-> 濫用圓角是一種視覺噪音。每一個圓角都應該能說出「我為什麼圓」。
-
-**P2 — 線條是第一公民**
-
-分隔區塊的第一直覺是線條與間距，而不是卡片。線條在深碳灰的背景上可以非常細膩——1px 的 subtle divider 已足夠建立層次，不需要 shadow 和 border 疊加。Surface 的提升（elevation）應保守使用。
-
-**P3 — 深碳灰的層次**
-
-Palladio 的暗色系不是「黑色加一點灰」，而是一組有意義的表面層級。每一層之間的色差是被計算過的——足以讓人感知到層次，但不會因為對比過強而產生碎片感。整體氛圍是沉穩、統一的深色空間。
-
-**P4 — 流體有機的動效**
-
-Palladio 的動效迴避兩個極端：線性（機械、沒有生命感）和彈跳（活潑但不專業）。目標是自然的加速與減速——物理世界裡物體的運動方式。進場比退場稍慢，讓內容有「落定」的感覺。
-
-**P5 — 開放的強調色插槽**
-
-Palladio 不定義強調色。每個產品或網站根據自身品牌明確填入所有 `pd-color-accent-*` 插槽；系統不推導 hover、active 或 disabled 色值，但會驗證各狀態在其指定前景／背景配對中的對比是否符合第八章。系統不規定色相。
-
-### 1.3 不是 Palladio 的東西
-
-- 不是一套「只要套用就有設計感」的 UI kit
-- 不是鼓勵所有產品長一樣的視覺模板
-- 不是追求極簡到失去個性的設計系統
-- 不涵蓋非互動式媒體（影片、印刷品）
+- 可及性硬規則（A-M1–A-M6）、Reduced Motion 規則、元件升格的機器可驗底線與人眼裁決 gate：見 **`docs/guardrails.md`**。
+- 核心個性、P1–P4 視覺原則（克制的圓潤、線條優先、深碳灰層次、流體有機動效）、圓角情境化原則、動效個性與 easing 使用限制、分組手段優先順序、Layer 2 元件級 token override：目前皆為**尚待驗證的候選規則**，見 **`docs/experiments/`**（分別在 `design-language-personality.md`、`shape-context-principles.md`、`motion-personality.md`、`grouping-priority.md`、`architecture-component-layer.md`）。
+- 強調色插槽的開放承諾（「不強迫所有產品長一樣」）：契約本身（六個插槽、不提供 fallback）已升格，見下方 §2.5；產品自主權作為架構承諾是否可實現（Layer 2）仍是 Hypothesis，見上一點。
 
 ---
 
@@ -60,6 +31,8 @@ Palladio 的表面系統由五層構成，從最深的背景往上疊加。每�
 | `pd-color-surface-raised` | 提升一層的表面（card、dropdown） | `#242424` |
 | `pd-color-surface-overlay` | 最高層（modal、tooltip、popover） | `#2E2E2E` |
 | `pd-color-surface-hover` | 互動 hover 狀態的表面變化 | `#323232` |
+
+> 這五層的具體 token 值與 API 已被實作與 pipeline 驗證消費，維持相容；「這個層級劃分感知起來是否正確」屬於美學判斷，見 `docs/experiments/design-language-personality.md`（P3）。
 
 ### 2.2 線條與分隔
 
@@ -83,16 +56,16 @@ Palladio 的表面系統由五層構成，從最深的背景往上疊加。每�
 
 ### 2.4 語意色彩
 
-語意色彩用於系統狀態，非品牌色。暗色系上的語意色需確保 contrast ratio ≥ 4.5:1。
+語意色彩用於系統狀態，非品牌色。暗色系上的語意色需確保 contrast ratio ≥ 4.5:1（A-M1，見 `docs/guardrails.md`）。
 
 | Token | 語意 | 參考色相 |
 |-------|------|----------|
-| `pd-color-success` | 成功、完成 | 綠色系（desaturated） |
+| `pd-color-success` | 成功、完成 | 綠色系 |
 | `pd-color-warning` | 警告、需注意 | 琥珀色系 |
-| `pd-color-danger` | 錯誤、危險操作 | 紅色系（desaturated） |
-| `pd-color-info` | 資訊、提示 | 藍色系（desaturated） |
+| `pd-color-danger` | 錯誤、危險操作 | 紅色系 |
+| `pd-color-info` | 資訊、提示 | 藍色系 |
 
-> 語意色刻意去飽和（desaturated），避免在深碳灰背景上過於刺眼。
+> 上表色相族群是已升格的 token 契約。「是否應該去飽和（desaturated）」這個美學選擇本身尚未經驗證，不得視為已定案的視覺要求，見 `docs/experiments/color-desaturation-rationale.md`；≥4.5:1 的對比要求本身是 guardrail，不受影響。
 
 ### 2.5 強調色插槽（各產品自定義）
 
@@ -111,14 +84,7 @@ pd-color-accent-text      # 強調色上的文字（需確保對比度）
 
 ## 三、字體
 
-### 3.1 字體選擇
-
-| 用途 | 字體 | 理由 |
-|------|------|------|
-| 主字體（UI、內容） | **Noto Sans** | 個人偏好；多語言覆蓋完整；人文無襯線風格與流體動效方向一致 |
-| 等寬（code、data） | **Noto Sans Mono** | 與主字體同族，視覺一致性高 |
-
-### 3.2 字體比例
+### 3.1 字體比例
 
 | Token | Size | Weight | Line Height | 用途 |
 |-------|------|--------|-------------|------|
@@ -133,11 +99,13 @@ pd-color-accent-text      # 強調色上的文字（需確保對比度）
 | `pd-text-label-sm` | 12px | 500 | 1.0 | 小型標籤、badge |
 | `pd-text-mono` | 13px | 400 | 1.6 | 程式碼、資料欄位 |
 
-### 3.3 字體規則
+> 字體家族選擇（Noto Sans／Noto Sans Mono）的理由尚未經驗證，見 `docs/experiments/typography-font-family.md`；上表尺寸比例本身已被 pipeline 產出並被元件消費，維持相容。
 
-- Letter-spacing：標題使用 `-0.01em` 到 `-0.02em`（輕微收緊），body 維持 `0`
-- 不使用 font-weight 100–300（在深色背景上過細，難以閱讀）
-- 最小可用字體尺寸：`10px`（僅限極端場景，例如 chart axis label）
+### 3.2 字體規則
+
+- Letter-spacing：標題使用 `-0.01em` 到 `-0.02em`（輕微收緊），body 維持 `0`——此值已編碼於 token（`palladio/tokens/semantic/typography.json`），為已升格契約。
+
+> 「不使用 font-weight 100–300」「最小可用字體尺寸 10px」這兩條沒有對應 token 或驗證器（純敘述性文字），尚待驗證，見 `docs/experiments/typography-font-family.md`。
 
 ---
 
@@ -154,22 +122,13 @@ pd-color-accent-text      # 強調色上的文字（需確保對比度）
 | `pd-radius-xl` | `16px` | 刻意圓潤的大型容器（保守使用） |
 | `pd-radius-full` | `9999px` | 膠囊形狀（badge、tag、pill button）、圓形頭像 |
 
-### 4.2 圓角使用原則（`[SHOULD]`）
-
-- 大面積容器（panel、sidebar、modal）傾向 `sm` 或 `md`
-- 按鈕預設 `md`；pill 變體使用 `full`
-- `xl` 和 `full` 是點綴，不是預設
-- 同一層級的元件保持圓角一致性——混用多個不同圓角值會產生視覺噪音
+> 上表是已升格的 token 數值契約，維持相容。「哪個元件該用哪個圓角」的情境判斷（含 Navigation 圓角空白這個已知失敗案例）尚待驗證，見 `docs/experiments/shape-context-principles.md`。
 
 ---
 
 ## 五、動效
 
-### 5.1 動效個性
-
-Palladio 的動效是流體有機的。技術上的體現是使用非對稱的 easing curve：進場比退場稍慢（有「落定」感），加速與減速都遵循物理直覺。避免彈跳（spring bounce），避免線性。
-
-### 5.2 Duration Scale
+### 5.1 Duration Scale
 
 | Token | 值 | 用途 |
 |-------|-----|------|
@@ -178,7 +137,7 @@ Palladio 的動效是流體有機的。技術上的體現是使用非對稱的 e
 | `pd-duration-normal` | `220ms` | 狀態轉場（panel expand、fade in/out） |
 | `pd-duration-slow` | `380ms` | 頁面層級轉場、signature animation |
 
-### 5.3 Easing Curves
+### 5.2 Easing Curves
 
 | Token | 值 | 用途 |
 |-------|-----|------|
@@ -187,15 +146,7 @@ Palladio 的動效是流體有機的。技術上的體現是使用非對稱的 e
 | `pd-easing-exit` | `cubic-bezier(0.4, 0.0, 1.0, 1.0)` | 元素退場（快進慢出） |
 | `pd-easing-expressive` | `cubic-bezier(0.34, 1.10, 0.64, 1.0)` | Signature animation（輕微超出再回落，有機感） |
 
-> `pd-easing-expressive` 是 Palladio 動效個性的核心。它產生輕微的過衝（overshoot），類似彈性但不是彈跳——是有機生命感的來源。僅用於 `pd-duration-normal` 以上的動畫，`fast` 等級不適用。
-
-### 5.4 Reduced Motion（`[MUST]`）
-
-當使用者啟用 `prefers-reduced-motion: reduce`：
-
-- 所有 duration 替換為 `pd-duration-instant`（`0ms`）
-- 所有 transform 類動畫移除
-- 必要的 opacity 狀態可保留，但必須瞬時切換，不保留 transition
+> 上兩表是已升格的 token 數值契約，維持相容。動效個性的整體敘事與 `pd-easing-expressive` 的使用限制（僅限 `pd-duration-normal` 以上）尚待驗證，見 `docs/experiments/motion-personality.md`。Reduced motion 的降級規則是 guardrail，見 `docs/guardrails.md`。
 
 ---
 
@@ -230,38 +181,9 @@ Palladio 使用 **4px 基礎單位**。所有間距均為 4 的倍數。
 
 ---
 
-## 七、分組手段優先順序
+## 七、Token 架構與系統基礎建設
 
-當需要將 UI 元素視覺分組時，依以下順序選擇手段（`[SHOULD]`）：
-
-1. **Spacing（留白）** — 首選
-2. **Typography hierarchy** — 標題與內文的層級差異
-3. **Divider（線條）** — `pd-color-border-subtle` 的 1px 線
-4. **Surface elevation** — 使用不同表面層級（`surface` vs `surface-raised`）
-5. **Card / 明確邊框** — 最後手段，用於需要獨立互動邊界的場景
-
----
-
-## 八、可及性規則
-
-### `[MUST]` 硬規則
-
-| 規則 | 標準 |
-|------|------|
-| A-M1 | 一般文字（含 placeholder；inactive UI 的 disabled 文字依 WCAG 豁免）contrast ratio ≥ 4.5:1 |
-| A-M2 | 大字（≥24px regular / ≥18.5px bold）及 UI 元件 contrast ratio ≥ 3:1 |
-| A-M3 | 所有互動元件必須有可見的 focus indicator（不得僅依賴 outline: none 後無替代方案） |
-| A-M4 | `prefers-reduced-motion` 觸發時，所有非必要動畫停用 |
-| A-M5 | 色彩不可作為唯一的資訊傳達手段 |
-| A-M6 | 互動元素最小尺寸依 density preset 對應值 |
-
----
-
-## 九、Token 架構與系統基礎建設
-
-> 本章為技術基礎建設。設計語言（第一至八章）是 source of truth，本章是承載設計語言的容器。
-
-### 9.1 三層 Token 架構
+### 7.1 Token 層級紀律
 
 ```
 Layer 0 — Primitive
@@ -271,13 +193,13 @@ Layer 0 — Primitive
 Layer 1 — Semantic
   描述用途的語意映射
   例：pd-color-text-primary, pd-duration-normal
-
-Layer 2 — Component（可選）
-  元件級 override，各產品可選擇使用
-  例：pd-button-bg-default, pd-card-border-color
 ```
 
-### 9.2 Token 命名空間
+Primitive 不得直接被 UI 元件消費；元件只引用 Semantic 層。
+
+> 可選的「Layer 2 — Component」元件級 override 尚未被任何消費端實作或驗證，見 `docs/experiments/architecture-component-layer.md`，不得當成已存在的能力。
+
+### 7.2 Token 命名空間
 
 ```
 --pd-color-{role}         例：--pd-color-text-primary
@@ -290,7 +212,7 @@ Layer 2 — Component（可選）
 
 Prefix `pd` = Palladio，避免與各產品自身的 CSS 變數衝突。
 
-### 9.3 Token Pipeline
+### 7.3 Token Pipeline
 
 | 項目 | 選擇 |
 |------|------|
@@ -301,7 +223,7 @@ Prefix `pd` = Palladio，避免與各產品自身的 CSS 變數衝突。
 | JSON 產出 | Raw JSON（供 Go / Wails 直接讀取） |
 | Agent Reference 產出 | `agent-reference.md`（Token 總覽 + 使用規則，AI 代理 context 用） |
 
-### 9.4 Agent Reference（核心交付物）
+### 7.4 Agent Reference（核心交付物）
 
 `agent-reference.md` 是 Palladio pipeline 的必要產出，不是可選附加。
 
@@ -309,95 +231,14 @@ Prefix `pd` = Palladio，避免與各產品自身的 CSS 變數衝突。
 
 **格式：** Markdown table + 使用規則摘要 + 禁止事項，與 maze-coder skill 結構對齊。
 
-### 9.5 檔案結構
-
-```
-palladio/
-├── tokens/
-│   ├── primitive/          # Layer 0
-│   ├── semantic/           # Layer 1
-│   │   └── density/        # Compact / Default / Spacious
-│   └── component/          # Layer 2（可選）
-├── themes/
-│   └── dark.json           # 暗色主題（首要）
-├── pipeline/
-│   ├── config.js           # Style Dictionary 設定
-│   └── transforms/
-├── dist/
-│   ├── css/
-│   ├── ts/
-│   ├── json/
-│   └── agent-reference.md  # 核心交付物
-└── docs/
-    ├── design-language/    # 第一至八章的完整說明
-    ├── components/         # 元件行為規範
-    └── accessibility/
-```
-
 ---
 
-## 十、元件規劃
+## 八、元件規劃與驗收流程
 
-### 10.1 第一批元件（Foundation 完成後）
+新元件不再依「規格先寫完整範圍，再逐一實作」的流程推進。流程改為：
 
-優先順序依「能同時驗證最多 Foundation 決策」排序：
+1. 依 `docs/experiments/README.md` 的生命週期，先產出候選原型／概念圖並記錄假設。
+2. 對照 `docs/guardrails.md` 的機器可驗底線與人眼裁決 gate 收集證據。
+3. 使用者裁決後，才把對應規則寫入本文件（`docs/spec.md`）；被拒絕的假設標記 `Rejected` 並保留紀錄，不刪除。
 
-| 順序 | 元件 | 驗證項目 |
-|------|------|----------|
-| 1 | **Button** | accent 插槽、radius、density、hover/active/disabled state、focus ring |
-| 2 | **Input** | border、surface、placeholder text、focus state、error state |
-| 3 | **Divider** | border token、spacing |
-| 4 | **Badge / Tag** | `pd-radius-full`、accent subtle、label text |
-| 5 | **Card** | surface-raised、border-subtle、radius、分組手段原則 |
-| 6 | **Navigation（sidebar）** | surface、density、active state |
-
-### 10.2 元件驗收標準（每個元件）
-
-- [ ] 在 Compact / Default / Spacious 三種密度下正常呈現，結構不變
-- [ ] Hover、active、focus、disabled 四種互動狀態完整定義
-- [ ] Keyboard navigation 行為符合規範
-- [ ] Focus indicator 可見且符合 A-M2 對比標準
-- [ ] `prefers-reduced-motion` 下動畫正確降級
-- [ ] Token 引用只使用 Semantic 層（不直接使用 Primitive 值）
-- [ ] 不得以 `font: inherit` 迴避 text role；有文字的元件必須完整引用對應 role 的字體屬性，純容器與非文字元素須記錄不套用 role 的理由
-- [ ] 圓角、動效曲線、分組手段的選擇，逐條對照 §1.2（P1–P5）、§4.2、§7 的原則說明理由；不得只因為「省事」或「其他元件也這樣」而套用，無對應原則可引用時視為未完成
-- [ ] 在標準 demo 頁渲染三種 density 的實際截圖，與 §1.2 逐條對照，由使用者裁決是否符合設計語言——本節其餘項目皆為機器可驗的下限，不能取代這一步
-
-**流程規則**：任何改動 token 值、或新增像 `pd-color-focus-ring` fallback 這類機制的 PR，必須在同一個 PR 內同步更新 `docs/spec.md` 對應章節（新 token 要進對應表格、新機制要進對應章節的規則說明），不得只改程式碼與元件 README。事後補寫已證明不會發生（見 Issue #74 的 focus-ring 分離未回寫 spec 的先例），此規則不接受「之後再補」。
-
----
-
-## 十一、驗證策略
-
-Palladio 的驗證以生產環境為主。每當有新產品或網頁接入 Palladio，即為一次實際驗證。發現 token 覆蓋不足或設計決策需要調整時，直接更新 Palladio 並同步至接入該系統的產品。
-
-Accent 插槽的對比度驗證於各產品定義強調色時進行。
-
----
-
-## 十二、風險與限制
-
-| 風險 | 等級 | 緩解策略 |
-|------|------|----------|
-| Foundation 過度設計（在無產品消費前堆砌太多 token） | 中 | Foundation 先做色彩、字體、間距、動效的 Semantic 層；Component token 等實際元件開發再補 |
-| Accent 插槽對比度失控（各產品填入低對比色） | 中 | 產品明確提供全部 accent 狀態，並在 `agent-reference.md` 列出實際前景／背景配對；依 A-M1／A-M2 驗證，pipeline 可加自動驗證 |
-| Light theme 補齊時大量調整 | 低 | Semantic token 命名不綁明暗（`surface.default` 而非 `surface.dark`），語意層抽象正確可降低重構幅度 |
-| Token pipeline 維護成本 | 低 | Style Dictionary 設定完成後為靜態流程，僅新增 token 時觸發 |
-
----
-
-## 十三、驗收標準
-
-### Foundation 完成標準
-
-- [ ] Primitive token 完整定義（色彩、字體、間距、圓角、動效）
-- [ ] Semantic token 映射完成（暗色主題）
-- [ ] 三種 Density preset 定義完成
-- [ ] Token pipeline 產出 CSS / TS / JSON / `agent-reference.md` 四種格式
-- [ ] 所有 `[MUST]` accessibility 規則文件化
-
-### 設計語言完成標準
-
-- [ ] 第一至八章設計語言完整，且與第九章 pipeline 產出一致
-- [ ] 至少一個真實產品或網頁已接入 Palladio，並依第十一章完成一輪回饋更新
-- [ ] Accent 插槽對比度驗證已於某個接入產品定義強調色時實際執行（見可及性契約第九節）
+舊有的第一批元件優先順序（歷史紀錄，非現行判準）與兩份一次性「完成度」清單已移入 `docs/archive/spec-v0.1.md`。改動 token 值或新增機制時的同步更新義務見 `docs/guardrails.md`「證據誠實與治理底線」。

@@ -6,7 +6,7 @@
 >
 > Source-spec SHA-256: `30AEE7DBA050F9C0994CBA418479767BE71B86E59EAA176BA9242D42780F0D82`
 >
-> Status: proposed migration only. The recommendations below await the user's final confirmation; no contract, source token, pipeline, component, governance file, or actual migration has changed.
+> Status: **executed** (2026-09-14, see the migration PR that added `docs/guardrails.md`, `docs/experiments/`, `docs/archive/spec-v0.1.md`, and rewrote `docs/spec.md`). This file is kept as the historical classification record; token values were not changed, only reorganized. The actual implementation consolidated the "Proposed target" paths below into flat files rather than the nested paths originally suggested — e.g. `docs/experiments/design-language-personality.md` (not `docs/experiments/design-language/core-personality.md`), a single `docs/archive/spec-v0.1.md` (not per-topic archive files), and guardrail content folded into `docs/guardrails.md` directly. Treat the actual file list in the repo as ground truth over the exact filenames named in the table below; the classification itself (which class each rule belongs to) is what was followed.
 
 ## Conclusion
 

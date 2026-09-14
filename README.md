@@ -2,7 +2,7 @@
 
 Palladio 是一套開源設計語言與 design-token system：以深碳灰的表面層級、精準線條與流體有機動效建立共同基礎，同時讓每個產品自行定義品牌強調色。
 
-Foundation（token 系統基礎）已完成。完整設計契約與驗收標準請見 [規格書](docs/spec.md)；第一批元件與壓力測試進行中，請見 GitHub Issues。
+Foundation（token 系統基礎）已完成。已升格的設計契約請見 [docs/spec.md](docs/spec.md)，安全與可及性底線請見 [docs/guardrails.md](docs/guardrails.md)，尚待驗證的候選規則請見 [docs/experiments/](docs/experiments/)；元件開發與原型實驗進行中，請見 GitHub Issues。
 
 ## 原則
 

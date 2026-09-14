@@ -45,7 +45,7 @@ const DRIFT_TOLERANCE = 0.01;
 // Expected ratios below are the ones documented and explained in
 // palladio/docs/accessibility/accessibility-contract.md (section 3).
 // `gated: true` means the token is used as a UI element that conveys a
-// boundary/state (docs/spec.md 2.2, 8) — a focus/UI indicator or an input's
+// boundary/state (docs/spec.md 2.2; docs/guardrails.md A-M2) — a focus/UI indicator or an input's
 // identifiable edge — and is therefore subject to the A-M2 3:1 threshold.
 // `gated: false` is reserved for tokens that are *only* decorative borders
 // (border-subtle and border-default, spec 2.2). Input's identifiable boundary
